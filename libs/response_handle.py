@@ -1,6 +1,6 @@
 import json
 
-from custom_exception import UserOperationError
+from custom_exception import RequestError
 
 
 def get_response_data(response):
@@ -16,7 +16,7 @@ def get_response_data(response):
 
     elif response.status_code == 400:  # API rejects action
         message = json.loads(response.content)['message']
-        raise UserOperationError(message)
+        raise RequestError(message)
 
     else:
-        raise UserOperationError("something went wrong")
+        raise RequestError("something went wrong")

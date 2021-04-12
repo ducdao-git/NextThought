@@ -1,6 +1,6 @@
 import requests
 
-from custom_exception import UserOperationError
+from custom_exception import RequestError
 from response_handle import get_response_data
 
 api_url = 'http://nsommer.wooster.edu/social'
@@ -19,7 +19,7 @@ def create_user(username):
 
         return AuthorizedUser(username, response_data['token'])
 
-    except UserOperationError as error:
+    except RequestError as error:
         print(f'popup create: {error}')
 
 
@@ -54,7 +54,7 @@ class AuthorizedUser:
                 self.uid = response_data['uid']
                 self.username = response_data['username']
 
-        except UserOperationError as error:
+        except RequestError as error:
             print(f'popup set_id: {username} -- {error}')
 
     def set_token(self, token):
@@ -82,7 +82,7 @@ class AuthorizedUser:
             )
             return token
 
-        except UserOperationError as error:
+        except RequestError as error:
             print(f'popup set_token: {self.username} -- {error}')
 
     def get_username(self):
@@ -123,7 +123,7 @@ class AuthorizedUser:
 
             self.username = new_username
 
-        except UserOperationError as error:
+        except RequestError as error:
             print(f'popup change: {self.username} -- {error}')
 
     def __repr__(self):
