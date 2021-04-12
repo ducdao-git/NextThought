@@ -1,0 +1,24 @@
+{
+  "next_mess": {
+    "primary_color": "#82279e",
+    "primary_variant_color": "#51006f",
+    "secondary_color": "#fdc72a",
+    "background_color": "#ffffff",
+    "divider_color": "#e0e0e0",
+    "text_primary_color": "#efe4f2",
+    "text_primary_variant_color": "#82279e",
+    "text_secondary_color": "#363331",
+    "text_background_color": "#2e2e2e"
+  },
+  "dark": {
+    "primary_color": "#282828",
+    "primary_variant_color": "#393e46",
+    "secondary_color": "#505050",
+    "background_color": "#1f1f1f",
+    "divider_color": "#363636",
+    "text_primary_color": "#c3c3c3",
+    "text_primary_variant_color": "#ffffff",
+    "text_secondary_color": "#cdcdcd",
+    "text_background_color": "#b8b8b8"
+  }
+}

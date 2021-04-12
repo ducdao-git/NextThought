@@ -1,0 +1,109 @@
+<NewsfeedRoute>:
+    name: 'newsfeed_route'
+
+
+    BoxLayout:
+        size: root.size
+        orientation: 'vertical'
+
+        Label:
+            text: 'status bar'
+            size_hint: 1, None
+            height: dp(24)
+            canvas.before:
+                Color:
+                    rgba: app.theme_palette['primary_variant_color']
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+
+        BoxLayout:  # action bar
+            orientation: 'horizontal'
+            size_hint: 1, None
+            height: dp(56)
+            canvas.before:
+                Color:
+                    rgba: app.theme_palette['primary_color']
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+
+            RouteTitleLabel:
+                text: ' ' * 3 + 'Newsfeed'
+
+            IconButton:
+                text: "%s" % icon('search')
+                color: app.theme_palette['text_primary_color']
+                on_release:
+#                    app.root.current = "completed_route"
+#                    root.manager.transition.direction = 'left'
+
+            IconButton:
+                text: "%s" % icon('cog')
+                color: app.theme_palette['text_primary_color']
+                on_release:
+#                    app.root.current = "theme_route"
+#                    root.manager.transition.direction = 'left'
+#                    app.root.return_route = 'upcoming_route'
+
+        FloatLayout:  # layout for tasks view and add button
+            ScrollView:
+                do_scroll: False, True
+                canvas.before:
+                    Color:
+                        rgba: app.theme_palette['background_color']
+                    Rectangle:
+                        size: self.size
+                        pos: self.pos
+
+                BoxLayout: # must specify height to scrollable
+                    id: newsfeed_scrollview
+                    orientation: 'vertical'
+                    size_hint_y: None
+                    height: self.minimum_height  # minimum_height is min height to contain all children
+                    padding: [dp(12), dp(12), dp(12), dp(12)]
+
+            AnchorLayout:
+                anchor_x: 'right'
+                anchor_y: 'bottom'
+                padding: [0, 0, dp(16), dp(72)]
+
+                IconButton:
+                    size_hint: None, None
+                    size: dp(50), dp(50)
+                    background_normal: ''
+                    background_color: [0, 0, 0, 0]
+                    text: "%s" % icon('pen')
+                    color: app.theme_palette['text_secondary_color']
+                    on_release:
+#                        app.root.current = "add_task_route"
+#                        root.manager.transition.direction = 'up'
+
+                    canvas.before:
+                        Color:
+                            rgba: app.theme_palette['secondary_color']
+                        Ellipse:
+                            size: self.size
+                            pos: self.pos
+
+            BoxLayout:  # bottom nav bar
+                orientation: 'horizontal'
+                size_hint: 1, None
+                height: dp(56)
+                canvas.before:
+                    Color:
+                        rgba: app.theme_palette['primary_color']
+                    Rectangle:
+                        size: self.size
+                        pos: self.pos
+
+                IconButton:
+                    text: "%s \n [size=14sp]Newsfeed[/size]" % icon('home')
+                    color: app.theme_palette['text_primary_color']
+                    on_release:
+
+
+                IconButton:
+                    text: "%s \n [size=14sp]Conversations[/size]" % icon('comments')
+                    color: app.theme_palette['text_primary_color']
+                    on_release:
