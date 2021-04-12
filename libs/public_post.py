@@ -27,11 +27,12 @@ def create_public_post(user, content, parentid=-1):
         print(f'popup create_ppost: {error}')
 
 
-def get_public_posts():
-    response = requests.get(api_url + '/posts', data={'tag': 'test'})
+def get_public_posts(limit=50, uid=None, tag=None):
+    response = requests.get(api_url + '/posts',
+                            data={'limit': limit, 'uid': uid, 'tag': tag})
     response_data = get_response_data(response)
 
-    pprint(response_data)
+    return response_data
 
 
 class PublicPost:
@@ -75,3 +76,6 @@ class PublicPost:
         return f'AuthorizedUser class -- uid: {self.uid}, ' \
                f'token: {self.token}, content: {self.content}, ' \
                f'postid: {self.postid}'
+
+
+
