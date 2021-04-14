@@ -2,7 +2,6 @@ import requests
 
 from libs.custom_exception import RequestError
 from libs.response_handle import get_response_data
-from libs.custom_popup import ErrorPopup
 
 api_url = 'http://nsommer.wooster.edu/social'
 
@@ -21,8 +20,8 @@ def create_user(username):
         return AuthorizedUser(username, response_data['token'])
 
     except RequestError as error:
-        # print(f'popup create: {error}')
-        ErrorPopup(f'Unable to create user -- {error}').open()
+        print(f'popup create: {error}')
+        raise RequestError(error)
 
 
 def get_uid_from_username(username):
@@ -37,8 +36,8 @@ def get_uid_from_username(username):
         return response_data['uid']
 
     except RequestError as error:
-        # print(f'popup get_uid: {username} -- {error}')
-        ErrorPopup(f'Unable to get user ID -- {error}').open()
+        print(f'popup get_uid: {username} -- {error}')
+        raise RequestError(error)
 
 
 class AuthorizedUser:
@@ -72,8 +71,8 @@ class AuthorizedUser:
             self.username = response_data['username']
 
         except RequestError as error:
-            # print(f'popup set_id: {username} -- {error}')
-            ErrorPopup(f'Unable to set user ID -- {error}').open()
+            print(f'popup set_id: {username} -- {error}')
+            raise RequestError(error)
 
     def set_token(self, token):
         """
@@ -101,8 +100,8 @@ class AuthorizedUser:
             return token
 
         except RequestError as error:
-            # print(f'popup set_token: {self.username} -- {error}')
-            ErrorPopup(f'Unable to set user token -- {error}').open()
+            print(f'popup set_token: {self.username} -- {error}')
+            raise RequestError(error)
 
     def get_username(self):
         """
@@ -143,8 +142,8 @@ class AuthorizedUser:
             self.username = new_username
 
         except RequestError as error:
-            # print(f'popup change: {self.username} -- {error}')
-            ErrorPopup(f'Unable to change username -- {error}').open()
+            print(f'popup change: {self.username} -- {error}')
+            raise RequestError(error)
 
     def __repr__(self):
         return f'AuthorizedUser class -- uid: {self.uid}, username:' \

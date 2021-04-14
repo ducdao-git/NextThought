@@ -1,7 +1,7 @@
 from kivy.uix.modalview import ModalView
 
 
-class SearchPopup(ModalView):
+class FilterPopup(ModalView):
     def __init__(self, root, **kwargs):
         super().__init__(**kwargs)
         self.root = root

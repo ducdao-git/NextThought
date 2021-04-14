@@ -2,7 +2,6 @@ import requests
 
 from libs.custom_exception import RequestError
 from libs.response_handle import get_response_data
-from libs.custom_popup import ErrorPopup
 
 api_url = 'http://nsommer.wooster.edu/social'
 
@@ -25,8 +24,8 @@ def create_public_post(user, content, parentid=-1):
         get_response_data(response)
 
     except RequestError as error:
-        # print(f'popup create_ppost: {error}')
-        ErrorPopup(f'Unable to create post -- {error}').open()
+        print(f'popup create_ppost: {error}')
+        raise RequestError(error)
 
 
 def get_public_posts(limit=50, uid=None, tag=None,
@@ -34,7 +33,6 @@ def get_public_posts(limit=50, uid=None, tag=None,
     """
     get public posts from server then create PublicPost obj from those data
     :param limit: int repr max number of post to fetch
-    :param username: string -- only fetch post from this username
     :param uid: int -- only fetch post from this user ID
     :param tag: string -- only fetch post with this tag
     :param parent_id: int -- only fetch post with this parent, by default fetch
@@ -57,8 +55,8 @@ def get_public_posts(limit=50, uid=None, tag=None,
         return public_posts
 
     except RequestError as error:
-        # print(f'popup create_ppost: {error}')
-        ErrorPopup(f'Unable to get posts -- {error}').open()
+        print(f'popup create_ppost: {error}')
+        raise RequestError(error)
 
 
 class PublicPost:
@@ -108,8 +106,8 @@ class PublicPost:
             self.content = new_content
 
         except RequestError as error:
-            # print(f'popup edit_ppost: {self.postid} -- {error}')
-            ErrorPopup(f'Unable to edit post -- {error}').open()
+            print(f'popup edit_ppost: {self.postid} -- {error}')
+            raise RequestError(error)
 
     def delete_public_post(self, owner):
         """
@@ -128,8 +126,8 @@ class PublicPost:
             self.owner_name = self.content = self.postid = None
 
         except RequestError as error:
-            # print(f'popup del_ppost: {self.postid} -- {error}')
-            ErrorPopup(f'Unable to delete post -- {error}').open()
+            print(f'popup del_ppost: {self.postid} -- {error}')
+            raise RequestError(error)
 
     def __repr__(self):
         """
