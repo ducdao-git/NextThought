@@ -46,8 +46,7 @@ class NextMess(App):
 
 if __name__ == '__main__':
     # user2 = AuthorizedUser('dtuser2', 'ejzifjyt')
-    # create_public_post(user2, "#test this is a test post 0")
-    # create_public_post(user2, "#test this test post is long" * 5)
-    # create_public_post(user2, "#test this \ntest post \nis multiline")
+    # for i in range(4):
+    #     create_public_post(user2, f"#test post {i}")
 
     NextMess().run()

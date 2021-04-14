@@ -34,10 +34,15 @@ class NewsfeedRoute(Screen):
 
     def display_public_posts(self):
         posts = get_public_posts()
-        pprint(posts)
+        # pprint(posts)
 
         for post in posts:
             self.ids.newsfeed_scrollview.add_widget(PostView(self, post))
 
     def delete_post(self, postview_instance):
         self.ids.newsfeed_scrollview.remove_widget(postview_instance)
+
+    def edit_post(self):
+        print('edit_post')
+        self.ids.newsfeed_scrollview.clear_widgets()
+        self.display_public_posts()

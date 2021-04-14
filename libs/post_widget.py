@@ -1,3 +1,4 @@
+from kivy.uix.modalview import ModalView
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
 from kivy.uix.label import Label
@@ -128,9 +129,10 @@ class PostView(BoxLayout):
         self.bind(minimum_height=self.setter('height'))
 
     def post_edit(self):
-        print('edit post')
+        self.post.edit_public_post(self.root.app.authorized_user,
+                                   'post edited again')
+        self.root.edit_post()
 
     def post_delete(self):
-        print('delete post')
         self.post.delete_public_post(self.root.app.authorized_user)
         self.root.delete_post(self)

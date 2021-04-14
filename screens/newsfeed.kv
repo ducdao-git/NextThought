@@ -61,6 +61,7 @@
                     id: newsfeed_scrollview
                     orientation: 'vertical'
                     size_hint_y: None
+                    padding: [0, 0, 0, dp(56)]  # account for part that are hide behind the bottom nav bar
                     height: self.minimum_height  # minimum_height is min height to contain all children
 
             AnchorLayout:
@@ -102,7 +103,6 @@
                     text: " " * 2 + "%s\n[size=14sp]Newsfeed[/size]" % icon('home')
                     color: app.theme_palette['text_primary_color']
                     on_release:
-
 
                 IconButton:
                     text: " " * 2 + "%s\n[size=14sp]Conversations[/size]" % icon('comments')
