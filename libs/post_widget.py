@@ -1,4 +1,3 @@
-from kivy.uix.modalview import ModalView
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
 from kivy.uix.label import Label
@@ -6,30 +5,7 @@ from kivy.uix.label import Label
 from kivy.graphics import Color, Rectangle
 
 from libs.custom_kv_widget import IconButton
-
-
-class PostOptionButton(IconButton):
-    def __init__(self, postview_instance, option_action, **kwargs):
-        super().__init__(**kwargs)
-        self.option_action = option_action
-        self.postview_instance = postview_instance
-
-        if option_action == 'edit':
-            option_icon = self.edit_icon
-        elif option_action == 'delete':
-            option_icon = self.delete_icon
-        else:
-            option_icon = self.error_icon
-
-        self.text = f'[size=16sp]{option_icon}[/size]'
-
-    def on_release(self):
-        if self.option_action == 'edit':
-            return self.postview_instance.post_edit()
-        elif self.option_action == 'delete':
-            return self.postview_instance.post_delete()
-        else:
-            return None
+from libs.custom_popup import PostEditPopup
 
 
 class PostInfoButton(Button):
@@ -105,6 +81,30 @@ class PostDividerLabel(Label):
         self.rect.size = self.size
 
 
+class PostOptionButton(IconButton):
+    def __init__(self, postview_instance, option_action, **kwargs):
+        super().__init__(**kwargs)
+        self.option_action = option_action
+        self.postview_instance = postview_instance
+
+        if option_action == 'edit':
+            option_icon = self.edit_icon
+        elif option_action == 'delete':
+            option_icon = self.delete_icon
+        else:
+            option_icon = self.error_icon
+
+        self.text = f'[size=16sp]{option_icon}[/size]'
+
+    def on_release(self):
+        if self.option_action == 'edit':
+            return self.postview_instance.get_post_new_content()
+        elif self.option_action == 'delete':
+            return self.postview_instance.post_delete()
+        else:
+            return None
+
+
 class PostView(BoxLayout):
     """
     custom boxlayout to display a public post
@@ -114,6 +114,7 @@ class PostView(BoxLayout):
         super().__init__(**kwargs)
         self.root = root
         self.post = post
+        self.post_new_content = 'edit -- sth go wrong'
 
         self.ids.row.add_widget(
             PostInfoButton(self.post.get_owner_name(), self.post.get_time()))
@@ -128,9 +129,12 @@ class PostView(BoxLayout):
 
         self.bind(minimum_height=self.setter('height'))
 
+    def get_post_new_content(self):
+        PostEditPopup(self).open()
+
     def post_edit(self):
         self.post.edit_public_post(self.root.app.authorized_user,
-                                   'post edited again')
+                                   self.post_new_content)
         self.root.edit_post()
 
     def post_delete(self):

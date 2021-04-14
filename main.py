@@ -23,6 +23,7 @@ kivysome.enable("https://kit.fontawesome.com/4adb19bb6e.js",
                 group=kivysome.FontGroup.SOLID, font_folder="assets/fonts")
 
 Builder.load_file('libs/custom_kv_widget.kv')
+Builder.load_file('libs/custom_popup.kv')
 Builder.load_file('libs/post_widget.kv')
 Builder.load_file('screens/newsfeed.kv')
 

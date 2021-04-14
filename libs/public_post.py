@@ -27,10 +27,12 @@ def create_public_post(user, content, parentid=-1):
         print(f'popup create_ppost: {error}')
 
 
-def get_public_posts(limit=50, uid=None, tag=None, parent_id=-1):
+def get_public_posts(limit=50, uid=None, tag=None,
+                     parent_id=-1):
     """
     get public posts from server then create PublicPost obj from those data
     :param limit: int repr max number of post to fetch
+    :param username: string -- only fetch post from this username
     :param uid: int -- only fetch post from this user ID
     :param tag: string -- only fetch post with this tag
     :param parent_id: int -- only fetch post with this parent, by default fetch

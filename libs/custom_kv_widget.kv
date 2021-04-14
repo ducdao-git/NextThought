@@ -21,3 +21,28 @@
     valign: 'center'
     font_size: sp(20)
     color: app.theme_palette['text_primary_color']
+
+
+<ResizableTextInput@TextInput>:
+    size_hint: 8, None
+    size: self.height, self.minimum_height
+    background_color: [1, 0, 0, 0]
+    cursor_color: app.theme_palette['primary_color']
+    padding: [dp(8), dp(8)]
+    write_tab: False
+    font_size: sp(14)
+    multiline: True
+    foreground_color: app.theme_palette['text_background_color']
+
+
+<InputLayout@BoxLayout>:
+    orientation: 'horizontal'
+    size_hint: 1, None
+    height: self.minimum_height
+
+    canvas.before:
+        Color:
+            rgba: app.theme_palette['divider_color']
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size

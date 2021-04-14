@@ -1,0 +1,140 @@
+<SearchPopup>
+    size_hint: 0.8, 1
+    background_normal: ''
+    background_color: (0, 0, 0, 0)
+    auto_dismiss: False
+    text_color: app.theme_palette['text_primary_color']
+
+    BoxLayout:
+        orientation: 'vertical'
+        size_hint: 1, None
+        height: self.minimum_height
+
+        opacity: 0.95
+        canvas.before:
+            Color:
+                rgba: app.theme_palette['background_color']
+            RoundedRectangle:
+                radius: [(20.0, 20.0), (20.0, 20.0), (20.0, 20.0), (20.0, 20.0)]
+                pos: self.pos
+                size: self.size
+
+        Label:
+            size_hint: 1, None
+            height: self.texture_size[1] * 2
+            text_size: root.width, None
+            halign: 'center'
+            text: 'Edit post content'
+            color: app.theme_palette['text_background_color']
+
+        BoxLayout:
+            size_hint: 1, None
+            height: self.minimum_height
+            orientation: 'vertical'
+            padding: dp(8), dp(0), dp(8), dp(8)
+            spacing: dp(8)
+
+            InputLayout:
+                IconButton:
+                    text: '%s' % icon('user', 16)
+
+                ResizableTextInput:
+                    id: filter_username
+                    hint_text: "Enter an username"
+
+            InputLayout:
+                IconButton:
+                    text: '%s' % icon('hashtag', 16)
+
+                ResizableTextInput:
+                    id: filter_tag
+                    hint_text: "Enter a tag"
+
+        Button:
+            size_hint: 1, None
+            height: self.texture_size[1] * 2
+
+            background_normal: ''
+            background_down: ''
+            background_color: [0, 0, 0, 0]
+
+            markup: True
+            text: '%s  Filter' % icon ('filter')
+            color: app.theme_palette['text_primary_color']
+            on_release: root.dismiss()
+
+            opacity: 0.95
+            canvas.before:
+                Color:
+                    rgba: app.theme_palette['primary_color']
+                RoundedRectangle:
+                    radius: [(0, 0), (0, 0), (20.0, 20.0), (20.0, 20.0)]
+                    pos: self.pos
+                    size: self.size
+
+
+<PostEditPopup>
+    size_hint: 0.9, 1
+    background_normal: ''
+    background_color: (0, 0, 0, 0)
+    auto_dismiss: False
+    text_color: app.theme_palette['text_primary_color']
+
+    BoxLayout:
+        orientation: 'vertical'
+        size_hint: 1, None
+        height: self.minimum_height
+
+        opacity: 0.95
+        canvas.before:
+            Color:
+                rgba: app.theme_palette['background_color']
+            RoundedRectangle:
+                radius: [(20.0, 20.0), (20.0, 20.0), (20.0, 20.0), (20.0, 20.0)]
+                pos: self.pos
+                size: self.size
+
+        Label:
+            size_hint: 1, None
+            height: self.texture_size[1] * 2
+            text_size: root.width, None
+            halign: 'center'
+            text: 'Edit post content'
+            color: app.theme_palette['text_background_color']
+
+        BoxLayout:
+            size_hint: 1, None
+            height: self.minimum_height
+            orientation: 'vertical'
+            padding: dp(8), dp(0), dp(8), dp(8)
+            spacing: dp(8)
+
+            InputLayout:
+                IconButton:
+                    text: '%s' % icon('align-left', 16)
+
+                ResizableTextInput:
+                    id: post_edit_new_content
+                    hint_text: "Enter new content"
+
+        Button:
+            size_hint: 1, None
+            height: self.texture_size[1] * 2
+
+            background_normal: ''
+            background_down: ''
+            background_color: [0, 0, 0, 0]
+
+            markup: True
+            text: '%s  Submit' % icon ('paper-plane')
+            color: app.theme_palette['text_primary_color']
+            on_release: root.dismiss()
+
+            opacity: 0.95
+            canvas.before:
+                Color:
+                    rgba: app.theme_palette['primary_color']
+                RoundedRectangle:
+                    radius: [(0, 0), (0, 0), (20.0, 20.0), (20.0, 20.0)]
+                    pos: self.pos
+                    size: self.size

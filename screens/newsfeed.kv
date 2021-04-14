@@ -1,7 +1,6 @@
 <NewsfeedRoute>:
     name: 'newsfeed_route'
 
-
     BoxLayout:
         size: root.size
         orientation: 'vertical'
@@ -35,9 +34,7 @@
             IconButton:
                 text: "%s" % icon('search')
                 color: app.theme_palette['text_primary_color']
-                on_release:
-#                    app.root.current = "completed_route"
-#                    root.manager.transition.direction = 'left'
+                on_release: root.open_filter_popup()
 
             IconButton:
                 text: "%s" % icon('cog')

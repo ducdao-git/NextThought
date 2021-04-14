@@ -23,6 +23,21 @@ def create_user(username):
         print(f'popup create: {error}')
 
 
+def get_uid_from_username(username):
+    if username in ['', None]:
+        return None
+
+    try:
+        response = requests.get(api_url + '/users',
+                                data={'username': username})
+        response_data = get_response_data(response)
+
+        return response_data['uid']
+
+    except RequestError as error:
+        print(f'popup get_uid: {username} -- {error}')
+
+
 class AuthorizedUser:
     """class represent signed in user"""
 
@@ -50,9 +65,8 @@ class AuthorizedUser:
                                     data={'username': username})
             response_data = get_response_data(response)
 
-            if response_data is not None:
-                self.uid = response_data['uid']
-                self.username = response_data['username']
+            self.uid = response_data['uid']
+            self.username = response_data['username']
 
         except RequestError as error:
             print(f'popup set_id: {username} -- {error}')
