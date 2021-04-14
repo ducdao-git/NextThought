@@ -73,9 +73,7 @@
                     background_color: [0, 0, 0, 0]
                     text: " [size=22sp]%s[/size]" % icon('edit')
                     color: app.theme_palette['text_secondary_color']
-                    on_release:
-#                        app.root.current = "add_task_route"
-#                        root.manager.transition.direction = 'up'
+                    on_release: root.open_create_post_popup()
 
                     canvas.before:
                         Color:

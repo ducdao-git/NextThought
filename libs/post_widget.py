@@ -5,7 +5,7 @@ from kivy.uix.label import Label
 from kivy.graphics import Color, Rectangle
 
 from libs.custom_kv_widget import IconButton
-from libs.custom_popup import PostEditPopup
+from libs.custom_popup import PostContentPopup
 
 
 class PostInfoButton(Button):
@@ -130,12 +130,13 @@ class PostView(BoxLayout):
         self.bind(minimum_height=self.setter('height'))
 
     def get_post_new_content(self):
-        PostEditPopup(self).open()
+        PostContentPopup(postview_instance=self,
+                         action_name='edit_post').open()
 
     def post_edit(self):
         self.post.edit_public_post(self.root.app.authorized_user,
                                    self.post_new_content)
-        self.root.edit_post()
+        self.root.refresh_newsfeed()
 
     def post_delete(self):
         self.post.delete_public_post(self.root.app.authorized_user)

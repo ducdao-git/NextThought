@@ -24,17 +24,29 @@ class FilterPopup(ModalView):
         self.root.filter_post(filter_username, filter_tag)
 
 
-class PostEditPopup(ModalView):
-    def __init__(self, postview_instance, **kwargs):
+class PostContentPopup(ModalView):
+    def __init__(self, root=None, postview_instance=None,
+                 action_name='create_post', **kwargs):
         super().__init__(**kwargs)
         self.postview_instance = postview_instance
-        self.ids.post_edit_new_content.text = \
-            self.postview_instance.post.get_content()
+        self.root = root
+        self.action_name = action_name
+
+        if action_name == 'edit_post':
+            self.ids.post_content_popup_title.text = 'Edit post content'
+            self.ids.post_content_input.hint_text = 'Enter new content'
+            self.ids.post_content_input.text = \
+                self.postview_instance.post.get_content()
+        elif action_name == 'create_post':
+            self.ids.post_content_input.text = ''
 
     def on_dismiss(self):
-        self.postview_instance.post_new_content = \
-            self.ids.post_edit_new_content.text
-        self.postview_instance.post_edit()
+        if self.action_name == 'edit_post':
+            self.postview_instance.post_new_content = \
+                self.ids.post_content_input.text
+            self.postview_instance.post_edit()
+        elif self.action_name == 'create_post':
+            self.root.create_post(self.ids.post_content_input.text)
 
 
 class ErrorPopup(ModalView):

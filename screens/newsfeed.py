@@ -1,10 +1,10 @@
 from kivy.uix.screenmanager import Screen
 
 from libs.authorized_user import get_uid_from_username
-from libs.public_post import get_public_posts
+from libs.public_post import get_public_posts, create_public_post
 from libs.post_widget import PostView
 from libs.custom_exception import RequestError
-from libs.custom_popup import FilterPopup, ErrorPopup
+from libs.custom_popup import FilterPopup, ErrorPopup, PostContentPopup
 
 
 class NewsfeedRoute(Screen):
@@ -46,12 +46,26 @@ class NewsfeedRoute(Screen):
         except RequestError as error:
             raise RequestError(error)
 
+    def refresh_newsfeed(self):
+        self.ids.newsfeed_scrollview.clear_widgets()
+        self.display_public_posts(self.filter_username, self.filter_tag)
+
     def delete_post(self, postview_instance):
         self.ids.newsfeed_scrollview.remove_widget(postview_instance)
 
-    def edit_post(self):
-        self.ids.newsfeed_scrollview.clear_widgets()
-        self.display_public_posts(self.filter_username, self.filter_tag)
+    def open_create_post_popup(self):
+        PostContentPopup(root=self).open()
+
+    def create_post(self, new_post_content):
+        if new_post_content in ['', None]:
+            return None
+
+        try:
+            create_public_post(self.app.authorized_user, new_post_content)
+            self.refresh_newsfeed()
+
+        except RequestError as error:
+            ErrorPopup(str(error)).open()
 
     def open_filter_popup(self):
         FilterPopup(self).open()

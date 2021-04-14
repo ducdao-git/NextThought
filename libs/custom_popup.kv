@@ -24,7 +24,7 @@
             height: self.texture_size[1] * 2.5
             text_size: root.width, None
             halign: 'center'
-            text: 'Edit post content'
+            text: 'Filter post by username or tag'
             color: app.theme_palette['text_background_color']
 
         BoxLayout:
@@ -74,7 +74,7 @@
                     size: self.size
 
 
-<PostEditPopup>
+<PostContentPopup>
     size_hint: 0.9, 1
     background_normal: ''
     background_color: (0, 0, 0, 0)
@@ -96,11 +96,12 @@
                 size: self.size
 
         Label:
+            id: post_content_popup_title
             size_hint: 1, None
             height: self.texture_size[1] * 2.5
             text_size: root.width, None
             halign: 'center'
-            text: 'Edit post content'
+            text: 'Create new post with content'
             color: app.theme_palette['text_background_color']
 
         BoxLayout:
@@ -115,9 +116,9 @@
                     text: '%s' % icon('align-left', 16)
 
                 ResizableTextInput:
-                    id: post_edit_new_content
+                    id: post_content_input
                     focus: True
-                    hint_text: "Enter new content"
+                    hint_text: "Enter post's content"
 
         Button:
             size_hint: 1, None
