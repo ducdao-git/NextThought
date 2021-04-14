@@ -1,10 +1,10 @@
 from kivy.uix.screenmanager import Screen
 
-from libs.authorized_user import get_uid_from_username
-from libs.public_post import get_public_posts, create_public_post
-from libs.post_widget import PostView
-from libs.custom_exception import RequestError
-from libs.custom_popup import FilterPopup, ErrorPopup, PostContentPopup
+from libs.backend.authorized_user import get_uid_from_username
+from libs.backend.public_post import get_public_posts, create_public_post
+from libs.frontend.post_widget import PostView
+from libs.backend.custom_exception import RequestError
+from libs.frontend.custom_popup import FilterPopup, ErrorPopup, PostContentPopup
 
 
 class NewsfeedRoute(Screen):

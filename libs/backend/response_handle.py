@@ -1,6 +1,6 @@
 import json
 
-from libs.custom_exception import RequestError
+from libs.backend.custom_exception import RequestError
 
 
 def get_response_data(response):
@@ -19,4 +19,5 @@ def get_response_data(response):
         raise RequestError(message)
 
     else:
-        raise RequestError("something went wrong")
+        print(response.status_code)
+        raise RequestError('sth went wrong')

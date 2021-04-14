@@ -1,7 +1,7 @@
 import requests
 
-from libs.custom_exception import RequestError
-from libs.response_handle import get_response_data
+from libs.backend.custom_exception import RequestError
+from libs.backend.response_handle import get_response_data
 
 api_url = 'http://nsommer.wooster.edu/social'
 

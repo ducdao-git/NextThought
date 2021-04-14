@@ -3,9 +3,10 @@ from kivy.uix.button import Button
 from kivy.uix.label import Label
 
 from kivy.graphics import Color, Rectangle
+from kivy.metrics import dp
 
-from libs.custom_kv_widget import IconButton
-from libs.custom_popup import PostContentPopup
+from libs.frontend.custom_kv_widget import IconButton
+from libs.frontend.custom_popup import PostContentPopup
 
 
 class PostInfoButton(Button):
@@ -105,6 +106,39 @@ class PostOptionButton(IconButton):
             return None
 
 
+class PostActionBar(BoxLayout):
+    def __init__(self, postview_instance, **kwargs):
+        super().__init__(**kwargs)
+        self.postview_instance = postview_instance
+        self.upvote_count = self.postview_instance.post.get_upvote()
+
+        self.ids.post_section_divider_holder.add_widget(
+            PostDividerLabel(height=dp(1)))
+        self.display_post_upvotes()
+
+        self.bind(minimum_height=self.setter('height'))
+
+    def display_post_upvotes(self):
+        if self.upvote_count != 0:
+            upvote_text = str(self.upvote_count)
+        else:
+            upvote_text = 'Like'
+
+        self.ids.post_like_button.text = \
+            self.heart_icon + f' [size=12sp]{upvote_text}[/size]'
+
+    def upvote_post(self):
+        curr_post = self.postview_instance.post
+        curr_user = self.postview_instance.root.app.authorized_user
+
+        curr_post.upvote_post(curr_user)
+
+        self.upvote_count += 1
+        self.ids.post_like_button.text = \
+            self.heart_icon + \
+            f' [size=12sp]{self.upvote_count}[/size]'
+
+
 class PostView(BoxLayout):
     """
     custom boxlayout to display a public post
@@ -125,7 +159,9 @@ class PostView(BoxLayout):
             self.ids.row.add_widget(PostOptionButton(self, 'delete'))
 
         self.add_widget(PostContentButton(self.post.get_content()))
-        self.add_widget(PostDividerLabel())
+
+        self.add_widget(PostActionBar(self))
+        self.add_widget(PostDividerLabel(height=dp(10)))
 
         self.bind(minimum_height=self.setter('height'))
 

@@ -5,13 +5,11 @@ from kivy.config import Config
 from kivy.lang.builder import Builder
 from kivy.uix.screenmanager import ScreenManager
 
-from libs.local_data_handle import get_theme_palette
+from libs.backend.local_data_handle import get_theme_palette
 from screens.newsfeed import NewsfeedRoute
-from libs.authorized_user import AuthorizedUser
+from libs.backend.authorized_user import AuthorizedUser
 
 # -- delete when done test -- #
-from libs.authorized_user import create_user
-from libs.public_post import create_public_post
 
 # --------------------------- #
 
@@ -22,9 +20,9 @@ Config.set('graphics', 'height', '800')
 kivysome.enable("https://kit.fontawesome.com/4adb19bb6e.js",
                 group=kivysome.FontGroup.SOLID, font_folder="assets/fonts")
 
-Builder.load_file('libs/custom_kv_widget.kv')
-Builder.load_file('libs/custom_popup.kv')
-Builder.load_file('libs/post_widget.kv')
+Builder.load_file('libs/frontend/custom_kv_widget.kv')
+Builder.load_file('libs/frontend/custom_popup.kv')
+Builder.load_file('libs/frontend/post_widget.kv')
 Builder.load_file('screens/newsfeed.kv')
 
 

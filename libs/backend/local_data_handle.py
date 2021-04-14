@@ -25,7 +25,7 @@ def get_theme_palette(theme_name):
     :param theme_name: name of the theme - next_mess
     :return: color palette for the theme
     """
-    if theme_name not in ['next_mess']:
+    if theme_name not in ['next_mess', 'dark']:
         raise ValueError
 
     try:

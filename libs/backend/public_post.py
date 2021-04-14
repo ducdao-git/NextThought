@@ -1,7 +1,7 @@
 import requests
 
-from libs.custom_exception import RequestError
-from libs.response_handle import get_response_data
+from libs.backend.custom_exception import RequestError
+from libs.backend.response_handle import get_response_data
 
 api_url = 'http://nsommer.wooster.edu/social'
 
@@ -49,7 +49,8 @@ def get_public_posts(limit=50, uid=None, tag=None,
             if post['parentid'] == parent_id:
                 public_posts.append(
                     PublicPost(post['username'], post['content'], post['time'],
-                               post['postid'], post['parentid'])
+                               post['upvotes'], post['postid'],
+                               post['parentid'])
                 )
 
         return public_posts
@@ -60,16 +61,19 @@ def get_public_posts(limit=50, uid=None, tag=None,
 
 
 class PublicPost:
-    def __init__(self, owner_name, content, time, postid, parentid):
+    def __init__(self, owner_name, content, time, upvotes, postid, parentid):
         """
         create PublicPost obj with owner name, content and post id
         :param owner_name: string repr name of the owner of this post
         :param content: string repr content of this post
+        :param time: string repr posted time for this post
+        :param upvotes: int repr number of upvote/like for this post
         :param postid: int repr ID of this post
         :param parentid: int repr ID of this post
         """
         self.owner_name = owner_name
         self.content, self.time = content, time
+        self.upvotes = upvotes
         self.postid, self.parentid = postid, parentid
 
     def get_owner_name(self):
@@ -81,11 +85,28 @@ class PublicPost:
     def get_time(self):
         return self.time
 
+    def get_upvote(self):
+        return self.upvotes
+
     def get_postid(self):
         return self.postid
 
     def get_parentid(self):
         return self.parentid
+
+    def upvote_post(self, user):
+        try:
+            response = requests.post(
+                api_url + '/upvotes',
+                data={'uid': user.get_uid(),
+                      'token': user.get_token(),
+                      'postid': self.postid}
+            )
+            get_response_data(response)
+
+        except RequestError as error:
+            print(f'popup upvote_ppost: {error}')
+            raise RequestError(error)
 
     def edit_public_post(self, owner, new_content):
         """
