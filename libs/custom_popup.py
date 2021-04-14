@@ -35,3 +35,17 @@ class PostEditPopup(ModalView):
         self.postview_instance.post_new_content = \
             self.ids.post_edit_new_content.text
         self.postview_instance.post_edit()
+
+
+class ErrorPopup(ModalView):
+    """
+    custom error popup
+    """
+
+    def __init__(self, message, **kwargs):
+        """
+        create a popup with this message
+        :param message: string as message will be display
+        """
+        super().__init__(**kwargs)
+        self.ids.error_popup_message.text = message

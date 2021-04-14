@@ -2,6 +2,7 @@ import requests
 
 from libs.custom_exception import RequestError
 from libs.response_handle import get_response_data
+from libs.custom_popup import ErrorPopup
 
 api_url = 'http://nsommer.wooster.edu/social'
 
@@ -24,7 +25,8 @@ def create_public_post(user, content, parentid=-1):
         get_response_data(response)
 
     except RequestError as error:
-        print(f'popup create_ppost: {error}')
+        # print(f'popup create_ppost: {error}')
+        ErrorPopup(f'Unable to create post -- {error}').open()
 
 
 def get_public_posts(limit=50, uid=None, tag=None,
@@ -55,7 +57,8 @@ def get_public_posts(limit=50, uid=None, tag=None,
         return public_posts
 
     except RequestError as error:
-        print(f'popup create_ppost: {error}')
+        # print(f'popup create_ppost: {error}')
+        ErrorPopup(f'Unable to get posts -- {error}').open()
 
 
 class PublicPost:
@@ -105,7 +108,8 @@ class PublicPost:
             self.content = new_content
 
         except RequestError as error:
-            print(f'popup edit_ppost: {self.postid} -- {error}')
+            # print(f'popup edit_ppost: {self.postid} -- {error}')
+            ErrorPopup(f'Unable to edit post -- {error}').open()
 
     def delete_public_post(self, owner):
         """
@@ -124,7 +128,8 @@ class PublicPost:
             self.owner_name = self.content = self.postid = None
 
         except RequestError as error:
-            print(f'popup del_ppost: {self.postid} -- {error}')
+            # print(f'popup del_ppost: {self.postid} -- {error}')
+            ErrorPopup(f'Unable to delete post -- {error}').open()
 
     def __repr__(self):
         """
