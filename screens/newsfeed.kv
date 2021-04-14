@@ -24,6 +24,7 @@
             canvas.before:
                 Color:
                     rgba: app.theme_palette['primary_color']
+#                    rgba: [0,0,0,0]
                 Rectangle:
                     size: self.size
                     pos: self.pos
@@ -61,7 +62,6 @@
                     orientation: 'vertical'
                     size_hint_y: None
                     height: self.minimum_height  # minimum_height is min height to contain all children
-                    padding: [dp(12), dp(12), dp(12), dp(12)]
 
             AnchorLayout:
                 anchor_x: 'right'
@@ -73,7 +73,7 @@
                     size: dp(50), dp(50)
                     background_normal: ''
                     background_color: [0, 0, 0, 0]
-                    text: "%s" % icon('pen')
+                    text: " [size=22sp]%s[/size]" % icon('edit')
                     color: app.theme_palette['text_secondary_color']
                     on_release:
 #                        app.root.current = "add_task_route"
@@ -93,17 +93,18 @@
                 canvas.before:
                     Color:
                         rgba: app.theme_palette['primary_color']
+#                        rgba: [0,0,0,0]
                     Rectangle:
                         size: self.size
                         pos: self.pos
 
                 IconButton:
-                    text: "%s \n [size=14sp]Newsfeed[/size]" % icon('home')
+                    text: " " * 2 + "%s\n[size=14sp]Newsfeed[/size]" % icon('home')
                     color: app.theme_palette['text_primary_color']
                     on_release:
 
 
                 IconButton:
-                    text: "%s \n [size=14sp]Conversations[/size]" % icon('comments')
+                    text: " " * 2 + "%s\n[size=14sp]Conversations[/size]" % icon('comments')
                     color: app.theme_palette['text_primary_color']
                     on_release:

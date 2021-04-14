@@ -1,6 +1,19 @@
 #: import icon kivysome.icon
 
 
+<IconButton>
+    size_hint: 1, 1
+    background_down: ''
+    background_normal: ''
+    background_color: [1, 1, 0, 0]
+    text_size: self.size
+    halign: 'center'
+    valign: 'center'
+    markup: True
+    font_size: sp(20)
+    color: app.theme_palette['text_background_color']
+
+
 <RouteTitleLabel@Label>
     size_hint: 7, 1
     text_size: self.size
@@ -8,117 +21,3 @@
     valign: 'center'
     font_size: sp(20)
     color: app.theme_palette['text_primary_color']
-
-
-#<DateDividerLabel>
-#    size_hint: 1, None
-#    height: dp(1.5)
-#    color: app.theme_palette['divider_color']
-
-
-<DateButton, TaskButton, IconButton>
-    size_hint: 1, None
-    background_down: ''
-    background_normal: ''
-    background_color: [1, 1, 0, 0]
-    markup: True
-    text_size: self.size
-    halign: 'left'
-    valign: 'center'
-    color: app.theme_palette['text_background_color']
-
-
-<IconButton@Button>
-    size_hint: 1, 1
-    halign: 'center'
-    valign: 'center'
-    font_size: sp(20)
-
-
-<ResizableTextInput@TextInput>:
-    size_hint: 8, None
-    size: self.height, self.minimum_height
-    background_color: [1, 0, 0, 0]
-    cursor_color: app.theme_palette['primary_color']
-    padding: [dp(8), dp(8)]
-    write_tab: False
-    font_size: sp(18)
-    multiline: True
-    foreground_color: app.theme_palette['text_background_color']
-
-
-<InputLayout@BoxLayout>:
-    orientation: 'horizontal'
-    size_hint: 1, None
-    height: self.minimum_height
-
-    canvas.before:
-        Color:
-            rgba: app.theme_palette['divider_color']
-        RoundedRectangle:
-            pos: self.pos
-            size: self.size
-
-
-<RoundedConnerButton@IconButton>
-    size_hint: 1, None
-    height: dp(35)
-    color: app.theme_palette['text_background_color']
-    button_color: [0, 0, 0, 0]
-    canvas.before:
-        Color:
-            rgba: self.button_color
-        RoundedRectangle:
-            pos: self.pos[0] + dp(5), self.pos[1]
-            size: self.size[0] - dp(10), self.size[1]
-
-
-<ErrorPopup>
-    background_normal: ''
-    background_color: (0, 0, 0, 0)
-    size_hint: (0.7, 0.25)
-    text_color: app.theme_palette['text_primary_color']
-
-    BoxLayout:
-        orientation: 'vertical'
-
-        Button:
-            id: message_label
-            background_normal: ''
-            background_down: ''
-            background_color: [0, 0, 0, 0]
-            opacity: 0.95
-
-            size_hint: 1, 3
-            text_size: root.width, None
-
-            halign: 'center'
-            text: ''
-            color: app.theme_palette['text_background_color']
-
-            canvas.before:
-                Color:
-                    rgba: app.theme_palette['background_color']
-                RoundedRectangle:
-                    radius: [(20.0, 20.0), (20.0, 20.0), (0, 0), (0, 0)]
-                    pos: self.pos
-                    size: self.size
-
-        Button:
-            background_normal: ''
-            background_down: ''
-            background_color: [0, 0, 0, 0]
-            color: app.theme_palette['text_primary_color']
-            opacity: 0.95
-
-            size_hint_y: 1
-            text: 'OK'
-            on_release: root.dismiss()
-
-            canvas.before:
-                Color:
-                    rgba: app.theme_palette['primary_color']
-                RoundedRectangle:
-                    radius: [(0, 0), (0, 0), (20.0, 20.0), (20.0, 20.0)]
-                    pos: self.pos
-                    size: self.size

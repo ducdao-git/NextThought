@@ -1,6 +1,6 @@
 import json
 
-from custom_exception import RequestError
+from libs.custom_exception import RequestError
 
 
 def get_response_data(response):

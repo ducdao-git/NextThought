@@ -1,18 +1,17 @@
 import requests
 
-from custom_exception import RequestError
-from response_handle import get_response_data
+from libs.custom_exception import RequestError
+from libs.response_handle import get_response_data
 
 api_url = 'http://nsommer.wooster.edu/social'
 
 
 def create_public_post(user, content, parentid=-1):
     """
-    create a post in server and locally
+    create a new public post in server
     :param user: AuthorizedUser obj who own this post
     :param content: string repr content of the post
     :param parentid: int repr ID of parent post if a comment, else -1
-    :return: PublicPost obj for this post
     """
     try:
         response = requests.post(
@@ -22,21 +21,20 @@ def create_public_post(user, content, parentid=-1):
                   'parentid': parentid,
                   'content': content}
         )
-        response_data = get_response_data(response)
-
-        return PublicPost(user.get_username(), content,
-                          response_data['postid'], parentid)
+        get_response_data(response)
 
     except RequestError as error:
         print(f'popup create_ppost: {error}')
 
 
-def get_public_posts(limit=50, uid=None, tag=None):
+def get_public_posts(limit=50, uid=None, tag=None, parent_id=-1):
     """
     get public posts from server then create PublicPost obj from those data
     :param limit: int repr max number of post to fetch
     :param uid: int -- only fetch post from this user ID
     :param tag: string -- only fetch post with this tag
+    :param parent_id: int -- only fetch post with this parent, by default fetch
+    post that is not comment of other post i.e. parent_id = -1
     :return: list of PublicPost obj from these data
     """
     try:
@@ -46,10 +44,11 @@ def get_public_posts(limit=50, uid=None, tag=None):
 
         public_posts = []
         for post in response_data:
-            public_posts.append(
-                PublicPost(post['username'], post['content'],
-                           post['postid'], post['parentid'])
-            )
+            if post['parentid'] == parent_id:
+                public_posts.append(
+                    PublicPost(post['username'], post['content'], post['time'],
+                               post['postid'], post['parentid'])
+                )
 
         return public_posts
 
@@ -58,7 +57,7 @@ def get_public_posts(limit=50, uid=None, tag=None):
 
 
 class PublicPost:
-    def __init__(self, owner_name, content, postid, parentid):
+    def __init__(self, owner_name, content, time, postid, parentid):
         """
         create PublicPost obj with owner name, content and post id
         :param owner_name: string repr name of the owner of this post
@@ -67,9 +66,23 @@ class PublicPost:
         :param parentid: int repr ID of this post
         """
         self.owner_name = owner_name
-        self.content = content
-        self.postid = postid
-        self.parentid = parentid
+        self.content, self.time = content, time
+        self.postid, self.parentid = postid, parentid
+
+    def get_owner_name(self):
+        return self.owner_name
+
+    def get_content(self):
+        return self.content
+
+    def get_time(self):
+        return self.time
+
+    def get_postid(self):
+        return self.postid
+
+    def get_parentid(self):
+        return self.parentid
 
     def edit_public_post(self, owner, new_content):
         """
@@ -116,5 +129,5 @@ class PublicPost:
         :return: string representation of a public post
         """
         return f'AuthorizedUser class -- owner_name: {self.owner_name}, ' \
-               f'content: {self.content}, postid: {self.postid}, ' \
-               f'parentid: {self.parentid}'
+               f'content: {self.content}, time: {self.time} ' \
+               f'postid: {self.postid}, parentid: {self.parentid}'

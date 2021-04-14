@@ -1,4 +1,9 @@
+from pprint import pprint
+
 from kivy.uix.screenmanager import Screen
+
+from libs.public_post import get_public_posts
+from libs.post_widget import PostView
 
 
 class NewsfeedRoute(Screen):
@@ -28,4 +33,11 @@ class NewsfeedRoute(Screen):
         self.ids.newsfeed_scrollview.clear_widgets()
 
     def display_public_posts(self):
-        pass
+        posts = get_public_posts()
+        pprint(posts)
+
+        for post in posts:
+            self.ids.newsfeed_scrollview.add_widget(PostView(self, post))
+
+    def delete_post(self, postview_instance):
+        self.ids.newsfeed_scrollview.remove_widget(postview_instance)

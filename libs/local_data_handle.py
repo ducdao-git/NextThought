@@ -36,7 +36,10 @@ def get_theme_palette(theme_name):
         theme_palette = {}
 
         for color in theme_data:
-            theme_palette[color] = _hex_to_rgb(theme_data[color])
+            if color in ['support_text_color']:
+                theme_palette[color] = theme_data[color]
+            else:
+                theme_palette[color] = _hex_to_rgb(theme_data[color])
 
         # pprint(theme_palette)
         return theme_palette
