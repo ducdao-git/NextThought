@@ -117,6 +117,8 @@ class PublicPost:
             )
             get_response_data(response)
 
+            self.upvotes_num += 1
+
         except RequestError as error:
             print(f'popup upvote_ppost: {error}')
             raise RequestError(error)
