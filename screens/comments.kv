@@ -41,10 +41,10 @@
                     app.root.transition = NoTransition()
                     app.root.current = app.root.return_route
 
-        BoxLayout:
-            id: short_top_comment_holder
-            size_hint: 1, None
-            height: self.minimum_height
+#        BoxLayout:
+#            id: short_top_comment_holder
+#            size_hint: 1, None
+#            height: self.minimum_height
 
         FloatLayout:  # layout for tasks view and add button
             ScrollView:
@@ -63,3 +63,32 @@
                     padding: [0, 0, 0, dp(56)]  # account for part that are hide behind the bottom nav bar
                     height: self.minimum_height  # minimum_height is min height to contain all children
 
+            BoxLayout:
+                size_hint: 1, None
+                height: self.minimum_height + dp(1)
+                orientation: 'horizontal'
+                padding: dp(4), dp(8)
+
+                canvas:
+                    Color:
+                        rgba: app.theme_palette['comment_background_color']
+                    Rectangle:
+                        pos: self.pos[0], self.pos[1] + self.size[1] - dp(1)
+                        size: self.size[0], dp(1.5)
+
+                IconButton:
+                    color: app.theme_palette['primary_color']
+                    text: '%s' % icon('chevron-right', int(sp(14)))
+
+                InputLayout:
+                    size_hint: 8, None
+
+                    ResizableTextInput:
+                        id: comment_content_input
+                        focus: True
+                        hint_text: "Write a comment..."
+
+                IconButton:
+                    color: app.theme_palette['primary_color']
+                    text: '%s' % icon('paper-plane', int(sp(14)))
+                    on_release: root.create_comment()

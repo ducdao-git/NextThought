@@ -36,40 +36,6 @@ class CommentOptionButton(IconButton):
             return None
 
 
-class CommentView(BoxLayout):
-    def __init__(self, screen_instance, comment, **kwargs):
-        super().__init__(**kwargs)
-        self.screen_instance = screen_instance
-        self.comment = comment
-        self.comment_upvote_count = self.comment.get_upvotes_num()
-        self.post_new_content = 'comment edit -- sth go wrong'
-
-        self.ids.comment_owner_name.text = \
-            f'[b]{self.comment.get_owner_name()}[/b]'
-
-        if self.screen_instance.app.authorized_user.get_username() == \
-                self.comment.get_owner_name():
-            self.ids.comment_option_holder.add_widget(
-                CommentOptionButton(self, 'edit_comment'))
-            self.ids.comment_option_holder.add_widget(
-                CommentOptionButton(self, 'delete_comment'))
-
-        self.ids.comment_content.text = self.comment.get_content()
-
-        self.ids.comment_upvote_num.text = \
-            self.ids.comment_upvote_num.icon + \
-            f' [size=14sp]{self.comment_upvote_count}[/size]'
-
-        self.ids.comment_comment_num.text = \
-            self.ids.comment_comment_num.icon + \
-            f' [size=14sp]{self.comment.get_comments_num()}[/size]'
-
-    def comment_delete(self):
-        self.comment.delete_public_post(
-            self.screen_instance.app.authorized_user)
-        self.screen_instance.ids.comment_scrollview.remove_widget(self)
-
-
 class TopCommentView(BoxLayout):
     def __init__(self, screen_instance, comment, **kwargs):
         super().__init__(**kwargs)
@@ -118,3 +84,46 @@ class TopCommentView(BoxLayout):
         self.ids.top_comment_upvote_num.text = \
             self.ids.top_comment_upvote_num.icon + \
             f' [size=14sp]{self.comment_upvote_count}[/size]'
+
+
+class CommentView(BoxLayout):
+    def __init__(self, screen_instance, comment, **kwargs):
+        super().__init__(**kwargs)
+        self.screen_instance = screen_instance
+        self.comment = comment
+        self.upvote_count = self.comment.get_upvotes_num()
+        self.post_new_content = 'comment edit -- sth go wrong'
+
+        self.ids.comment_owner_name.text = \
+            f'[b]{self.comment.get_owner_name()}[/b]'
+
+        if self.screen_instance.app.authorized_user.get_username() == \
+                self.comment.get_owner_name():
+            self.ids.comment_option_holder.add_widget(
+                CommentOptionButton(self, 'edit_comment'))
+            self.ids.comment_option_holder.add_widget(
+                CommentOptionButton(self, 'delete_comment'))
+
+        self.ids.comment_content.text = self.comment.get_content()
+
+        self.ids.comment_upvote_num.text = \
+            self.ids.comment_upvote_num.icon + \
+            f' [size=14sp]{self.upvote_count}[/size]'
+
+        self.ids.comment_comment_num.text = \
+            self.ids.comment_comment_num.icon + \
+            f' [size=14sp]{self.comment.get_comments_num()}[/size]'
+
+    def comment_delete(self):
+        self.comment.delete_public_post(
+            self.screen_instance.app.authorized_user)
+        # self.screen_instance.ids.comment_scrollview.remove_widget(self)
+        self.screen_instance.top_comment.reduce_comments_num()
+        self.screen_instance.refresh_display()
+
+    def comment_upvote(self):
+        self.comment.upvote_post(self.screen_instance.app.authorized_user)
+        self.upvote_count += 1
+        self.ids.comment_upvote_num.text = \
+            self.ids.comment_upvote_num.icon + \
+            f' [size=14sp]{self.upvote_count}[/size]'

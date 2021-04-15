@@ -123,6 +123,9 @@ class PublicPost:
             print(f'popup upvote_ppost: {error}')
             raise RequestError(error)
 
+    def reduce_comments_num(self, by=1):
+        self.comments_num -= by
+
     def edit_public_post(self, owner, new_content):
         """
         edit public post in both server and locally

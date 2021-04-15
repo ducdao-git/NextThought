@@ -101,7 +101,7 @@
             height: self.texture_size[1] * 2.5
             text_size: root.width, None
             halign: 'center'
-            text: 'Create new post with content'
+            text: 'Create new post'
             color: app.theme_palette['text_background_color']
 
         BoxLayout:
@@ -118,7 +118,7 @@
                 ResizableTextInput:
                     id: post_content_input
                     focus: True
-                    hint_text: "Enter post's content"
+                    hint_text: "What's on your mind?"
 
         Button:
             size_hint: 1, None

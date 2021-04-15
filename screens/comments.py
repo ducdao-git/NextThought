@@ -1,6 +1,6 @@
 from kivy.uix.screenmanager import Screen
 
-from libs.backend.public_post import get_public_posts
+from libs.backend.public_post import create_public_post, get_public_posts
 from libs.frontend.comment_widget import TopCommentView, CommentView
 
 
@@ -15,6 +15,16 @@ class CommentsRoute(Screen):
         self.comments = None
 
     def on_pre_enter(self, *args):
+        self.display_comments()
+
+    def on_leave(self, *args):
+        self.ids.comment_scrollview.clear_widgets()
+
+    def refresh_display(self):
+        self.ids.comment_scrollview.clear_widgets()
+        self.display_comments()
+
+    def display_comments(self):
         self.top_comment = self.app.process_post
 
         self.ids.comment_scrollview.add_widget(
@@ -26,5 +36,17 @@ class CommentsRoute(Screen):
         for comment in self.comments:
             self.ids.comment_scrollview.add_widget(CommentView(self, comment))
 
-    def on_leave(self, *args):
-        self.ids.comment_scrollview.clear_widgets()
+    def create_comment(self):
+        comment_input = self.ids.comment_content_input.text
+
+        if comment_input in ['', None]:
+            return
+
+        create_public_post(
+            user=self.app.authorized_user,
+            content=comment_input,
+            parentid=self.top_comment.get_postid()
+        )
+
+        self.refresh_display()
+        self.ids.comment_content_input.text = ''
