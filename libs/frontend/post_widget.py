@@ -110,22 +110,35 @@ class PostActionBar(BoxLayout):
     def __init__(self, postview_instance, **kwargs):
         super().__init__(**kwargs)
         self.postview_instance = postview_instance
-        self.upvote_count = self.postview_instance.post.get_upvote()
 
         self.ids.post_section_divider_holder.add_widget(
             PostDividerLabel(height=dp(1)))
+
+        self.upvotes_num = self.postview_instance.post.get_upvotes_num()
         self.display_post_upvotes()
+
+        self.comments_num = self.postview_instance.post.get_comments_num()
+        self.display_post_comments_num()
 
         self.bind(minimum_height=self.setter('height'))
 
     def display_post_upvotes(self):
-        if self.upvote_count != 0:
-            upvote_text = str(self.upvote_count)
+        if self.upvotes_num != 0:
+            upvote_text = str(self.upvotes_num)
         else:
             upvote_text = 'Like'
 
         self.ids.post_like_button.text = \
             self.heart_icon + f' [size=12sp]{upvote_text}[/size]'
+
+    def display_post_comments_num(self):
+        if self.comments_num != 0:
+            comment_btn_text = str(self.comments_num)
+        else:
+            comment_btn_text = 'Comment'
+
+        self.ids.post_comment_button.text = \
+            self.comment_icon + f' [size=12sp]{comment_btn_text}[/size]'
 
     def upvote_post(self):
         curr_post = self.postview_instance.post
@@ -133,10 +146,10 @@ class PostActionBar(BoxLayout):
 
         curr_post.upvote_post(curr_user)
 
-        self.upvote_count += 1
+        self.upvotes_num += 1
         self.ids.post_like_button.text = \
             self.heart_icon + \
-            f' [size=12sp]{self.upvote_count}[/size]'
+            f' [size=12sp]{self.upvotes_num}[/size]'
 
 
 class PostView(BoxLayout):

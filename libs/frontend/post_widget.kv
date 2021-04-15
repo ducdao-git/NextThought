@@ -44,6 +44,7 @@
     spacing: dp(2)
 
     heart_icon: '%s' % icon('heart', int(sp(12)))
+    comment_icon: '%s' % icon('comment-alt', int(sp(12)))
 
     BoxLayout:
         id: post_section_divider_holder
@@ -58,13 +59,11 @@
 
         IconButton:
             id: post_like_button
-            text: 'default'
             color: app.theme_palette['support_text_color']
             on_release: root.upvote_post()
 
         IconButton:
             id: post_comment_button
-            text: '%s [size=12sp]Comment[/size]' % icon('comment-alt', int(sp(12)))
             color: app.theme_palette['support_text_color']
 
         IconButton:

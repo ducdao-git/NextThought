@@ -1,4 +1,6 @@
 import requests
+from itertools import groupby
+from pprint import pprint
 
 from libs.backend.custom_exception import RequestError
 from libs.backend.response_handle import get_response_data
@@ -28,8 +30,7 @@ def create_public_post(user, content, parentid=-1):
         raise RequestError(error)
 
 
-def get_public_posts(limit=50, uid=None, tag=None,
-                     parent_id=-1):
+def get_public_posts(limit=50, uid=None, tag=None, parent_id=-1):
     """
     get public posts from server then create PublicPost obj from those data
     :param limit: int repr max number of post to fetch
@@ -44,14 +45,22 @@ def get_public_posts(limit=50, uid=None, tag=None,
                                 data={'limit': limit, 'uid': uid, 'tag': tag})
         response_data = get_response_data(response)
 
+        sorted_response_data = \
+            sorted(response_data, key=lambda x: x['parentid'])
+
+        response_data = {}
+        for key, value in groupby(sorted_response_data,
+                                  key=lambda x: x['parentid']):
+            response_data[key] = list(value)
+
         public_posts = []
-        for post in response_data:
-            if post['parentid'] == parent_id:
-                public_posts.append(
-                    PublicPost(post['username'], post['content'], post['time'],
-                               post['upvotes'], post['postid'],
-                               post['parentid'])
-                )
+        for post in response_data.get(parent_id, []):
+            public_posts.append(
+                PublicPost(post['username'], post['content'], post['time'],
+                           post['upvotes'],
+                           len(response_data.get(post['postid'], [])),
+                           post['postid'], post['parentid'])
+            )
 
         return public_posts
 
@@ -61,19 +70,20 @@ def get_public_posts(limit=50, uid=None, tag=None,
 
 
 class PublicPost:
-    def __init__(self, owner_name, content, time, upvotes, postid, parentid):
+    def __init__(self, owner_name, content, time, upvotes_num, comments_num,
+                 postid, parentid):
         """
         create PublicPost obj with owner name, content and post id
         :param owner_name: string repr name of the owner of this post
         :param content: string repr content of this post
         :param time: string repr posted time for this post
-        :param upvotes: int repr number of upvote/like for this post
+        :param upvotes_num: int repr number of upvote/like for this post
         :param postid: int repr ID of this post
         :param parentid: int repr ID of this post
         """
         self.owner_name = owner_name
         self.content, self.time = content, time
-        self.upvotes = upvotes
+        self.upvotes_num, self.comments_num = upvotes_num, comments_num
         self.postid, self.parentid = postid, parentid
 
     def get_owner_name(self):
@@ -85,8 +95,11 @@ class PublicPost:
     def get_time(self):
         return self.time
 
-    def get_upvote(self):
-        return self.upvotes
+    def get_upvotes_num(self):
+        return self.upvotes_num
+
+    def get_comments_num(self):
+        return self.comments_num
 
     def get_postid(self):
         return self.postid
