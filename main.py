@@ -4,7 +4,6 @@ from kivy.app import App
 from kivy.config import Config
 from kivy.lang.builder import Builder
 from kivy.uix.screenmanager import ScreenManager
-from kivy.uix.screenmanager import WipeTransition
 
 from libs.backend.local_data_handle import get_theme_palette
 from libs.backend.authorized_user import AuthorizedUser
@@ -27,6 +26,7 @@ kivysome.enable("https://kit.fontawesome.com/4adb19bb6e.js",
 Builder.load_file('libs/frontend/custom_kv_widget.kv')
 Builder.load_file('libs/frontend/custom_popup.kv')
 Builder.load_file('libs/frontend/post_widget.kv')
+Builder.load_file('libs/frontend/comment_widget.kv')
 Builder.load_file('screens/newsfeed.kv')
 Builder.load_file('screens/comments.kv')
 
@@ -53,12 +53,13 @@ class NextMess(App):
 if __name__ == '__main__':
     user2 = AuthorizedUser('dtuser2', 'ejzifjyt')
     # for i in range(4):
-    #     create_public_post(user2, f"#test post {i}",58)
+    #     create_public_post(user2, f"#test post {i}", 81)
 
-    # posts = get_public_posts(uid=5, parent_id=35)
+    # for pid in [-1, 81]:
+    #     posts = get_public_posts(uid=5, parent_id=pid)
     #
-    # for post in posts:
-    #     post.delete_public_post(user2)
+    #     for post in posts:
+    #         post.delete_public_post(user2)
 
-    # create_public_post(user2, f"#test comment post parent 57", 57)
+    # create_public_post(user2, 'a'*1000)
     NextMess().run()

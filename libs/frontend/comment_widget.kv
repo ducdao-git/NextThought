@@ -1,0 +1,142 @@
+<CommentOptionButton>
+    size_hint: 1, 1
+    markup: True
+    color: app.theme_palette['support_text_color']
+    edit_icon: '%s' % icon('pencil-alt')
+    delete_icon: '%s' % icon('trash-alt')
+    error_icon: '%s' % icon('exclamation-circle')
+
+
+<CommentView>
+    orientation: 'vertical'
+    size_hint: 1, None
+    height: self.minimum_height
+    padding: dp(40), dp(15), dp(20), dp(15)
+    spacing: dp(8)
+
+    canvas.before:
+        Color:
+            rgba: app.theme_palette['comment_background_color']
+        RoundedRectangle:
+            radius: [(20.0, 20.0), (20.0, 20.0), (20.0, 20.0), (20.0, 20.0)]
+            pos: self.pos[0] + dp(40), self.pos[1] + dp(5)
+            size: self.size[0] - dp(46), self.size[1] - dp(10)
+
+    BoxLayout:
+        orientation: 'horizontal'
+        size_hint: 1, None
+        height: self.minimum_height
+
+        Label:
+            id: comment_owner_name
+            size_hint: 8, None
+            # only need one specify size for the whole row to have minimum height
+            height: self.texture_size[1]
+            padding: dp(8), dp(0)
+            text_size: self.width, None
+            valign: 'center'
+            halign: 'left'
+            markup: True
+            color: app.theme_palette['text_background_color']
+
+        BoxLayout:
+            id: comment_option_holder
+            orientation: 'horizontal'
+            size_hint: 2, 1
+
+    Label:
+        id: comment_content
+        size_hint: 1, None
+        height: self.texture_size[1]
+        padding: dp(8), dp(0)
+        text_size: self.width, None
+        color: app.theme_palette['text_background_color']
+
+    BoxLayout:
+        size_hint: 1, None
+        height: self.minimum_height
+        orientation: 'horizontal'
+
+        IconButton:
+            id: comment_upvote_num
+            size_hint: 1, None
+            height: self.texture_size[1]
+            color: app.theme_palette['support_text_color']
+            icon: '%s' % icon('heart', int(sp(10)))
+
+        IconButton:
+            id: comment_comment_num
+            size_hint: 1, 1
+            color: app.theme_palette['support_text_color']
+            font_size: sp(14)
+            icon: '%s' % icon('comment-alt', int(sp(10)))
+
+        Label:
+            size_hint: 7, 1
+
+<TopCommentView>
+    orientation: 'vertical'
+    size_hint: 1, None
+    height: self.minimum_height
+    padding: dp(20), dp(20)
+    spacing: dp(8)
+
+    canvas.before:
+        Color:
+            rgba: app.theme_palette['comment_background_color']
+        RoundedRectangle:
+            radius: [(20.0, 20.0), (20.0, 20.0), (20.0, 20.0), (20.0, 20.0)]
+            pos: self.pos[0] + dp(8), self.pos[1] + dp(8)
+            size: self.size[0] - dp(16), self.size[1] - dp(16)
+
+    BoxLayout:
+        orientation: 'horizontal'
+        size_hint: 1, None
+        height: self.minimum_height
+
+        Label:
+            id: top_comment_owner_name
+            size_hint: 8, None
+            # only need one specify size for the whole row to have minimum height
+            height: self.texture_size[1]
+            padding: dp(8), dp(0)
+            text_size: self.width, None
+            valign: 'center'
+            halign: 'left'
+            markup: True
+            color: app.theme_palette['text_background_color']
+
+        BoxLayout:
+            id: top_comment_option_holder
+            orientation: 'horizontal'
+            size_hint: 2, 1
+
+    Label:
+        id: top_comment_content
+        size_hint: 1, None
+        height: self.texture_size[1]
+        padding: dp(8), dp(0)
+        text_size: self.width, None
+        color: app.theme_palette['text_background_color']
+
+    BoxLayout:
+        size_hint: 1, None
+        height: self.minimum_height
+        orientation: 'horizontal'
+
+        IconButton:
+            id: top_comment_upvote_num
+            size_hint: 1, None
+            height: self.texture_size[1]
+            color: app.theme_palette['support_text_color']
+            icon: '%s' % icon('heart', int(sp(10)))
+
+        IconButton:
+            id: top_comment_comment_num
+            size_hint: 1, 1
+            color: app.theme_palette['support_text_color']
+            font_size: sp(14)
+            icon: '%s' % icon('comment-alt', int(sp(10)))
+
+        Label:
+            size_hint: 7, 1

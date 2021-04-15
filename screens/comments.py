@@ -1,6 +1,8 @@
 from kivy.uix.screenmanager import Screen
 
-from libs.frontend.post_widget import PostOptionButton
+from libs.backend.public_post import get_public_posts
+from libs.frontend.comment_widget import CommentOptionButton
+from libs.frontend.comment_widget import TopCommentView, CommentView
 
 
 class CommentsRoute(Screen):
@@ -10,20 +12,30 @@ class CommentsRoute(Screen):
         """
         super().__init__(**kwargs)
         self.app = app
+        self.top_comment = None
+        self.comments = None
 
     def on_pre_enter(self, *args):
-        top_post = self.app.process_post
+        print('on_pre_enter')
+        self.top_comment = self.app.process_post
 
-        self.ids.top_comment_owner_name.text = \
-            f'[b]{top_post.get_owner_name()}[/b]'
+        self.ids.comment_scrollview.add_widget(
+            TopCommentView(self, self.top_comment))
 
-        if self.app.authorized_user.get_username() == \
-                top_post.get_owner_name():
-            self.ids.row.add_widget(PostOptionButton(self, 'edit'))
-            self.ids.row.add_widget(PostOptionButton(self, 'delete'))
+        self.comments = get_public_posts(
+            parent_id=self.top_comment.get_postid())
 
-        self.ids.top_comment_content.text = top_post.get_content()
+        for comment in self.comments:
+            self.ids.comment_scrollview.add_widget(CommentView(self, comment))
 
-    def on_leave(self, *args):
-        for i in range(2):
-            self.ids.row.clear_widgets()
+    # def on_leave(self, *args):
+    #     self.ids.top_comment_option_holder.clear_widgets()
+
+    # def comment_edit(self, comment_new_content):
+    #     self.top_comment.edit_public_post(self.app.authorized_user,
+    #                                       comment_new_content)
+    #
+    # def top_comment_delete(self):
+    #     self.top_comment.delete_public_post(self.app.authorized_user)
+    #     self.app.route_manager.current = \
+    #         self.app.route_manager.return_route
