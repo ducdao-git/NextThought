@@ -4,12 +4,16 @@ from kivy.app import App
 from kivy.config import Config
 from kivy.lang.builder import Builder
 from kivy.uix.screenmanager import ScreenManager
+from kivy.uix.screenmanager import WipeTransition
 
 from libs.backend.local_data_handle import get_theme_palette
-from screens.newsfeed import NewsfeedRoute
 from libs.backend.authorized_user import AuthorizedUser
 
+from screens.newsfeed import NewsfeedRoute
+from screens.comments import CommentsRoute
+
 # -- delete when done test -- #
+from libs.backend.public_post import create_public_post, get_public_posts
 
 # --------------------------- #
 
@@ -24,11 +28,13 @@ Builder.load_file('libs/frontend/custom_kv_widget.kv')
 Builder.load_file('libs/frontend/custom_popup.kv')
 Builder.load_file('libs/frontend/post_widget.kv')
 Builder.load_file('screens/newsfeed.kv')
+Builder.load_file('screens/comments.kv')
 
 
 class NextMess(App):
     authorized_user = AuthorizedUser('dtuser2', 'ejzifjyt')
     theme_palette = get_theme_palette('next_mess')
+    process_post = None
     route_manager = ScreenManager()
 
     def build(self):
@@ -38,14 +44,21 @@ class NextMess(App):
         self.title = 'NextMess'
 
         self.route_manager.add_widget(NewsfeedRoute(app=self))
+        self.route_manager.add_widget(CommentsRoute(app=self))
 
         self.route_manager.return_route = ''
         return self.route_manager
 
 
 if __name__ == '__main__':
-    # user2 = AuthorizedUser('dtuser2', 'ejzifjyt')
+    user2 = AuthorizedUser('dtuser2', 'ejzifjyt')
     # for i in range(4):
-    #     create_public_post(user2, f"#test post {i}")
+    #     create_public_post(user2, f"#test post {i}",58)
 
+    # posts = get_public_posts(uid=5, parent_id=35)
+    #
+    # for post in posts:
+    #     post.delete_public_post(user2)
+
+    # create_public_post(user2, f"#test comment post parent 57", 57)
     NextMess().run()

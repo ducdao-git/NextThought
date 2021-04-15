@@ -9,7 +9,8 @@
     "text_primary_variant_color": "#82279e",
     "text_secondary_color": "#363331",
     "text_background_color": "#2e2e2e",
-    "support_text_color": "a1a1a1"
+    "support_text_color": "a1a1a1",
+    "comment_background_color": "#f0f2f5"
   },
   "dark": {
     "primary_color": "#282828",

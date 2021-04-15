@@ -1,0 +1,106 @@
+<CommentsRoute>:
+    name: 'comments_route'
+
+    BoxLayout:
+        orientation: 'vertical'
+        size: root.size
+
+        canvas.before:
+            Color:
+                rgba: app.theme_palette['background_color']
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+        Label:
+            size_hint: 1, None
+            height: dp(24)
+            canvas.before:
+                Color:
+                    rgba: app.theme_palette['primary_variant_color']
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+
+        BoxLayout:  # action bar
+            size_hint: 1, None
+            height: dp(56)
+            canvas.before:
+                Color:
+                    rgba: app.theme_palette['primary_color']
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+
+            IconButton:
+                text: "   %s   Post's Comments" % icon('chevron-left')
+                color: app.theme_palette['text_primary_color']
+                valign: 'center'
+                halign: 'left'
+                on_release:
+                    app.root.transition = NoTransition()
+                    app.root.current = app.root.return_route
+
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint: 1, None
+            height: self.minimum_height
+            padding: dp(20), dp(20)
+            spacing: dp(4)
+
+            canvas.before:
+                Color:
+                    rgba: app.theme_palette['comment_background_color']
+#                    rgba: [0,0.5,0,1]
+                RoundedRectangle:
+                    pos: self.pos[0] + dp(8), self.pos[1] + dp(8)
+                    size: self.size[0] - dp(16), self.size[1] - dp(16)
+
+            BoxLayout:
+                orientation: 'horizontal'
+                size_hint: 1, None
+                height: self.minimum_height
+
+                Label:
+                    id: top_comment_owner_name
+                    size_hint: 8, None
+                    # only need one specify size for the whole row to have minimum height
+                    height: self.texture_size[1]
+                    padding: dp(8), dp(0)
+                    text_size: self.width, None
+                    valign: 'center'
+                    halign: 'left'
+                    markup: True
+                    color: app.theme_palette['text_background_color']
+
+                BoxLayout:
+                    id: row
+                    orientation: 'horizontal'
+                    size_hint: 2, 1
+
+            Label:
+                id: top_comment_content
+                size_hint: 1, None
+                height: self.texture_size[1]
+                padding: dp(8), dp(0)
+                text_size: self.width, None
+                color: app.theme_palette['text_background_color']
+
+        FloatLayout:  # layout for tasks view and add button
+            size_hint: 1, 5
+
+            ScrollView:
+                do_scroll: False, True
+                canvas.before:
+                    Color:
+                        rgba: app.theme_palette['background_color']
+                    Rectangle:
+                        size: self.size
+                        pos: self.pos
+
+                BoxLayout: # must specify height to scrollable
+                    id: newsfeed_scrollview
+                    orientation: 'vertical'
+                    size_hint_y: None
+                    padding: [0, 0, 0, dp(56)]  # account for part that are hide behind the bottom nav bar
+                    height: self.minimum_height  # minimum_height is min height to contain all children
