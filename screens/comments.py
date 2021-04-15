@@ -48,5 +48,6 @@ class CommentsRoute(Screen):
             parentid=self.top_comment.get_postid()
         )
 
+        self.top_comment.reduce_comments_num(-1)
         self.refresh_display()
         self.ids.comment_content_input.text = ''

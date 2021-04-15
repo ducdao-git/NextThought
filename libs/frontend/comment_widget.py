@@ -85,6 +85,10 @@ class TopCommentView(BoxLayout):
             self.ids.top_comment_upvote_num.icon + \
             f' [size=14sp]{self.comment_upvote_count}[/size]'
 
+    def focus_new_comment_input(self):
+        print('checkpoint')
+        self.screen_instance.ids.comment_content_input.focus = True
+
 
 class CommentView(BoxLayout):
     def __init__(self, screen_instance, comment, **kwargs):
@@ -117,7 +121,6 @@ class CommentView(BoxLayout):
     def comment_delete(self):
         self.comment.delete_public_post(
             self.screen_instance.app.authorized_user)
-        # self.screen_instance.ids.comment_scrollview.remove_widget(self)
         self.screen_instance.top_comment.reduce_comments_num()
         self.screen_instance.refresh_display()
 
@@ -127,3 +130,7 @@ class CommentView(BoxLayout):
         self.ids.comment_upvote_num.text = \
             self.ids.comment_upvote_num.icon + \
             f' [size=14sp]{self.upvote_count}[/size]'
+
+    def display_comment_reply(self):
+        self.screen_instance.app.process_post = self.comment
+        self.screen_instance.refresh_display()
