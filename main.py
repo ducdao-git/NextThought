@@ -52,10 +52,11 @@ class NextMess(App):
 
 if __name__ == '__main__':
     user2 = AuthorizedUser('dtuser2', 'ejzifjyt')
-    # for i in range(4):
-    #     create_public_post(user2, f"#test post {i}", 81)
+    # create_public_post(user2, 'a'*1000)
+    # for i in range(3):
+    #     create_public_post(user2, f"#comment {i} parent 94", 99)
 
-    # for pid in [-1, 81]:
+    # for pid in [99]:
     #     posts = get_public_posts(uid=5, parent_id=pid)
     #
     #     for post in posts:

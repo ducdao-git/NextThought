@@ -161,7 +161,7 @@ class PostView(BoxLayout):
         super().__init__(**kwargs)
         self.root = root
         self.post = post
-        self.post_new_content = 'edit -- sth go wrong'
+        # self.post_new_content = 'edit -- sth go wrong'
 
         self.ids.row.add_widget(
             PostInfoButton(self.post.get_owner_name(), self.post.get_time()))
@@ -182,11 +182,16 @@ class PostView(BoxLayout):
         PostContentPopup(postview_instance=self,
                          action_name='edit_post').open()
 
-    def post_edit(self):
+    def post_edit(self, post_new_content):
+        if post_new_content == '':
+            return
+
         self.post.edit_public_post(self.root.app.authorized_user,
-                                   self.post_new_content)
+                                   post_new_content)
+
+        # self.post_new_content = post_new_content
         self.root.refresh_newsfeed()
 
     def post_delete(self):
         self.post.delete_public_post(self.root.app.authorized_user)
-        self.root.delete_post(self)
+        self.root.ids.newsfeed_scrollview.remove_widget(self)

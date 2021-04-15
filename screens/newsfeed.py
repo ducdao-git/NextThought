@@ -4,7 +4,8 @@ from libs.backend.authorized_user import get_uid_from_username
 from libs.backend.public_post import get_public_posts, create_public_post
 from libs.frontend.post_widget import PostView
 from libs.backend.custom_exception import RequestError
-from libs.frontend.custom_popup import FilterPopup, ErrorPopup, PostContentPopup
+from libs.frontend.custom_popup import FilterPopup, ErrorPopup, \
+    PostContentPopup
 
 
 class NewsfeedRoute(Screen):
@@ -26,7 +27,7 @@ class NewsfeedRoute(Screen):
         function will be call when the animation to enter the screen start. it
         display most <limit> recent post
         """
-        self.display_public_posts()
+        self.display_public_posts(self.filter_username, self.filter_tag)
 
     def on_leave(self, *args):
         """
@@ -49,9 +50,6 @@ class NewsfeedRoute(Screen):
     def refresh_newsfeed(self):
         self.ids.newsfeed_scrollview.clear_widgets()
         self.display_public_posts(self.filter_username, self.filter_tag)
-
-    def delete_post(self, postview_instance):
-        self.ids.newsfeed_scrollview.remove_widget(postview_instance)
 
     def open_create_post_popup(self):
         PostContentPopup(root=self).open()

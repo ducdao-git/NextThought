@@ -2,16 +2,16 @@
     size_hint: 1, 1
     markup: True
     color: app.theme_palette['support_text_color']
-    edit_icon: '%s' % icon('pencil-alt')
-    delete_icon: '%s' % icon('trash-alt')
-    error_icon: '%s' % icon('exclamation-circle')
+    edit_icon: '%s' % icon('pencil-alt', int(sp(15)))
+    delete_icon: '%s' % icon('trash-alt', int(sp(15)))
+    error_icon: '%s' % icon('exclamation-circle', int(sp(15)))
 
 
 <CommentView>
     orientation: 'vertical'
     size_hint: 1, None
     height: self.minimum_height
-    padding: dp(40), dp(15), dp(20), dp(15)
+    padding: dp(40), dp(15), dp(10), dp(15)
     spacing: dp(8)
 
     canvas.before:
@@ -29,7 +29,7 @@
 
         Label:
             id: comment_owner_name
-            size_hint: 8, None
+            size_hint: 9, None
             # only need one specify size for the whole row to have minimum height
             height: self.texture_size[1]
             padding: dp(8), dp(0)
@@ -78,7 +78,7 @@
     orientation: 'vertical'
     size_hint: 1, None
     height: self.minimum_height
-    padding: dp(20), dp(20)
+    padding: dp(20), dp(20), dp(10), dp(20)
     spacing: dp(8)
 
     canvas.before:
@@ -96,7 +96,7 @@
 
         Label:
             id: top_comment_owner_name
-            size_hint: 8, None
+            size_hint: 9, None
             # only need one specify size for the whole row to have minimum height
             height: self.texture_size[1]
             padding: dp(8), dp(0)
@@ -130,6 +130,7 @@
             height: self.texture_size[1]
             color: app.theme_palette['support_text_color']
             icon: '%s' % icon('heart', int(sp(10)))
+            on_release: root.top_comment_upvote()
 
         IconButton:
             id: top_comment_comment_num

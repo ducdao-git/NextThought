@@ -37,27 +37,25 @@ class PostContentPopup(ModalView):
             self.ids.post_content_input.hint_text = 'Enter new content'
             self.ids.post_content_input.text = \
                 self.postview_instance.post.get_content()
+
         elif action_name == 'create_post':
             self.ids.post_content_input.text = ''
+
         elif action_name == 'edit_top_comment':
             self.ids.post_content_popup_title.text = 'Edit comment content'
             self.ids.post_content_input.hint_text = 'Enter new content'
             self.ids.post_content_input.text = \
-                self.root.top_comment.get_content()
+                self.postview_instance.comment.get_content()
 
     def on_dismiss(self):
         if self.action_name == 'edit_post':
-            self.postview_instance.post_new_content = \
-                self.ids.post_content_input.text
-            self.postview_instance.post_edit()
+            self.postview_instance.post_edit(self.ids.post_content_input.text)
 
         elif self.action_name == 'create_post':
             self.root.create_post(self.ids.post_content_input.text)
 
         elif self.action_name == 'edit_top_comment':
-            self.root.ids.top_comment_content.text = \
-                self.ids.post_content_input.text
-            self.root.comment_edit(
+            self.postview_instance.top_comment_edit(
                 self.ids.post_content_input.text)
 
 
