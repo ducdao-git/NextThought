@@ -6,10 +6,11 @@ from kivy.lang.builder import Builder
 from kivy.uix.screenmanager import ScreenManager
 
 from libs.backend.local_data_handle import get_theme_palette
-from libs.backend.authorized_user import AuthorizedUser
+from libs.backend.user import AuthorizedUser
 
 from screens.newsfeed import NewsfeedRoute
 from screens.comments import CommentsRoute
+from screens.prichat import PriChatRoute
 
 # -- delete when done test -- #
 from libs.backend.public_post import create_public_post, get_public_posts
@@ -29,6 +30,7 @@ Builder.load_file('libs/frontend/post_widget.kv')
 Builder.load_file('libs/frontend/comment_widget.kv')
 Builder.load_file('screens/newsfeed.kv')
 Builder.load_file('screens/comments.kv')
+Builder.load_file('screens/prichat.kv')
 
 
 class NextMess(App):
@@ -45,6 +47,7 @@ class NextMess(App):
 
         self.route_manager.add_widget(NewsfeedRoute(app=self))
         self.route_manager.add_widget(CommentsRoute(app=self))
+        self.route_manager.add_widget(PriChatRoute(app=self))
 
         self.route_manager.return_route = ''
         return self.route_manager

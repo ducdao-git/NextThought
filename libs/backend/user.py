@@ -145,12 +145,76 @@ class AuthorizedUser:
             print(f'error AUser change name: {error}')
             raise DataError(error)
 
-    # def create_message(self, recipientid, message_content):
-    #     try:
-    #         response = requests.post(api_url + '/users',
-    #                                  data={'username': username})
-    #         response_data = get_response_data(response)
+    def create_message(self, recipientid, message_content):
+        try:
+            response = requests.post(
+                api_url + '/messages',
+                data={
+                    'senderid': self.get_uid(),
+                    'recipientid': recipientid,
+                    'token': self.get_token(),
+                    'content': message_content,
+                }
+            )
+            get_response_data(response)
+
+        except Exception as error:
+            print(f'error AUser create message: {error}')
+            raise DataError(error)
+
+    def get_messages(self, otherid, limit=50):
+        try:
+            response = requests.get(
+                api_url + '/messages',
+                data={
+                    'uid': self.get_uid(),
+                    'otherid': otherid,
+                    'token': self.get_token(),
+                    'limit': limit
+                }
+            )
+            return get_response_data(response)
+
+        except Exception as error:
+            print(f'error AUser get messages: {error}')
+            raise DataError(error)
+
+    def get_conversations(self):
+        try:
+            response = requests.get(
+                api_url + '/conversations',
+                data={
+                    'uid': self.get_uid(),
+                    'token': self.get_token()
+                }
+            )
+            return get_response_data(response)
+
+        except Exception as error:
+            print(f'error AUser get conversations: {error}')
+            raise DataError(error)
 
     def __repr__(self):
         return f'AuthorizedUser class -- uid: {self.uid}, username:' \
                f' {self.username}, token: {self.token}'
+
+
+class AnonymousUser:
+    def __init__(self, username, uid=None, server_check=False):
+        if server_check or uid is None:
+            self.uid = get_uid_from_username(username)
+
+            if self.uid is not None:
+                self.username = username
+            else:
+                self.username = None
+
+        else:
+            self.username = username
+            self.uid = uid
+
+    def get_username(self):
+        return self.username
+
+    def get_uid(self):
+        return self.uid

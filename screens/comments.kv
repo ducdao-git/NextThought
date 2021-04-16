@@ -33,12 +33,12 @@
                     pos: self.pos
 
             IconButton:
-                text: "   %s   Post's Comments" % icon('chevron-left')
+                text: "   %s   Post's Comments" % icon('chevron-down')
                 color: app.theme_palette['text_primary_color']
                 valign: 'center'
                 halign: 'left'
                 on_release:
-                    app.root.transition = NoTransition()
+                    app.root.transition = CardTransition(mode='pop', direction='down')
                     app.root.current = app.root.return_route
 
 #        BoxLayout:

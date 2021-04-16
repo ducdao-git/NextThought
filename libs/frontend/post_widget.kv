@@ -1,5 +1,3 @@
-#: import NoTransition kivy.uix.screenmanager.NoTransition
-
 <PostOptionButton>
     size_hint: 1, 1
     markup: True
@@ -67,10 +65,10 @@
             id: post_comment_button
             color: app.theme_palette['support_text_color']
             on_release:
-                app.root.transition = NoTransition()
+                app.root.transition = CardTransition(mode='push', direction='up')
                 app.process_post = root.postview_instance.post
-                app.root.current = 'comments_route'
                 app.root.return_route = 'newsfeed_route'
+                app.root.current = 'comments_route'
 
         IconButton:
             id: post_share_button

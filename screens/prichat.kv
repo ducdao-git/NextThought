@@ -1,8 +1,5 @@
-#: import CardTransition kivy.uix.screenmanager.CardTransition
-#: import SlideTransition kivy.uix.screenmanager.SlideTransition
-
-<NewsfeedRoute>:
-    name: 'newsfeed_route'
+<PriChatRoute>:
+    name: 'prichat_route'
 
     BoxLayout:
         size: root.size
@@ -32,12 +29,7 @@
                     pos: self.pos
 
             RouteTitleLabel:
-                text: ' ' * 3 + 'Newsfeed'
-
-            IconButton:
-                text: "%s" % icon('search')
-                color: app.theme_palette['text_primary_color']
-                on_release: root.open_filter_popup()
+                text: ' ' * 3 + 'PriChat'
 
             IconButton:
                 text: "%s" % icon('cog')
@@ -58,7 +50,7 @@
                         pos: self.pos
 
                 BoxLayout: # must specify height to scrollable
-                    id: newsfeed_scrollview
+                    id: prichat_scrollview
                     orientation: 'vertical'
                     size_hint_y: None
                     padding: [0, 0, 0, dp(56)]  # account for part that are hide behind the bottom nav bar
@@ -99,13 +91,14 @@
 
                 IconButton:
                     text: " " * 2 + "%s\n[size=14sp]Newsfeed[/size]" % icon('home')
-                    color: app.theme_palette['secondary_color']
+                    color: app.theme_palette['text_primary_color']
                     on_release:
-                        root.refresh_newsfeed()
+                        app.root.transition = SlideTransition(direction='right', duration=0.3)
+                        app.root.current = 'newsfeed_route'
 
                 IconButton:
                     text: "%s\n[size=14sp]PriChat[/size]" % icon('comments')
-                    color: app.theme_palette['text_primary_color']
+                    color: app.theme_palette['secondary_color']
                     on_release:
-                        app.root.transition = SlideTransition(direction='left', duration=0.3)
                         app.root.current = 'prichat_route'
+
