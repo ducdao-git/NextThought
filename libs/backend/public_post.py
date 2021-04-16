@@ -3,7 +3,7 @@ from itertools import groupby
 from datetime import datetime
 from dateutil import tz
 
-from libs.backend.custom_exception import RequestError
+from libs.backend.custom_exception import DataError
 from libs.backend.response_handle import get_response_data
 
 api_url = 'http://nsommer.wooster.edu/social'
@@ -26,9 +26,9 @@ def create_public_post(user, content, parentid=-1):
         )
         get_response_data(response)
 
-    except RequestError as error:
-        print(f'popup create_ppost: {error}')
-        raise RequestError(error)
+    except Exception as error:
+        print(f'error ppost create: {error}')
+        raise DataError(error)
 
 
 def get_public_posts(limit=50, uid=None, tag=None, parent_id=-1):
@@ -65,9 +65,9 @@ def get_public_posts(limit=50, uid=None, tag=None, parent_id=-1):
 
         return public_posts
 
-    except RequestError as error:
-        print(f'popup create_ppost: {error}')
-        raise RequestError(error)
+    except Exception as error:
+        print(f'error ppost get: {error}')
+        raise DataError(error)
 
 
 class PublicPost:
@@ -94,16 +94,20 @@ class PublicPost:
         return self.content
 
     def get_time(self):
-        from_zone = tz.tzutc()
-        to_zone = tz.tzlocal()
+        try:
+            from_zone = tz.tzutc()
+            to_zone = tz.tzlocal()
 
-        post_utc_time = datetime.strptime(
-            self.time, '%Y-%m-%d %H:%M:%S'
-        ).replace(tzinfo=from_zone)
+            post_utc_time = datetime.strptime(
+                self.time, '%Y-%m-%d %H:%M:%S'
+            ).replace(tzinfo=from_zone)
 
-        post_local_time = post_utc_time.astimezone(to_zone)
+            post_local_time = post_utc_time.astimezone(to_zone)
+            return post_local_time.strftime('%H:%M %b %d')
 
-        return post_local_time.strftime('%H:%M %b %d')
+        except Exception as error:
+            print(f'error ppost get_time: {error}')
+            raise DataError(error)
 
     def get_upvotes_num(self):
         return self.upvotes_num
@@ -129,9 +133,9 @@ class PublicPost:
 
             self.upvotes_num += 1
 
-        except RequestError as error:
-            print(f'popup upvote_ppost: {error}')
-            raise RequestError(error)
+        except Exception as error:
+            print(f'error ppost upvote: {error}')
+            raise DataError(error)
 
     def reduce_comments_num(self, by=1):
         self.comments_num -= by
@@ -154,9 +158,9 @@ class PublicPost:
 
             self.content = new_content
 
-        except RequestError as error:
-            print(f'popup edit_ppost: {self.postid} -- {error}')
-            raise RequestError(error)
+        except Exception as error:
+            print(f'error ppost edit: {error}')
+            raise DataError(error)
 
     def delete_public_post(self, owner):
         """
@@ -174,9 +178,9 @@ class PublicPost:
 
             self.owner_name = self.content = self.postid = None
 
-        except RequestError as error:
-            print(f'popup del_ppost: {self.postid} -- {error}')
-            raise RequestError(error)
+        except Exception as error:
+            print(f'error ppost delete: {error}')
+            raise DataError(error)
 
     def __repr__(self):
         """

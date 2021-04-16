@@ -1,7 +1,8 @@
 from kivy.uix.boxlayout import BoxLayout
 
+from libs.backend.custom_exception import DataError
 from libs.frontend.custom_kv_widget import IconButton
-from libs.frontend.custom_popup import PostContentPopup
+from libs.frontend.custom_popup import PostContentPopup, ErrorPopup
 
 
 class CommentOptionButton(IconButton):
@@ -67,26 +68,39 @@ class TopCommentView(BoxLayout):
     def top_comment_edit(self, comment_new_content):
         if comment_new_content == '':
             return
+        try:
+            self.comment.edit_public_post(
+                self.screen_instance.app.authorized_user, comment_new_content)
 
-        self.comment.edit_public_post(
-            self.screen_instance.app.authorized_user, comment_new_content)
-        self.ids.top_comment_content.text = comment_new_content
+            self.ids.top_comment_content.text = comment_new_content
+
+        except DataError as error:
+            ErrorPopup(error.message).open()
 
     def top_comment_delete(self):
-        self.comment.delete_public_post(
-            self.screen_instance.app.authorized_user)
-        self.screen_instance.app.route_manager.current = \
-            self.screen_instance.app.route_manager.return_route
+        try:
+            self.comment.delete_public_post(
+                self.screen_instance.app.authorized_user)
+
+            self.screen_instance.app.route_manager.current = \
+                self.screen_instance.app.route_manager.return_route
+
+        except DataError as error:
+            ErrorPopup(error.message).open()
 
     def top_comment_upvote(self):
-        self.comment.upvote_post(self.screen_instance.app.authorized_user)
-        self.comment_upvote_count += 1
-        self.ids.top_comment_upvote_num.text = \
-            self.ids.top_comment_upvote_num.icon + \
-            f' [size=14sp]{self.comment_upvote_count}[/size]'
+        try:
+            self.comment.upvote_post(self.screen_instance.app.authorized_user)
+            self.comment_upvote_count += 1
+
+            self.ids.top_comment_upvote_num.text = \
+                self.ids.top_comment_upvote_num.icon + \
+                f' [size=14sp]{self.comment_upvote_count}[/size]'
+
+        except DataError as error:
+            ErrorPopup(error.message).open()
 
     def focus_new_comment_input(self):
-        print('checkpoint')
         self.screen_instance.ids.comment_content_input.focus = True
 
 
@@ -119,26 +133,46 @@ class CommentView(BoxLayout):
             f' [size=14sp]{self.comment.get_comments_num()}[/size]'
 
     def comment_delete(self):
-        self.comment.delete_public_post(
-            self.screen_instance.app.authorized_user)
-        self.screen_instance.top_comment.reduce_comments_num()
-        self.screen_instance.refresh_display()
+        try:
+            self.comment.delete_public_post(
+                self.screen_instance.app.authorized_user)
+
+            self.screen_instance.top_comment.reduce_comments_num()
+            self.screen_instance.refresh_display()
+
+        except DataError as error:
+            ErrorPopup(error.message).open()
 
     def comment_edit(self, comment_new_content):
         if comment_new_content in ['', None]:
             return
 
-        self.comment.edit_public_post(self.screen_instance.app.authorized_user,
-                                      comment_new_content)
-        self.ids.comment_content.text = comment_new_content
+        try:
+            self.comment.edit_public_post(
+                self.screen_instance.app.authorized_user,
+                comment_new_content)
+
+            self.ids.comment_content.text = comment_new_content
+
+        except DataError as error:
+            ErrorPopup(error.message).open()
 
     def comment_upvote(self):
-        self.comment.upvote_post(self.screen_instance.app.authorized_user)
-        self.upvote_count += 1
-        self.ids.comment_upvote_num.text = \
-            self.ids.comment_upvote_num.icon + \
-            f' [size=14sp]{self.upvote_count}[/size]'
+        try:
+            self.comment.upvote_post(self.screen_instance.app.authorized_user)
+            self.upvote_count += 1
+
+            self.ids.comment_upvote_num.text = \
+                self.ids.comment_upvote_num.icon + \
+                f' [size=14sp]{self.upvote_count}[/size]'
+
+        except DataError as error:
+            ErrorPopup(error.message).open()
 
     def display_comment_reply(self):
-        self.screen_instance.app.process_post = self.comment
-        self.screen_instance.refresh_display()
+        try:
+            self.screen_instance.app.process_post = self.comment
+            self.screen_instance.refresh_display()
+
+        except DataError as error:
+            ErrorPopup(error.message).open()

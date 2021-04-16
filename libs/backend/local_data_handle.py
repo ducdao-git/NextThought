@@ -1,5 +1,5 @@
 import json
-from pprint import pprint
+from libs.backend.custom_exception import DataError
 
 
 def _hex_to_rgb(hex_color):
@@ -25,10 +25,10 @@ def get_theme_palette(theme_name):
     :param theme_name: name of the theme - next_mess
     :return: color palette for the theme
     """
-    if theme_name not in ['next_mess', 'dark']:
-        raise ValueError
-
     try:
+        if theme_name not in ['next_mess', 'dark']:
+            raise ValueError
+
         with open('assets/theme_palettes.json', 'r') as f:
             themes_data = json.load(f)
 
@@ -44,8 +44,5 @@ def get_theme_palette(theme_name):
         # pprint(theme_palette)
         return theme_palette
 
-    except Exception as e:
-        print(e)
-
-
-get_theme_palette('next_mess')
+    except Exception as error:
+        raise DataError(error)

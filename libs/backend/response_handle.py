@@ -1,6 +1,6 @@
 import json
 
-from libs.backend.custom_exception import RequestError
+from libs.backend.custom_exception import DataError
 
 
 def get_response_data(response):
@@ -11,13 +11,11 @@ def get_response_data(response):
     """
     if response.status_code == 200:
         content = json.loads(response.content)
-        # print(response.status_code, '--', content, '--', type(content))
         return content
 
     elif response.status_code == 400:  # API rejects action
         message = json.loads(response.content)['message']
-        raise RequestError(message)
+        raise DataError(message)
 
     else:
-        print(response.status_code)
-        raise RequestError('sth went wrong')
+        raise DataError({'status code': response.status_code})

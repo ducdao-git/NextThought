@@ -5,8 +5,9 @@ from kivy.uix.label import Label
 from kivy.graphics import Color, Rectangle
 from kivy.metrics import dp
 
+from libs.backend.custom_exception import DataError
 from libs.frontend.custom_kv_widget import IconButton
-from libs.frontend.custom_popup import PostContentPopup
+from libs.frontend.custom_popup import PostContentPopup, ErrorPopup
 
 
 class PostInfoButton(Button):
@@ -143,13 +144,16 @@ class PostActionBar(BoxLayout):
     def upvote_post(self):
         curr_post = self.postview_instance.post
         curr_user = self.postview_instance.root.app.authorized_user
+        try:
+            curr_post.upvote_post(curr_user)
 
-        curr_post.upvote_post(curr_user)
+            self.upvotes_num += 1
+            self.ids.post_like_button.text = \
+                self.heart_icon + \
+                f' [size=12sp]{self.upvotes_num}[/size]'
 
-        self.upvotes_num += 1
-        self.ids.post_like_button.text = \
-            self.heart_icon + \
-            f' [size=12sp]{self.upvotes_num}[/size]'
+        except DataError as error:
+            ErrorPopup(error.message).open()
 
 
 class PostView(BoxLayout):
@@ -186,12 +190,21 @@ class PostView(BoxLayout):
         if post_new_content == '':
             return
 
-        self.post.edit_public_post(self.root.app.authorized_user,
-                                   post_new_content)
+        try:
+            self.post.edit_public_post(
+                self.root.app.authorized_user,
+                post_new_content
+            )
 
-        # self.post_new_content = post_new_content
-        self.root.refresh_newsfeed()
+            # self.post_new_content = post_new_content
+            self.root.refresh_newsfeed()
+
+        except DataError as error:
+            ErrorPopup(error.message).open()
 
     def post_delete(self):
-        self.post.delete_public_post(self.root.app.authorized_user)
-        self.root.ids.newsfeed_scrollview.remove_widget(self)
+        try:
+            self.post.delete_public_post(self.root.app.authorized_user)
+            self.root.ids.newsfeed_scrollview.remove_widget(self)
+        except DataError as error:
+            ErrorPopup(error.message).open()

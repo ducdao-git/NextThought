@@ -1,6 +1,6 @@
 import requests
 
-from libs.backend.custom_exception import RequestError
+from libs.backend.custom_exception import DataError
 from libs.backend.response_handle import get_response_data
 
 api_url = 'http://nsommer.wooster.edu/social'
@@ -19,9 +19,9 @@ def create_user(username):
 
         return AuthorizedUser(username, response_data['token'])
 
-    except RequestError as error:
-        print(f'popup create: {error}')
-        raise RequestError(error)
+    except Exception as error:
+        print(f'error AUser create user: {error}')
+        raise DataError(error)
 
 
 def get_uid_from_username(username):
@@ -35,9 +35,9 @@ def get_uid_from_username(username):
 
         return response_data['uid']
 
-    except RequestError as error:
-        print(f'popup get_uid: {username} -- {error}')
-        raise RequestError(error)
+    except Exception as error:
+        print(f'error AUser get userID: {error}')
+        raise DataError(error)
 
 
 class AuthorizedUser:
@@ -70,9 +70,9 @@ class AuthorizedUser:
             self.uid = response_data['uid']
             self.username = response_data['username']
 
-        except RequestError as error:
-            print(f'popup set_id: {username} -- {error}')
-            raise RequestError(error)
+        except Exception as error:
+            print(f'error AUser set userID: {error}')
+            raise DataError(error)
 
     def set_token(self, token):
         """
@@ -99,9 +99,9 @@ class AuthorizedUser:
             )
             return token
 
-        except RequestError as error:
-            print(f'popup set_token: {self.username} -- {error}')
-            raise RequestError(error)
+        except Exception as error:
+            print(f'error AUser set token: {error}')
+            raise DataError(error)
 
     def get_username(self):
         """
@@ -141,9 +141,15 @@ class AuthorizedUser:
 
             self.username = new_username
 
-        except RequestError as error:
-            print(f'popup change: {self.username} -- {error}')
-            raise RequestError(error)
+        except Exception as error:
+            print(f'error AUser change name: {error}')
+            raise DataError(error)
+
+    # def create_message(self, recipientid, message_content):
+    #     try:
+    #         response = requests.post(api_url + '/users',
+    #                                  data={'username': username})
+    #         response_data = get_response_data(response)
 
     def __repr__(self):
         return f'AuthorizedUser class -- uid: {self.uid}, username:' \

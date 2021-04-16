@@ -3,7 +3,7 @@ from kivy.uix.screenmanager import Screen
 from libs.backend.authorized_user import get_uid_from_username
 from libs.backend.public_post import get_public_posts, create_public_post
 from libs.frontend.post_widget import PostView
-from libs.backend.custom_exception import RequestError
+from libs.backend.custom_exception import DataError
 from libs.frontend.custom_popup import FilterPopup, ErrorPopup, \
     PostContentPopup
 
@@ -27,7 +27,10 @@ class NewsfeedRoute(Screen):
         function will be call when the animation to enter the screen start. it
         display most <limit> recent post
         """
-        self.display_public_posts(self.filter_username, self.filter_tag)
+        try:
+            self.display_public_posts(self.filter_username, self.filter_tag)
+        except DataError as error:
+            ErrorPopup(error.message).open()
 
     def on_leave(self, *args):
         """
@@ -37,19 +40,18 @@ class NewsfeedRoute(Screen):
         self.ids.newsfeed_scrollview.clear_widgets()
 
     def display_public_posts(self, username=None, tag=None):
-        try:
-            posts = get_public_posts(uid=get_uid_from_username(username),
-                                     tag=tag)
+        posts = get_public_posts(uid=get_uid_from_username(username), tag=tag)
 
-            for post in posts:
-                self.ids.newsfeed_scrollview.add_widget(PostView(self, post))
-
-        except RequestError as error:
-            raise RequestError(error)
+        for post in posts:
+            self.ids.newsfeed_scrollview.add_widget(PostView(self, post))
 
     def refresh_newsfeed(self):
-        self.ids.newsfeed_scrollview.clear_widgets()
-        self.display_public_posts(self.filter_username, self.filter_tag)
+        try:
+            self.ids.newsfeed_scrollview.clear_widgets()
+            self.display_public_posts(self.filter_username, self.filter_tag)
+
+        except DataError as error:
+            ErrorPopup(error.message).open()
 
     def open_create_post_popup(self):
         PostContentPopup(root=self).open()
@@ -62,8 +64,8 @@ class NewsfeedRoute(Screen):
             create_public_post(self.app.authorized_user, new_post_content)
             self.refresh_newsfeed()
 
-        except RequestError as error:
-            ErrorPopup(str(error)).open()
+        except DataError as error:
+            ErrorPopup(error.message).open()
 
     def open_filter_popup(self):
         FilterPopup(self).open()
@@ -75,6 +77,5 @@ class NewsfeedRoute(Screen):
             self.filter_username = username
             self.filter_tag = tag
 
-        except RequestError as error:
-            ErrorPopup(str(error)).open()
-            self.display_public_posts(self.filter_username, self.filter_tag)
+        except DataError as error:
+            ErrorPopup(error.message).open()

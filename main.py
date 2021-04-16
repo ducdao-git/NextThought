@@ -51,7 +51,7 @@ class NextMess(App):
 
 
 if __name__ == '__main__':
-    user2 = AuthorizedUser('dtuser2', 'ejzifjyt')
+    # user2 = AuthorizedUser('dtuser2', 'ejzifjyt')
     # create_public_post(user2, 'a'*1000)
     # for i in range(3):
     #     create_public_post(user2, f"#comment {i} parent 94", 99)
