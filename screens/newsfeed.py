@@ -2,10 +2,9 @@ from kivy.uix.screenmanager import Screen
 
 from libs.backend.user import get_uid_from_username
 from libs.backend.public_post import get_public_posts, create_public_post
-from libs.frontend.post_widget import PostView
 from libs.backend.custom_exception import DataError
-from libs.frontend.custom_popup import FilterPopup, ErrorPopup, \
-    PostContentPopup
+from libs.frontend.post_widget import PostView
+from libs.frontend.custom_popup import *
 
 
 class NewsfeedRoute(Screen):

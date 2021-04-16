@@ -1,5 +1,6 @@
 import requests
 
+from libs.backend.messages import Message
 from libs.backend.custom_exception import DataError
 from libs.backend.response_handle import get_response_data
 
@@ -173,7 +174,19 @@ class AuthorizedUser:
                     'limit': limit
                 }
             )
-            return get_response_data(response)
+            response_data = get_response_data(response)
+
+            messages = []
+            for message in response_data:
+                messages.append(Message(
+                    sender=message['sender'],
+                    senderid=message['senderid'],
+                    recipient=message['recipient'],
+                    recipientid=message['recipientid'],
+                    content=message['content'],
+                    time=message['time'],
+                ))
+            return messages
 
         except Exception as error:
             print(f'error AUser get messages: {error}')
@@ -188,7 +201,14 @@ class AuthorizedUser:
                     'token': self.get_token()
                 }
             )
-            return get_response_data(response)
+            response_data = get_response_data(response)
+
+            anonymous_users = []
+            for user in response_data:
+                anonymous_users.append(
+                    AnonymousUser(user['username'], user['uid']))
+
+            return anonymous_users
 
         except Exception as error:
             print(f'error AUser get conversations: {error}')
@@ -218,3 +238,7 @@ class AnonymousUser:
 
     def get_uid(self):
         return self.uid
+
+    def __repr__(self):
+        return f'AnonymousUser class -- uid: {self.uid}, ' \
+               f'username: {self.username}'

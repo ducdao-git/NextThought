@@ -1,0 +1,26 @@
+<ChatView>
+    orientation: 'horizontal'
+    size_hint: 1, None
+    height: self.minimum_height
+
+    on_touch_up: root.get_messages()
+
+    canvas.before:
+        Color:
+            rgba: [0, 0.5, 0, 1]
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    Label:
+        size_hint: 1, None
+        height: dp(56)
+        markup: True
+        text: '%s' % icon('user-circle', int(sp(24)))
+
+    Label:
+        id: last_message_preview
+        size_hint: 1, None
+        height: dp(56)
+        markup: True
+        text_size: root.width, None

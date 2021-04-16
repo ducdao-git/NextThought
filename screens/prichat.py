@@ -2,10 +2,9 @@ from kivy.uix.screenmanager import Screen
 
 from libs.backend.user import get_uid_from_username
 from libs.backend.public_post import get_public_posts, create_public_post
-from libs.frontend.post_widget import PostView
+from libs.frontend.chat_widget import ChatView
 from libs.backend.custom_exception import DataError
-from libs.frontend.custom_popup import FilterPopup, ErrorPopup, \
-    PostContentPopup
+from libs.frontend.custom_popup import ErrorPopup
 
 
 class PriChatRoute(Screen):
@@ -20,29 +19,22 @@ class PriChatRoute(Screen):
         super().__init__(**kwargs)
         self.app = app
 
-    # def on_pre_enter(self, *args):
-    #     """
-    #     function will be call when the animation to enter the screen start. it
-    #     display most <limit> recent post
-    #     """
-    #     try:
-    #         self.display_public_posts(self.filter_username, self.filter_tag)
-    #     except DataError as error:
-    #         ErrorPopup(error.message).open()
-    #
-    # def on_leave(self, *args):
-    #     """
-    #     function will be call whn leaving the screen. the function will clear
-    #     all widget in screen i.e. remove all unused widget, data
-    #     """
-    #     self.ids.newsfeed_scrollview.clear_widgets()
-    #
-    # def display_public_posts(self, username=None, tag=None):
-    #     posts = get_public_posts(uid=get_uid_from_username(username), tag=tag)
-    #
-    #     for post in posts:
-    #         self.ids.newsfeed_scrollview.add_widget(PostView(self, post))
-    #
+    def on_pre_enter(self, *args):
+        try:
+            self.display_conversations()
+        except DataError as error:
+            ErrorPopup(error.message).open()
+
+    def on_leave(self, *args):
+        self.ids.prichat_scrollview.clear_widgets()
+
+    def display_conversations(self):
+        conversations = self.app.authorized_user.get_conversations()
+
+        for other_user in conversations:
+            print(other_user)
+            self.ids.prichat_scrollview.add_widget(ChatView(self, other_user))
+
     # def refresh_newsfeed(self):
     #     try:
     #         self.ids.newsfeed_scrollview.clear_widgets()
