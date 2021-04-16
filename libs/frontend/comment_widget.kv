@@ -74,7 +74,13 @@
             on_release: root.focus_new_comment_input()
 
         Label:
+            id: top_comment_time
             size_hint: 7, 1
+            text_size: self.size
+            halign: 'right'
+            padding: dp(8), dp(0)
+            font_size: sp(14)
+            color: app.theme_palette['support_text_color']
 
 
 <CommentView>
@@ -151,4 +157,10 @@
                 on_release: root.display_comment_reply()
 
             Label:
+                id: comment_time
                 size_hint: 7, 1
+                text_size: self.size
+                halign: 'right'
+                padding: dp(8), dp(0)
+                font_size: sp(14)
+                color: app.theme_palette['support_text_color']

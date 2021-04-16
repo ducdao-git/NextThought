@@ -3,11 +3,9 @@
     size_hint: 1, None
     height: self.minimum_height
 
-    on_touch_up: root.get_messages()
-
     canvas.before:
         Color:
-            rgba: [0, 0.5, 0, 1]
+            rgba: [0, 0.5, 0, 0]
         Rectangle:
             pos: self.pos
             size: self.size
@@ -16,11 +14,47 @@
         size_hint: 1, None
         height: dp(56)
         markup: True
-        text: '%s' % icon('user-circle', int(sp(30)))
+        color: app.theme_palette['primary_color']
+        text: '%s' % icon('user-circle', int(sp(35)))
 
-    Label:
-        id: last_message_preview
-        size_hint: 5, None
-        height: dp(56)
-        markup: True
-        text_size: self.width, None
+    BoxLayout:
+        orientation: 'vertical'
+        size_hint: 5, 1
+        padding: dp(0), dp(8), dp(12), dp(8)
+
+        canvas.before:
+            Color:
+                rgba: app.theme_palette['divider_color']
+            Rectangle:
+                pos: self.pos
+                size: self.size[0] - dp(12), dp(1.5)
+
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint: 1, 1
+
+            Label:
+                id: chat_partner_name
+                size_hint: 4, None
+                height: self.texture_size[1]
+                text_size: self.width, None
+                bold: True
+                shorten: True
+                shorten_from: 'right'
+                color: app.theme_palette['text_background_color']
+
+            Label:
+                id: last_message_time
+                size_hint: 1, None
+                height: self.texture_size[1]
+                text_size: self.width, None
+                halign: 'right'
+                color: app.theme_palette['text_background_color']
+
+        Label:
+            id: last_message_preview
+            size_hint: 1, 1
+            text_size: self.width, None
+            shorten: True
+            shorten_from: 'right'
+            color: app.theme_palette['text_background_color']

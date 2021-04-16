@@ -206,7 +206,7 @@ class AuthorizedUser:
             anonymous_users = []
             for user in response_data:
                 anonymous_users.append(
-                    AnonymousUser(user['username'], user['uid']))
+                    ChatPartner(user['username'], user['uid']))
 
             return anonymous_users
 
@@ -219,7 +219,7 @@ class AuthorizedUser:
                f' {self.username}, token: {self.token}'
 
 
-class AnonymousUser:
+class ChatPartner:
     def __init__(self, username, uid=None, server_check=False):
         if server_check or uid is None:
             self.uid = get_uid_from_username(username)
@@ -240,5 +240,5 @@ class AnonymousUser:
         return self.uid
 
     def __repr__(self):
-        return f'AnonymousUser class -- uid: {self.uid}, ' \
+        return f'ChatPartner class -- uid: {self.uid}, ' \
                f'username: {self.username}'

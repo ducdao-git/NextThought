@@ -1,7 +1,5 @@
 import requests
 from itertools import groupby
-from datetime import datetime
-from dateutil import tz
 
 from libs.backend.custom_exception import DataError
 from libs.backend.response_handle import get_response_data
@@ -94,20 +92,7 @@ class PublicPost:
         return self.content
 
     def get_time(self):
-        try:
-            from_zone = tz.tzutc()
-            to_zone = tz.tzlocal()
-
-            post_utc_time = datetime.strptime(
-                self.time, '%Y-%m-%d %H:%M:%S'
-            ).replace(tzinfo=from_zone)
-
-            post_local_time = post_utc_time.astimezone(to_zone)
-            return post_local_time.strftime('%H:%M %b %d')
-
-        except Exception as error:
-            print(f'error ppost get_time: {error}')
-            raise DataError(error)
+        return self.time
 
     def get_upvotes_num(self):
         return self.upvotes_num

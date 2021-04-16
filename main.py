@@ -55,7 +55,9 @@ class NextMess(App):
 
 
 if __name__ == '__main__':
-    # user2 = AuthorizedUser('dtuser2', 'ejzifjyt')
+    user2 = AuthorizedUser('dtuser2', 'ejzifjyt')
+    # user3 = AuthorizedUser('dtuser3', 'sphyuddr')
+
     # create_public_post(user2, 'a'*1000)
     # for i in range(3):
     #     create_public_post(user2, f"#comment {i} parent 94", 99)
@@ -67,4 +69,14 @@ if __name__ == '__main__':
     #         post.delete_public_post(user2)
 
     # create_public_post(user2, 'a'*1000)
+
+    # user2.create_message(6, 'msg 2 from user2 to user3' * 10)
+    # user3.create_message(user2.get_uid(), 'msg 2 from user3 to user2')
+    #
+    # pprint(user2.get_conversations())
+    # pprint(user2.get_messages(user3.get_uid(), limit=1))
+    #
+    # print('\n')
+    # pprint(user3.get_conversations())
+    # pprint(user3.get_messages(user2.get_uid(), limit=1))
     NextMess().run()

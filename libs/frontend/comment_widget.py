@@ -1,5 +1,6 @@
 from kivy.uix.boxlayout import BoxLayout
 
+from libs.backend.local_data_handle import get_readable_time
 from libs.backend.custom_exception import DataError
 from libs.frontend.custom_kv_widget import IconButton
 from libs.frontend.custom_popup import PostContentPopup, ErrorPopup
@@ -64,6 +65,9 @@ class TopCommentView(BoxLayout):
         self.ids.top_comment_comment_num.text = \
             self.ids.top_comment_comment_num.icon + \
             f' [size=14sp]{self.comment.get_comments_num()}[/size]'
+
+        self.ids.top_comment_time.text = \
+            get_readable_time(self.comment.get_time())
 
     def top_comment_edit(self, comment_new_content):
         if comment_new_content == '':
@@ -131,6 +135,8 @@ class CommentView(BoxLayout):
         self.ids.comment_comment_num.text = \
             self.ids.comment_comment_num.icon + \
             f' [size=14sp]{self.comment.get_comments_num()}[/size]'
+
+        self.ids.comment_time.text = get_readable_time(self.comment.get_time())
 
     def comment_delete(self):
         try:

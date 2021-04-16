@@ -1,4 +1,7 @@
 import json
+from datetime import datetime, timedelta
+from dateutil import tz
+
 from libs.backend.custom_exception import DataError
 
 
@@ -45,4 +48,35 @@ def get_theme_palette(theme_name):
         return theme_palette
 
     except Exception as error:
+        raise DataError(error)
+
+
+def get_readable_time(time):
+    try:
+        from_zone = tz.tzutc()
+        to_zone = tz.tzlocal()
+
+        post_utc_time = datetime.strptime(
+            time, '%Y-%m-%d %H:%M:%S'
+        ).replace(tzinfo=from_zone)
+
+        post_local_time = post_utc_time.astimezone(to_zone)
+        curr_time = datetime.now().astimezone(to_zone)
+        time_diff = curr_time - post_local_time
+
+        if (time_diff / timedelta(days=365)) > 1:
+            return post_local_time.strftime('%x')
+        elif (time_diff / timedelta(days=1)) > 1:
+            return post_local_time.strftime('%b %d')
+        elif (time_diff / timedelta(hours=1)) > 1:
+            return str(time_diff.seconds // 3600) + 'h'
+            # return post_local_time.strftime('%b %d')
+            # return post_local_time.strftime('%x')
+        elif (time_diff / timedelta(minutes=1)) > 1:
+            return str(time_diff.seconds // 60) + 'm'
+        else:
+            return str(time_diff.seconds) + 's'
+
+    except Exception as error:
+        print(f'error ppost get_time: {error}')
         raise DataError(error)

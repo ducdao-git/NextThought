@@ -5,6 +5,7 @@ from kivy.uix.label import Label
 from kivy.graphics import Color, Rectangle
 from kivy.metrics import dp
 
+from libs.backend.local_data_handle import get_readable_time
 from libs.backend.custom_exception import DataError
 from libs.frontend.custom_kv_widget import IconButton
 from libs.frontend.custom_popup import PostContentPopup, ErrorPopup
@@ -168,7 +169,9 @@ class PostView(BoxLayout):
         # self.post_new_content = 'edit -- sth go wrong'
 
         self.ids.row.add_widget(
-            PostInfoButton(self.post.get_owner_name(), self.post.get_time()))
+            PostInfoButton(self.post.get_owner_name(),
+                           get_readable_time(self.post.get_time()))
+        )
 
         if self.root.app.authorized_user.get_username() == \
                 self.post.get_owner_name():
