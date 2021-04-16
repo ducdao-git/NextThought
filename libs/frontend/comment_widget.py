@@ -124,6 +124,14 @@ class CommentView(BoxLayout):
         self.screen_instance.top_comment.reduce_comments_num()
         self.screen_instance.refresh_display()
 
+    def comment_edit(self, comment_new_content):
+        if comment_new_content in ['', None]:
+            return
+
+        self.comment.edit_public_post(self.screen_instance.app.authorized_user,
+                                      comment_new_content)
+        self.ids.comment_content.text = comment_new_content
+
     def comment_upvote(self):
         self.comment.upvote_post(self.screen_instance.app.authorized_user)
         self.upvote_count += 1

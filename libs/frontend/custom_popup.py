@@ -40,7 +40,7 @@ class PostContentPopup(ModalView):
         elif action_name == 'create_post':
             self.ids.post_content_input.text = ''
 
-        elif action_name == 'edit_top_comment':
+        elif action_name in ['edit_comment', 'edit_top_comment']:
             self.ids.post_content_popup_title.text = 'Edit post'
             self.ids.post_content_input.text = \
                 self.postview_instance.comment.get_content()
@@ -54,6 +54,10 @@ class PostContentPopup(ModalView):
 
         elif self.action_name == 'edit_top_comment':
             self.postview_instance.top_comment_edit(
+                self.ids.post_content_input.text)
+
+        elif self.action_name == 'edit_comment':
+            self.postview_instance.comment_edit(
                 self.ids.post_content_input.text)
 
 

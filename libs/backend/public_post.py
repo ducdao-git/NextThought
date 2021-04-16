@@ -1,6 +1,7 @@
 import requests
 from itertools import groupby
-from pprint import pprint
+from datetime import datetime
+from dateutil import tz
 
 from libs.backend.custom_exception import RequestError
 from libs.backend.response_handle import get_response_data
@@ -93,7 +94,16 @@ class PublicPost:
         return self.content
 
     def get_time(self):
-        return self.time
+        from_zone = tz.tzutc()
+        to_zone = tz.tzlocal()
+
+        post_utc_time = datetime.strptime(
+            self.time, '%Y-%m-%d %H:%M:%S'
+        ).replace(tzinfo=from_zone)
+
+        post_local_time = post_utc_time.astimezone(to_zone)
+
+        return post_local_time.strftime('%H:%M %b %d')
 
     def get_upvotes_num(self):
         return self.upvotes_num
