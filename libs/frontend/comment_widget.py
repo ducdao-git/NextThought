@@ -1,4 +1,5 @@
 from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.screenmanager import CardTransition
 
 from libs.backend.local_data_handle import get_readable_time
 from libs.backend.custom_exception import DataError
@@ -86,6 +87,8 @@ class TopCommentView(BoxLayout):
             self.comment.delete_public_post(
                 self.screen_instance.app.authorized_user)
 
+            self.screen_instance.app.route_manager.transition = \
+                CardTransition(mode='pop', direction='down')
             self.screen_instance.app.route_manager.current = \
                 self.screen_instance.app.route_manager.return_route
 

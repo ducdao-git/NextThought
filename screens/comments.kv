@@ -79,6 +79,9 @@
                 IconButton:
                     color: app.theme_palette['primary_color']
                     text: '%s' % icon('chevron-right', int(sp(14)))
+                    on_release:
+                        root.ids.comment_content_input.focus = True
+                        root.ids.comment_content_input.select_all()
 
                 InputLayout:
                     size_hint: 8, None

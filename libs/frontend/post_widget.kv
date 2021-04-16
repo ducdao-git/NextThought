@@ -1,3 +1,5 @@
+#: import ErrorPopup libs.frontend.custom_popup.ErrorPopup
+
 <PostOptionButton>
     size_hint: 1, 1
     markup: True
@@ -73,6 +75,7 @@
             id: post_share_button
             text: '%s [size=12sp]Share[/size]' % icon('share', int(sp(12)))
             color: app.theme_palette['support_text_color']
+            on_release: ErrorPopup('Share feature is not yet available.').open()
 
 <PostView>
     orientation: 'vertical'
