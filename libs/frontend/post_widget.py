@@ -85,10 +85,10 @@ class PostDividerLabel(Label):
 
 
 class PostOptionButton(IconButton):
-    def __init__(self, postview_instance, option_action, **kwargs):
+    def __init__(self, view_instance, option_action, **kwargs):
         super().__init__(**kwargs)
         self.option_action = option_action
-        self.postview_instance = postview_instance
+        self.view_instance = view_instance
 
         if option_action == 'edit':
             option_icon = self.edit_icon
@@ -101,25 +101,25 @@ class PostOptionButton(IconButton):
 
     def on_release(self):
         if self.option_action == 'edit':
-            return self.postview_instance.get_post_new_content()
+            return self.view_instance.get_post_new_content()
         elif self.option_action == 'delete':
-            return self.postview_instance.post_delete()
+            return self.view_instance.post_delete()
         else:
             return None
 
 
 class PostActionBar(BoxLayout):
-    def __init__(self, postview_instance, **kwargs):
+    def __init__(self, view_instance, **kwargs):
         super().__init__(**kwargs)
-        self.postview_instance = postview_instance
+        self.view_instance = view_instance
 
         self.ids.post_section_divider_holder.add_widget(
             PostDividerLabel(height=dp(1)))
 
-        self.upvotes_num = self.postview_instance.post.get_upvotes_num()
+        self.upvotes_num = self.view_instance.post.get_upvotes_num()
         self.display_post_upvotes()
 
-        self.comments_num = self.postview_instance.post.get_comments_num()
+        self.comments_num = self.view_instance.post.get_comments_num()
         self.display_post_comments_num()
 
         self.bind(minimum_height=self.setter('height'))
@@ -143,8 +143,8 @@ class PostActionBar(BoxLayout):
             self.comment_icon + f' [size=12sp]{comment_btn_text}[/size]'
 
     def upvote_post(self):
-        curr_post = self.postview_instance.post
-        curr_user = self.postview_instance.screen_instance.app.authorized_user
+        curr_post = self.view_instance.post
+        curr_user = self.view_instance.screen_instance.app.authorized_user
         try:
             curr_post.upvote_post(curr_user)
 
@@ -162,9 +162,9 @@ class PostView(BoxLayout):
     custom boxlayout to display a public post
     """
 
-    def __init__(self, root, post, **kwargs):
+    def __init__(self, screen_instance, post, **kwargs):
         super().__init__(**kwargs)
-        self.root = root
+        self.screen_instance = screen_instance
         self.post = post
         # self.post_new_content = 'edit -- sth go wrong'
 
@@ -173,7 +173,7 @@ class PostView(BoxLayout):
                            get_readable_time(self.post.get_time()))
         )
 
-        if self.root.app.authorized_user.get_username() == \
+        if self.screen_instance.app.authorized_user.get_username() == \
                 self.post.get_owner_name():
             self.ids.row.add_widget(PostOptionButton(self, 'edit'))
             self.ids.row.add_widget(PostOptionButton(self, 'delete'))
@@ -194,19 +194,21 @@ class PostView(BoxLayout):
 
         try:
             self.post.edit_public_post(
-                self.root.app.authorized_user,
+                self.screen_instance.app.authorized_user,
                 post_new_content
             )
 
             # self.post_new_content = post_new_content
-            self.root.refresh_newsfeed()
+            self.screen_instance.refresh_newsfeed()
 
         except DataError as error:
             ErrorPopup(error.message).open()
 
     def post_delete(self):
         try:
-            self.post.delete_public_post(self.root.app.authorized_user)
-            self.root.ids.newsfeed_scrollview.remove_widget(self)
+            self.post.delete_public_post(
+                self.screen_instance.app.authorized_user
+            )
+            self.screen_instance.ids.newsfeed_scrollview.remove_widget(self)
         except DataError as error:
             ErrorPopup(error.message).open()

@@ -23,6 +23,7 @@ class MessageRoute(Screen):
 
     def on_leave(self, *args):
         self.ids.message_scrollview.clear_widgets()
+        self.ids.message_content_input.text = ''
 
     def display_messages(self):
         try:

@@ -100,5 +100,5 @@
                     text: "%s\n[size=14sp]PriChat[/size]" % icon('comments')
                     color: app.theme_palette['secondary_color']
                     on_release:
-                        app.root.current = 'prichat_route'
-
+                        root.ids.prichat_scrollview.clear_widgets()
+                        root.display_conversations()
