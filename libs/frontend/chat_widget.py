@@ -5,7 +5,9 @@ from kivy.uix.label import Label
 from kivy.metrics import dp
 from kivy.graphics import Color, RoundedRectangle
 
+from libs.backend.custom_exception import DataError
 from libs.backend.local_data_handle import get_readable_time
+from libs.frontend.custom_popup import ErrorPopup
 
 
 class ChatView(BoxLayout):

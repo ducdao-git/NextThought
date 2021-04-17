@@ -18,17 +18,17 @@ class PriChatRoute(Screen):
         self.app = app
 
     def on_pre_enter(self, *args):
-        try:
-            self.display_conversations()
-        except DataError as error:
-            ErrorPopup(error.message).open()
+        self.display_conversations()
 
     def on_leave(self, *args):
         self.ids.prichat_scrollview.clear_widgets()
 
     def display_conversations(self):
-        conversations = self.app.authorized_user.get_conversations()
+        try:
+            conversations = self.app.authorized_user.get_conversations()
 
-        for chat_partner in conversations:
-            self.ids.prichat_scrollview.add_widget(
-                ChatView(self, chat_partner))
+            for chat_partner in conversations:
+                self.ids.prichat_scrollview.add_widget(
+                    ChatView(self, chat_partner))
+        except DataError as error:
+            ErrorPopup(error.message).open()

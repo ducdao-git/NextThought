@@ -19,23 +19,24 @@ class MessageRoute(Screen):
         self.ids.message_partner_name.text = \
             self.message_partner.get_username()
 
-        try:
-            self.display_messages()
-        except DataError as error:
-            ErrorPopup(error.message).open()
+        self.display_messages()
 
     def on_leave(self, *args):
         self.ids.message_scrollview.clear_widgets()
 
     def display_messages(self):
-        messages = self.authorized_user.get_messages(
-            self.message_partner.get_uid()
-        )
+        try:
+            messages = self.authorized_user.get_messages(
+                self.message_partner.get_uid()
+            )
 
-        for message in messages[::-1]:
-            if message.get_senderid() == self.authorized_user.get_uid():
-                self.ids.message_scrollview.add_widget(
-                    UserMessageView(message.get_content()))
-            else:
-                self.ids.message_scrollview.add_widget(
-                    PartnerMessageView(message.get_content()))
+            for message in messages[::-1]:
+                if message.get_senderid() == self.authorized_user.get_uid():
+                    self.ids.message_scrollview.add_widget(
+                        UserMessageView(message.get_content()))
+                else:
+                    self.ids.message_scrollview.add_widget(
+                        PartnerMessageView(message.get_content()))
+
+        except DataError as error:
+            ErrorPopup(error.message).open()
