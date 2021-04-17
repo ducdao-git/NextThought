@@ -1,4 +1,5 @@
 from kivy.uix.screenmanager import Screen, CardTransition
+from time import sleep
 
 from libs.backend.user import ChatPartner
 from libs.backend.custom_exception import DataError
@@ -17,6 +18,7 @@ class PriChatRoute(Screen):
         """
         super().__init__(**kwargs)
         self.app = app
+        self.conversations = None
 
     def on_pre_enter(self, *args):
         self.display_conversations()
@@ -26,14 +28,27 @@ class PriChatRoute(Screen):
 
     def display_conversations(self):
         try:
-            conversations = self.app.authorized_user.get_conversations()
-
-            for chat_partner in conversations:
-                self.ids.prichat_scrollview.add_widget(
-                    ChatView(self, chat_partner))
-
+            self.conversations = self.app.authorized_user.get_conversations()
         except DataError as error:
-            ErrorPopup(error.message).open()
+            ErrorPopup('conver ' + error.message).open()
+            return
+
+        partner_index = 0
+        conversations_num = len(self.conversations)
+
+        while partner_index < conversations_num:
+            try:
+                self.ids.prichat_scrollview.add_widget(
+                    ChatView(self, self.conversations[partner_index])
+                )
+                partner_index += 1
+
+            except DataError as error:
+                if error.message == \
+                        'Too many requests. Please try again later.':
+                    sleep(0.05)
+                else:
+                    ErrorPopup('conver ' + error.message).open()
 
     def find_partner(self):
         OneInputFieldPopup(screen_instance=self,

@@ -1,5 +1,6 @@
+from time import sleep
+
 from kivy.uix.screenmanager import Screen
-from kivy.uix.label import Label
 
 from libs.backend.local_data_handle import get_readable_time
 from libs.backend.custom_exception import DataError
@@ -13,8 +14,8 @@ class MessageRoute(Screen):
         self.app = app
         self.authorized_user = None
         self.message_partner = None
-        self.scrollview_height = 0
-        self.message_scrollview_height = 0
+        # self.scrollview_height = 0
+        # self.message_scrollview_height = 0
 
         # self.ids.scrollview_widget.bind(
         #     height=self.get_scrollview_height)
@@ -90,7 +91,12 @@ class MessageRoute(Screen):
             #     )
 
         except DataError as error:
-            ErrorPopup(error.message).open()
+            if error.message == \
+                    'Too many requests. Please try again later.':
+                sleep(0.05)
+                self.display_messages()
+            else:
+                ErrorPopup(error.message).open()
 
     # def get_message_scrollview_height(self, _, height):
     #     print(height)
