@@ -30,6 +30,5 @@ class PriChatRoute(Screen):
         conversations = self.app.authorized_user.get_conversations()
 
         for chat_partner in conversations:
-            print(chat_partner)
             self.ids.prichat_scrollview.add_widget(
                 ChatView(self, chat_partner))

@@ -10,7 +10,11 @@
     "text_secondary_color": "#363331",
     "text_background_color": "#2e2e2e",
     "support_text_color": "#a1a1a1",
-    "comment_background_color": "#eeeeee"
+    "comment_background_color": "#eeeeee",
+    "user_message_background_color": "#8819ff",
+    "partner_message_background_color": "#eeeeee",
+    "user_message_color": "#e0e0e0",
+    "partner_message_color": "#2e2e2e"
   },
   "dark": {
     "primary_color": "#282828",

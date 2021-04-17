@@ -1,0 +1,106 @@
+<MessageRoute>:
+    name: 'message_route'
+
+    BoxLayout:
+        orientation: 'vertical'
+        size: root.size
+
+        Label:
+            size_hint: 1, None
+            height: dp(24)
+            canvas.before:
+                Color:
+                    rgba: app.theme_palette['primary_variant_color']
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+
+        BoxLayout:  # action bar
+            size_hint: 1, None
+            height: dp(56)
+            canvas.before:
+                Color:
+                    rgba: app.theme_palette['primary_color']
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+
+            IconButton:
+                text: "%s" % icon('chevron-right')
+                color: app.theme_palette['text_primary_color']
+                on_release:
+                    app.root.transition = CardTransition(mode='pop', direction='right')
+                    app.root.current = app.root.return_route
+
+            Label:
+                id: message_partner_name
+                size_hint: 6, 1
+                text_size: self.size
+                shorten: True
+                shorten_from: 'right'
+                padding: dp(8), dp(0)
+                halign: 'left'
+                valign: 'center'
+                font_size: sp(18)
+
+            IconButton:
+                text: "%s" % icon('cog')
+                color: app.theme_palette['text_primary_color']
+                on_release:
+
+        FloatLayout:  # layout for tasks view and add button
+            ScrollView:
+                do_scroll: False, True
+                canvas.before:
+                    Color:
+                        rgba: app.theme_palette['background_color']
+                    Rectangle:
+                        size: self.size
+                        pos: self.pos
+
+                BoxLayout: # must specify height to scrollable
+                    id: message_scrollview
+                    orientation: 'vertical'
+                    size_hint_y: None
+                    padding: [0, 0, 0, dp(56)]  # account for part that are hide behind the bottom nav bar
+                    height: self.minimum_height  # minimum_height is min height to contain all children
+
+            BoxLayout:
+                size_hint: 1, None
+                height: self.minimum_height + dp(1)
+                orientation: 'horizontal'
+                padding: dp(4), dp(8)
+
+                canvas:
+                    Color:
+                        rgba: app.theme_palette['comment_background_color']
+                    Rectangle:
+                        pos: self.pos[0], self.pos[1] + self.size[1] - dp(1)
+                        size: self.size[0], dp(1.5)
+
+                canvas.before:
+                    Color:
+                        rgba: app.theme_palette['background_color']
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
+
+                IconButton:
+                    color: app.theme_palette['primary_color']
+                    text: '%s' % icon('chevron-right', int(sp(14)))
+                    on_release:
+                        root.ids.message_content_input.focus = True
+                        root.ids.message_content_input.select_all()
+
+                InputLayout:
+                    size_hint: 8, None
+
+                    ResizableTextInput:
+                        id: message_content_input
+                        focus: True
+                        hint_text: "Type a message..."
+
+                IconButton:
+                    color: app.theme_palette['primary_color']
+                    text: '%s' % icon('paper-plane', int(sp(14)))
+#                    on_release: root.create_comment()

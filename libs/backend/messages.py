@@ -36,5 +36,5 @@ class Message:
         return self.time
 
     def __repr__(self):
-        return f'Message class -- sender: {self.sender}, ' \
-               f'recipient: {self.recipient}, content: {self.content}'
+        return f'Message class -- sender: {self.senderid}, ' \
+               f'recipient: {self.recipientid}, content: {self.content}'

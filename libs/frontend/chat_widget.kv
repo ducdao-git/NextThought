@@ -12,7 +12,7 @@
 
     Label:
         size_hint: 1, None
-        height: dp(56)
+        height: dp(64)
         markup: True
         color: app.theme_palette['primary_color']
         text: '%s' % icon('user-circle', int(sp(35)))
@@ -49,7 +49,7 @@
                 height: self.texture_size[1]
                 text_size: self.width, None
                 halign: 'right'
-                color: app.theme_palette['text_background_color']
+                color: app.theme_palette['support_text_color']
 
         Label:
             id: last_message_preview
@@ -58,3 +58,29 @@
             shorten: True
             shorten_from: 'right'
             color: app.theme_palette['text_background_color']
+
+
+<MessageContentLabel>
+    size_hint: None, None
+    size: self.texture_size
+    halign: 'left'
+    markup: True
+    padding: dp(8), dp(8)
+
+    background_color: app.theme_palette['user_message_background_color']
+    color: app.theme_palette['user_message_color']
+
+    partner_bg_color: app.theme_palette['partner_message_background_color']
+    partner_text_color: app.theme_palette['partner_message_color']
+
+
+<UserMessageView>
+    orientation: 'vertical'
+    size_hint: 1, None
+    height: self.minimum_height
+    padding: dp(8), dp(8)
+
+<PartnerMessageView>
+    size_hint: 1, None
+    height: self.minimum_height
+    padding: dp(8), dp(8)

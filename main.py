@@ -6,11 +6,12 @@ from kivy.lang.builder import Builder
 from kivy.uix.screenmanager import ScreenManager
 
 from libs.backend.local_data_handle import get_theme_palette
-from libs.backend.user import AuthorizedUser
+from libs.backend.user import create_user, AuthorizedUser
 
 from screens.newsfeed import NewsfeedRoute
 from screens.comments import CommentsRoute
 from screens.prichat import PriChatRoute
+from screens.message import MessageRoute
 
 # -- delete when done test -- #
 from libs.backend.public_post import create_public_post, get_public_posts
@@ -32,12 +33,15 @@ Builder.load_file('libs/frontend/chat_widget.kv')
 Builder.load_file('screens/newsfeed.kv')
 Builder.load_file('screens/comments.kv')
 Builder.load_file('screens/prichat.kv')
+Builder.load_file('screens/message.kv')
 
 
 class NextMess(App):
     authorized_user = AuthorizedUser('dtuser2', 'ejzifjyt')
+    # authorized_user = AuthorizedUser('dtuser4', 'dkhdiznn')
     theme_palette = get_theme_palette('next_mess')
     process_post = None
+    process_message_partner = None
     route_manager = ScreenManager()
 
     def build(self):
@@ -49,14 +53,16 @@ class NextMess(App):
         self.route_manager.add_widget(NewsfeedRoute(app=self))
         self.route_manager.add_widget(CommentsRoute(app=self))
         self.route_manager.add_widget(PriChatRoute(app=self))
+        self.route_manager.add_widget(MessageRoute(app=self))
 
         self.route_manager.return_route = ''
         return self.route_manager
 
 
 if __name__ == '__main__':
-    user2 = AuthorizedUser('dtuser2', 'ejzifjyt')
+    # user2 = AuthorizedUser('dtuser2', 'ejzifjyt')
     # user3 = AuthorizedUser('dtuser3', 'sphyuddr')
+    # user4 = AuthorizedUser('dtuser4', 'dkhdiznn')
 
     # create_public_post(user2, 'a'*1000)
     # for i in range(3):
@@ -70,7 +76,7 @@ if __name__ == '__main__':
 
     # create_public_post(user2, 'a'*1000)
 
-    # user2.create_message(6, 'msg 2 from user2 to user3' * 10)
+    # user4.create_message(5, 'hello, this is a msg from user4 to user2')
     # user3.create_message(user2.get_uid(), 'msg 2 from user3 to user2')
     #
     # pprint(user2.get_conversations())
