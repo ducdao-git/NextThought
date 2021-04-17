@@ -4,7 +4,7 @@ from kivy.uix.screenmanager import CardTransition
 from libs.backend.local_data_handle import get_readable_time
 from libs.backend.custom_exception import DataError
 from libs.frontend.custom_kv_widget import IconButton
-from libs.frontend.custom_popup import PostContentPopup, ErrorPopup
+from libs.frontend.custom_popup import OneInputFieldPopup, ErrorPopup
 
 
 class CommentOptionButton(IconButton):
@@ -24,7 +24,7 @@ class CommentOptionButton(IconButton):
 
     def on_release(self):
         if self.option_action in ['edit_comment', 'edit_top_comment']:
-            return PostContentPopup(
+            return OneInputFieldPopup(
                 postview_instance=self.commentview_instance,
                 action_name=self.option_action
             ).open()

@@ -24,7 +24,7 @@ class FilterPopup(ModalView):
         self.root.filter_post(filter_username, filter_tag)
 
 
-class PostContentPopup(ModalView):
+class OneInputFieldPopup(ModalView):
     def __init__(self, root=None, postview_instance=None,
                  action_name='create_post', **kwargs):
         super().__init__(**kwargs)

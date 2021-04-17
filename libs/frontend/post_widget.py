@@ -8,7 +8,7 @@ from kivy.metrics import dp
 from libs.backend.local_data_handle import get_readable_time
 from libs.backend.custom_exception import DataError
 from libs.frontend.custom_kv_widget import IconButton
-from libs.frontend.custom_popup import PostContentPopup, ErrorPopup
+from libs.frontend.custom_popup import OneInputFieldPopup, ErrorPopup
 
 
 class PostInfoButton(Button):
@@ -186,8 +186,8 @@ class PostView(BoxLayout):
         self.bind(minimum_height=self.setter('height'))
 
     def get_post_new_content(self):
-        PostContentPopup(postview_instance=self,
-                         action_name='edit_post').open()
+        OneInputFieldPopup(postview_instance=self,
+                           action_name='edit_post').open()
 
     def post_edit(self, post_new_content):
         if post_new_content == '':

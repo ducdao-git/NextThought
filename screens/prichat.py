@@ -32,3 +32,4 @@ class PriChatRoute(Screen):
                     ChatView(self, chat_partner))
         except DataError as error:
             ErrorPopup(error.message).open()
+

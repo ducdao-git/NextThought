@@ -76,6 +76,13 @@
                         pos: self.pos[0], self.pos[1] + self.size[1] - dp(1)
                         size: self.size[0], dp(1.5)
 
+                canvas.before:
+                    Color:
+                        rgba: app.theme_palette['background_color']
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
+
                 IconButton:
                     color: app.theme_palette['primary_color']
                     text: '%s' % icon('chevron-right', int(sp(14)))

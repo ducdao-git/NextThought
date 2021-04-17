@@ -50,6 +50,7 @@
 
         FloatLayout:  # layout for tasks view and add button
             ScrollView:
+                id: scrollview_widget
                 do_scroll: False, True
                 canvas.before:
                     Color:
@@ -103,4 +104,4 @@
                 IconButton:
                     color: app.theme_palette['primary_color']
                     text: '%s' % icon('paper-plane', int(sp(14)))
-#                    on_release: root.create_comment()
+                    on_release: root.create_message()
