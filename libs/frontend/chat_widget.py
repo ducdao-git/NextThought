@@ -82,13 +82,16 @@ class MessageContentLabel(Label):
 
 
 class UserMessageView(BoxLayout):
-    def __init__(self, message_content, **kwargs):
+    def __init__(self, message_content, message_time, **kwargs):
         super().__init__(**kwargs)
         self.add_widget(
-            MessageContentLabel(message_content, pos_hint={'right': 1}))
+            MessageContentLabel(message_content, pos_hint={'right': 1})
+        )
+        # self.ids.message_send_time.text = message_time
 
 
 class PartnerMessageView(BoxLayout):
-    def __init__(self, message_content, **kwargs):
+    def __init__(self, message_content, message_time, **kwargs):
         super().__init__(**kwargs)
         self.add_widget(MessageContentLabel(message_content, partner=True))
+        # self.ids.message_send_time.text = message_time

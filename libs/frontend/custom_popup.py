@@ -33,32 +33,41 @@ class OneInputFieldPopup(ModalView):
         self.action_name = action_name
 
         if action_name == 'edit_post':
-            self.ids.post_content_popup_title.text = 'Edit post'
-            self.ids.post_content_input.text = \
+            self.ids.popup_title.text = 'Edit post'
+            self.ids.input_field.text = \
                 self.view_instance.post.get_content()
 
         elif action_name == 'create_post':
-            self.ids.post_content_input.text = ''
+            self.ids.input_field.text = ''
 
         elif action_name in ['edit_comment', 'edit_top_comment']:
-            self.ids.post_content_popup_title.text = 'Edit post'
-            self.ids.post_content_input.text = \
+            self.ids.popup_title.text = 'Edit post'
+            self.ids.input_field.text = \
                 self.view_instance.comment.get_content()
+
+        elif action_name == 'find_partner':
+            self.ids.popup_title.text = 'Stat conversation with'
+            self.ids.input_icon.text = self.user_icon
+            self.ids.input_field.hint_text = 'Type a username...'
 
     def on_dismiss(self):
         if self.action_name == 'edit_post':
-            self.view_instance.post_edit(self.ids.post_content_input.text)
+            self.view_instance.post_edit(self.ids.input_field.text)
 
         elif self.action_name == 'create_post':
-            self.screen_instance.create_post(self.ids.post_content_input.text)
+            self.screen_instance.create_post(self.ids.input_field.text)
 
         elif self.action_name == 'edit_top_comment':
             self.view_instance.top_comment_edit(
-                self.ids.post_content_input.text)
+                self.ids.input_field.text)
 
         elif self.action_name == 'edit_comment':
             self.view_instance.comment_edit(
-                self.ids.post_content_input.text)
+                self.ids.input_field.text)
+
+        elif self.action_name == 'find_partner':
+            self.screen_instance.get_partner(
+                self.ids.input_field.text)
 
 
 class ErrorPopup(ModalView):

@@ -79,7 +79,7 @@
     background_normal: ''
     background_color: (0, 0, 0, 0)
     auto_dismiss: False
-#    text_color: app.theme_palette['text_primary_color']
+    user_icon: '%s' % icon('user', int(sp(16)))
 
     BoxLayout:
         orientation: 'vertical'
@@ -96,7 +96,7 @@
                 size: self.size
 
         Label:
-            id: post_content_popup_title
+            id: popup_title
             size_hint: 1, None
             height: self.texture_size[1] * 2.5
             text_size: root.width, None
@@ -113,10 +113,11 @@
 
             InputLayout:
                 IconButton:
+                    id: input_icon
                     text: '%s' % icon('align-left', int(sp(16)))
 
                 ResizableTextInput:
-                    id: post_content_input
+                    id: input_field
                     focus: True
                     hint_text: "What's on your mind?"
 

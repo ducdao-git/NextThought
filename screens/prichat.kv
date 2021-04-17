@@ -68,7 +68,7 @@
                     background_color: [0, 0, 0, 0]
                     text: "%s" % icon('plus')
                     color: app.theme_palette['text_secondary_color']
-                    on_release:
+                    on_release: root.find_partner()
 
                     canvas.before:
                         Color:

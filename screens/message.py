@@ -1,7 +1,8 @@
 from kivy.uix.screenmanager import Screen
 
-from libs.frontend.chat_widget import UserMessageView, PartnerMessageView
+from libs.backend.local_data_handle import get_readable_time
 from libs.backend.custom_exception import DataError
+from libs.frontend.chat_widget import UserMessageView, PartnerMessageView
 from libs.frontend.custom_popup import ErrorPopup
 
 
@@ -31,21 +32,36 @@ class MessageRoute(Screen):
                 self.message_partner.get_uid()
             )
 
+            if len(messages) == 0:
+                return
+
             # for loop left out the newest message so we can manually add it
             # and reference for scrollview to scroll to that widget
             for message in messages[:0:-1]:
                 if message.get_senderid() == self.authorized_user.get_uid():
                     self.ids.message_scrollview.add_widget(
-                        UserMessageView(message.get_content()))
+                        UserMessageView(
+                            message.get_content(),
+                            get_readable_time(message.get_time())
+                        ))
                 else:
                     self.ids.message_scrollview.add_widget(
-                        PartnerMessageView(message.get_content()))
+                        PartnerMessageView(
+                            message.get_content(),
+                            get_readable_time(message.get_time())
+                        ))
 
             # create reference for message view obj
             if messages[0].get_senderid() == self.authorized_user.get_uid():
-                newest_msg_view = UserMessageView(messages[0].get_content())
+                newest_msg_view = UserMessageView(
+                    messages[0].get_content(),
+                    get_readable_time(messages[0].get_time())
+                )
             else:
-                newest_msg_view = PartnerMessageView(messages[0].get_content())
+                newest_msg_view = PartnerMessageView(
+                    messages[0].get_content(),
+                    get_readable_time(messages[0].get_time())
+                )
 
             # tell scrollview_widget to scroll to and make sure that message
             # view obj show within the view port.
