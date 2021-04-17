@@ -46,6 +46,7 @@ class OneInputFieldPopup(ModalView):
                 self.view_instance.comment.get_content()
 
         elif action_name == 'find_partner':
+            self.size_hint = (0.7, 1)
             self.ids.popup_title.text = 'Stat conversation with'
             self.ids.input_icon.text = self.user_icon
             self.ids.input_field.hint_text = 'Type a username...'

@@ -1,4 +1,5 @@
 from kivy.uix.screenmanager import Screen
+from kivy.uix.label import Label
 
 from libs.backend.local_data_handle import get_readable_time
 from libs.backend.custom_exception import DataError
@@ -12,6 +13,11 @@ class MessageRoute(Screen):
         self.app = app
         self.authorized_user = None
         self.message_partner = None
+        self.scrollview_height = 0
+        self.message_scrollview_height = 0
+
+        # self.ids.scrollview_widget.bind(
+        #     height=self.get_scrollview_height)
 
     def on_pre_enter(self, *args):
         self.authorized_user = self.app.authorized_user
@@ -42,25 +48,25 @@ class MessageRoute(Screen):
                     self.ids.message_scrollview.add_widget(
                         UserMessageView(
                             message.get_content(),
-                            get_readable_time(message.get_time())
+                            get_readable_time(message.get_time(), True)
                         ))
                 else:
                     self.ids.message_scrollview.add_widget(
                         PartnerMessageView(
                             message.get_content(),
-                            get_readable_time(message.get_time())
+                            get_readable_time(message.get_time(), True)
                         ))
 
             # create reference for message view obj
             if messages[0].get_senderid() == self.authorized_user.get_uid():
                 newest_msg_view = UserMessageView(
                     messages[0].get_content(),
-                    get_readable_time(messages[0].get_time())
+                    get_readable_time(messages[0].get_time(), True)
                 )
             else:
                 newest_msg_view = PartnerMessageView(
                     messages[0].get_content(),
-                    get_readable_time(messages[0].get_time())
+                    get_readable_time(messages[0].get_time(), True)
                 )
 
             # tell scrollview_widget to scroll to and make sure that message
@@ -72,8 +78,26 @@ class MessageRoute(Screen):
                 newest_msg_view, padding=self.height, animate=True
             )
 
+            # self.ids.message_scrollview.bind(
+            #     minimum_height=self.get_message_scrollview_height)
+            #
+            # height_diff = self.scrollview_height - self.message_scrollview_height
+            # if height_diff > 0:
+            #     # print(height_diff)
+            #     self.ids.message_scrollview.add_widget(
+            #         Label(size_hint=(1, None), height=height_diff),
+            #         index=len(messages)
+            #     )
+
         except DataError as error:
             ErrorPopup(error.message).open()
+
+    # def get_message_scrollview_height(self, _, height):
+    #     print(height)
+    #     self.message_scrollview_height = height
+    #
+    # def get_scrollview_height(self, _, scrollview_height):
+    #     self.scrollview_height = scrollview_height
 
     def create_message(self):
         if self.ids.message_content_input.text in ['', None]:

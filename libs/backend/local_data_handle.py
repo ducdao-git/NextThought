@@ -51,7 +51,7 @@ def get_theme_palette(theme_name):
         raise DataError(error)
 
 
-def get_readable_time(time):
+def get_readable_time(time, message_time=False):
     try:
         from_zone = tz.tzutc()
         to_zone = tz.tzlocal()
@@ -64,14 +64,18 @@ def get_readable_time(time):
         curr_time = datetime.now().astimezone(to_zone)
         time_diff = curr_time - post_local_time
 
-        if (time_diff / timedelta(days=365)) > 1:
+        if message_time:
+            if (time_diff / timedelta(days=365)) > 1:
+                return post_local_time.strftime('%b %d, %Y AT %H:%M')
+            else:
+                return post_local_time.strftime('%b %d AT %H:%M')
+
+        elif (time_diff / timedelta(days=365)) > 1:
             return post_local_time.strftime('%x')
         elif (time_diff / timedelta(days=1)) > 1:
             return post_local_time.strftime('%b %d')
         elif (time_diff / timedelta(hours=1)) > 1:
             return str(time_diff.seconds // 3600) + 'h'
-            # return post_local_time.strftime('%b %d')
-            # return post_local_time.strftime('%x')
         elif (time_diff / timedelta(minutes=1)) > 1:
             return str(time_diff.seconds // 60) + 'm'
         else:

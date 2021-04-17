@@ -1,6 +1,7 @@
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.screenmanager import CardTransition
-from kivy.uix.label import Label
+# from kivy.uix.label import Label
+from kivy.uix.button import Button
 
 from kivy.metrics import dp
 from kivy.graphics import Color, RoundedRectangle
@@ -43,7 +44,7 @@ class ChatView(BoxLayout):
             self.app.route_manager.return_route = 'prichat_route'
 
 
-class MessageContentLabel(Label):
+class MessageContentLabel(Button):
     def __init__(self, message_content, partner=False, **kwargs):
         super().__init__(**kwargs)
         self.text = message_content
@@ -57,6 +58,7 @@ class MessageContentLabel(Label):
             self.rect = RoundedRectangle()
 
         self.bind(pos=self.update_rect, size=self.update_rect)
+        self.background_color = (0, 0, 0, 0)
 
         # must use bind to get correct/updated value of attribute
         self.bind(texture_size=self.update_text_size)
@@ -80,18 +82,27 @@ class MessageContentLabel(Label):
         self.rect.pos = self.pos
         self.rect.size = self.size
 
+    def on_release(self):
+        if self.parent.ids.message_send_time.text == '':
+            self.parent.ids.message_send_time.text = \
+                f'--  {self.parent.message_time}  --'
+        else:
+            self.parent.ids.message_send_time.text = ''
+
 
 class UserMessageView(BoxLayout):
     def __init__(self, message_content, message_time, **kwargs):
         super().__init__(**kwargs)
+        self.message_time = message_time
+
         self.add_widget(
             MessageContentLabel(message_content, pos_hint={'right': 1})
         )
-        # self.ids.message_send_time.text = message_time
 
 
 class PartnerMessageView(BoxLayout):
     def __init__(self, message_content, message_time, **kwargs):
         super().__init__(**kwargs)
+        self.message_time = message_time
+
         self.add_widget(MessageContentLabel(message_content, partner=True))
-        # self.ids.message_send_time.text = message_time

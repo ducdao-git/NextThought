@@ -67,6 +67,8 @@
     markup: True
     padding: dp(8), dp(8)
 
+    background_normal: ''
+    background_down: ''
     background_color: app.theme_palette['user_message_background_color']
     color: app.theme_palette['user_message_color']
 
@@ -84,9 +86,8 @@
         id: message_send_time
         size_hint: 1, None
         height: self.texture_size[1]
-        text_size: self.width, None
-        halign: 'right'
         padding: dp(4), dp(4)
+        font_size: sp(14)
         color: app.theme_palette['support_text_color']
 
 <PartnerMessageView>
@@ -99,7 +100,6 @@
         id: message_send_time
         size_hint: 1, None
         height: self.texture_size[1]
-        text_size: self.width, None
-        halign: 'left'
-        padding: dp(2), dp(2)
+        padding: dp(4), dp(4)
+        font_size: sp(14)
         color: app.theme_palette['support_text_color']
