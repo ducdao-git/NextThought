@@ -2,15 +2,15 @@ from kivy.uix.modalview import ModalView
 
 
 class FilterPopup(ModalView):
-    def __init__(self, root, **kwargs):
+    def __init__(self, screen_instance, **kwargs):
         super().__init__(**kwargs)
-        self.root = root
+        self.screen_instance = screen_instance
 
-        if self.root.filter_username not in ['', None]:
-            self.ids.filter_username.text = self.root.filter_username
+        if self.screen_instance.filter_username not in ['', None]:
+            self.ids.filter_username.text = self.screen_instance.filter_username
 
-        if self.root.filter_tag not in ['', None]:
-            self.ids.filter_tag.text = self.root.filter_tag
+        if self.screen_instance.filter_tag not in ['', None]:
+            self.ids.filter_tag.text = self.screen_instance.filter_tag
 
     def on_dismiss(self):
         filter_username, filter_tag = None, None
@@ -21,21 +21,21 @@ class FilterPopup(ModalView):
         if self.ids.filter_tag.text != '':
             filter_tag = self.ids.filter_tag.text
 
-        self.root.filter_post(filter_username, filter_tag)
+        self.screen_instance.filter_post(filter_username, filter_tag)
 
 
 class OneInputFieldPopup(ModalView):
-    def __init__(self, root=None, postview_instance=None,
+    def __init__(self, screen_instance=None, view_instance=None,
                  action_name='create_post', **kwargs):
         super().__init__(**kwargs)
-        self.postview_instance = postview_instance
-        self.root = root
+        self.view_instance = view_instance
+        self.screen_instance = screen_instance
         self.action_name = action_name
 
         if action_name == 'edit_post':
             self.ids.post_content_popup_title.text = 'Edit post'
             self.ids.post_content_input.text = \
-                self.postview_instance.post.get_content()
+                self.view_instance.post.get_content()
 
         elif action_name == 'create_post':
             self.ids.post_content_input.text = ''
@@ -43,21 +43,21 @@ class OneInputFieldPopup(ModalView):
         elif action_name in ['edit_comment', 'edit_top_comment']:
             self.ids.post_content_popup_title.text = 'Edit post'
             self.ids.post_content_input.text = \
-                self.postview_instance.comment.get_content()
+                self.view_instance.comment.get_content()
 
     def on_dismiss(self):
         if self.action_name == 'edit_post':
-            self.postview_instance.post_edit(self.ids.post_content_input.text)
+            self.view_instance.post_edit(self.ids.post_content_input.text)
 
         elif self.action_name == 'create_post':
-            self.root.create_post(self.ids.post_content_input.text)
+            self.screen_instance.create_post(self.ids.post_content_input.text)
 
         elif self.action_name == 'edit_top_comment':
-            self.postview_instance.top_comment_edit(
+            self.view_instance.top_comment_edit(
                 self.ids.post_content_input.text)
 
         elif self.action_name == 'edit_comment':
-            self.postview_instance.comment_edit(
+            self.view_instance.comment_edit(
                 self.ids.post_content_input.text)
 
 

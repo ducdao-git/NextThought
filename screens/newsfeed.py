@@ -53,7 +53,7 @@ class NewsfeedRoute(Screen):
             ErrorPopup(error.message).open()
 
     def open_create_post_popup(self):
-        OneInputFieldPopup(root=self).open()
+        OneInputFieldPopup(screen_instance=self).open()
 
     def create_post(self, new_post_content):
         if new_post_content in ['', None]:

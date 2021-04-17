@@ -144,7 +144,7 @@ class PostActionBar(BoxLayout):
 
     def upvote_post(self):
         curr_post = self.postview_instance.post
-        curr_user = self.postview_instance.root.app.authorized_user
+        curr_user = self.postview_instance.screen_instance.app.authorized_user
         try:
             curr_post.upvote_post(curr_user)
 
@@ -186,8 +186,7 @@ class PostView(BoxLayout):
         self.bind(minimum_height=self.setter('height'))
 
     def get_post_new_content(self):
-        OneInputFieldPopup(postview_instance=self,
-                           action_name='edit_post').open()
+        OneInputFieldPopup(view_instance=self, action_name='edit_post').open()
 
     def post_edit(self, post_new_content):
         if post_new_content == '':

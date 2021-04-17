@@ -24,10 +24,8 @@ class CommentOptionButton(IconButton):
 
     def on_release(self):
         if self.option_action in ['edit_comment', 'edit_top_comment']:
-            return OneInputFieldPopup(
-                postview_instance=self.commentview_instance,
-                action_name=self.option_action
-            ).open()
+            return OneInputFieldPopup(view_instance=self.commentview_instance,
+                                      action_name=self.option_action).open()
 
         elif self.option_action == 'delete_top_comment':
             return self.commentview_instance.top_comment_delete()
