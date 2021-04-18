@@ -45,7 +45,7 @@ class PriChatRoute(Screen):
 
             except DataError as error:
                 if error.custom_code == 429:
-                    sleep(0.15)
+                    sleep(0.1)
                 else:
                     ErrorPopup(error.message).open()
 

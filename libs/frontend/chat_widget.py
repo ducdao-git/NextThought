@@ -19,20 +19,21 @@ class ChatView(BoxLayout):
         self.authorized_user = self.screen_instance.app.authorized_user
         self.chat_partner = chat_partner
 
-        last_message = self.authorized_user.get_messages(
-            self.chat_partner.get_uid(), limit=1
-        )[0]
+        ##* last_message = self.authorized_user.get_messages(
+        ##*     self.chat_partner.get_uid(), limit=1
+        ##* )[0]
+        ##*
+        ##* if last_message.get_senderid() == self.authorized_user.get_uid():
+        ##*     self.ids.last_message_preview.text = \
+        ##*         'You: ' + last_message.get_content()
+        ##* else:
+        ##*     self.ids.last_message_preview.text = last_message.get_content()
+        ##*
+        ##* self.ids.last_message_time.text = \
+        ##*     get_readable_time(last_message.get_time())
 
         self.ids.chat_partner_name.text = self.chat_partner.get_username()
-
-        if last_message.get_senderid() == self.authorized_user.get_uid():
-            self.ids.last_message_preview.text = \
-                'You: ' + last_message.get_content()
-        else:
-            self.ids.last_message_preview.text = last_message.get_content()
-
-        self.ids.last_message_time.text = \
-            get_readable_time(last_message.get_time())
+        self.ids.chat_info_holder.remove_widget(self.ids.last_message_preview)
 
     def on_touch_up(self, touch):
         if self.collide_point(*touch.pos) and self.collide_point(*touch.opos):

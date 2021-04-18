@@ -13,6 +13,7 @@ class CommentsRoute(Screen):
         """
         super().__init__(**kwargs)
         self.app = app
+        self.user_profile = self.app.user_profile
         self.top_comment = None
         self.comments = None
 
@@ -34,6 +35,7 @@ class CommentsRoute(Screen):
                 TopCommentView(self, self.top_comment))
 
             self.comments = get_public_posts(
+                limit=self.user_profile.get_num_post_show(),
                 parent_id=self.top_comment.get_postid())
 
             for comment in self.comments:

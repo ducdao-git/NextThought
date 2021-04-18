@@ -40,14 +40,11 @@ class NewsfeedRoute(Screen):
         self.ids.newsfeed_scrollview.clear_widgets()
 
     def display_public_posts(self, username=None, tag=None):
-        # print(self.user_profile.get_num_post_show())
         posts = get_public_posts(
             limit=self.user_profile.get_num_post_show(),
             uid=get_uid_from_username(username),
             tag=tag
         )
-
-        # print(posts)
 
         for post in posts:
             self.ids.newsfeed_scrollview.add_widget(PostView(self, post))

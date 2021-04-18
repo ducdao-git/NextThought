@@ -12,6 +12,7 @@ class MessageRoute(Screen):
     def __init__(self, app, **kwargs):
         super().__init__(**kwargs)
         self.app = app
+        self.user_profile = self.app.user_profile
         self.authorized_user = None
         self.message_partner = None
         # self.scrollview_height = 0
@@ -36,7 +37,8 @@ class MessageRoute(Screen):
     def display_messages(self):
         try:
             messages = self.authorized_user.get_messages(
-                self.message_partner.get_uid()
+                self.message_partner.get_uid(),
+                limit=self.user_profile.get_num_message_show(),
             )
 
             if len(messages) == 0:
