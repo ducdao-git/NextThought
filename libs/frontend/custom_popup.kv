@@ -39,18 +39,26 @@
             InputLayout:
                 IconButton:
                     text: '%s' % icon('user', int(sp(16)))
+                    on_release:
+                        root.ids.filter_username.focus = True
+                        root.ids.filter_username.select_all()
 
                 ResizableTextInput:
                     id: filter_username
                     focus: True
+                    multiline: False
                     hint_text: "Enter an username"
 
             InputLayout:
                 IconButton:
                     text: '%s' % icon('hashtag', int(sp(16)))
+                    on_release:
+                        root.ids.filter_tag.focus = True
+                        root.ids.filter_tag.select_all()
 
                 ResizableTextInput:
                     id: filter_tag
+                    multiline: False
                     hint_text: "Enter a tag"
 
         Button:
@@ -117,6 +125,9 @@
                 IconButton:
                     id: input_icon
                     text: '%s' % icon('align-left', int(sp(16)))
+                    on_release:
+                        root.ids.input_field.focus = True
+                        root.ids.input_field.select_all()
 
                 ResizableTextInput:
                     id: input_field

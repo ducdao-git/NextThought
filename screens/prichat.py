@@ -48,7 +48,7 @@ class PriChatRoute(Screen):
                         'Too many requests. Please try again later.':
                     sleep(0.05)
                 else:
-                    ErrorPopup('conver ' + error.message).open()
+                    ErrorPopup(error.message).open()
 
     def find_partner(self):
         OneInputFieldPopup(screen_instance=self,

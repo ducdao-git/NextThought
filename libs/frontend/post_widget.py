@@ -1,7 +1,8 @@
+from time import sleep
+
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
 from kivy.uix.label import Label
-
 from kivy.graphics import Color, Rectangle
 from kivy.metrics import dp
 
@@ -145,6 +146,7 @@ class PostActionBar(BoxLayout):
     def upvote_post(self):
         curr_post = self.view_instance.post
         curr_user = self.view_instance.screen_instance.app.authorized_user
+
         try:
             curr_post.upvote_post(curr_user)
 
@@ -154,7 +156,11 @@ class PostActionBar(BoxLayout):
                 f' [size=12sp]{self.upvotes_num}[/size]'
 
         except DataError as error:
-            ErrorPopup(error.message).open()
+            if error.message == \
+                    'Too many requests. Please try again later.':
+                sleep(0.05)
+            else:
+                ErrorPopup(error.message).open()
 
 
 class PostView(BoxLayout):

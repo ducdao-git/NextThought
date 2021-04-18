@@ -77,4 +77,7 @@ class NewsfeedRoute(Screen):
             self.filter_tag = tag
 
         except DataError as error:
+            if error.message == 'No such user':
+                self.refresh_newsfeed()
+
             ErrorPopup(error.message).open()

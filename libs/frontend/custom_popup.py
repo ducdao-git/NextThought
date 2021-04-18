@@ -9,7 +9,8 @@ class FilterPopup(ModalView):
         self.screen_instance = screen_instance
 
         if self.screen_instance.filter_username not in ['', None]:
-            self.ids.filter_username.text = self.screen_instance.filter_username
+            self.ids.filter_username.text = \
+                self.screen_instance.filter_username
 
         if self.screen_instance.filter_tag not in ['', None]:
             self.ids.filter_tag.text = self.screen_instance.filter_tag
@@ -18,10 +19,10 @@ class FilterPopup(ModalView):
         filter_username, filter_tag = None, None
 
         if self.ids.filter_username.text != '':
-            filter_username = self.ids.filter_username.text
+            filter_username = self.ids.filter_username.text.strip()
 
         if self.ids.filter_tag.text != '':
-            filter_tag = self.ids.filter_tag.text
+            filter_tag = self.ids.filter_tag.text.lstrip('#').strip()
 
         self.screen_instance.filter_post(filter_username, filter_tag)
 

@@ -39,12 +39,12 @@ Builder.load_file('screens/message.kv')
 
 
 class NextMess(App):
-    authorized_user = AuthorizedUser('dtuser2', 'ejzifjyt')
+    # authorized_user = AuthorizedUser('dtuser2', 'ejzifjyt')
     # authorized_user = AuthorizedUser('dtuser4', 'dkhdiznn')
 
     theme_palette = get_theme_palette('next_mess')
 
-    # authorized_user = None
+    authorized_user = None
     process_message_partner = None
     process_post = None
 

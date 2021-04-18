@@ -101,11 +101,15 @@
                     text: " " * 2 + "%s\n[size=14sp]Newsfeed[/size]" % icon('home')
                     color: app.theme_palette['secondary_color']
                     on_release:
+                        root.filter_username = ''
+                        root.filter_tag = ''
                         root.refresh_newsfeed()
 
                 IconButton:
                     text: "%s\n[size=14sp]PriChat[/size]" % icon('comments')
                     color: app.theme_palette['text_primary_color']
                     on_release:
+                        root.filter_username = ''
+                        root.filter_tag = ''
                         app.root.transition = SlideTransition(direction='left', duration=0.3)
                         app.root.current = 'prichat_route'
