@@ -1,0 +1,152 @@
+<LoginActionButton@Button>
+    size_hint: 1, None
+    height: self.texture_size[1]
+    padding: dp(8), dp(8)
+    background_normal: ''
+    background_down: ''
+    background_color: (0, 0, 0, 0)
+    bg_color: (0, 0.5, 0, 1)
+
+    opacity: 0.95
+    canvas.before:
+        Color:
+            rgba: self.bg_color
+        RoundedRectangle:
+            radius: [(0.0, 0.0), (0.0, 0.0), (15.0, 15.0), (15.0, 15.0)]
+            pos: self.pos
+            size: self.size
+
+<SignInInput>
+    orientation: 'vertical'
+    size_hint: 1, None
+    height: self.minimum_height
+    spacing: dp(12)
+
+    eye_icon: '%s' % icon('eye', int(sp(14)))
+    no_eye_icon: '%s' % icon('eye-slash', int(sp(14)))
+
+    InputLayout:
+        IconButton:
+            text: '%s' % icon('user', int(sp(16)))
+            on_release:
+                root.ids.username_input.focus = True
+                root.ids.username_input.select_all()
+
+        ResizableTextInput:
+            id: username_input
+            multiline: False
+            focus: True
+            hint_text: "Username"
+
+    InputLayout:
+        IconButton:
+            text: '%s' % icon('key', int(sp(16)))
+            on_release:
+                root.ids.password_input.focus = True
+                root.ids.password_input.select_all()
+
+        ResizableTextInput:
+            id: password_input
+            multiline: False
+            focus: True
+            hint_text: "Password"
+            password: True
+
+        IconButton:
+            text: root.no_eye_icon
+            on_release:
+                root.ids.password_input.password = False if root.ids.password_input.password == True else True
+                self.text = root.eye_icon if root.ids.password_input.password == False else root.no_eye_icon
+
+<SignUpInput>
+    size_hint: 1, None
+    height: dp(78.0)
+    padding: dp(0), dp(22.5)
+
+    InputLayout:
+        IconButton:
+            text: '%s' % icon('user', int(sp(16)))
+            on_release:
+                root.ids.username_input.focus = True
+                root.ids.username_input.select_all()
+
+        ResizableTextInput:
+            id: username_input
+            multiline: False
+            focus: True
+            hint_text: "Username"
+
+
+<LoginRoute>:
+    name: "login_route"
+
+    primary_color: app.theme_palette['primary_color']
+    text_primary_color: app.theme_palette['text_primary_color']
+    support_color: app.theme_palette['comment_background_color']
+    text_support_color: app.theme_palette['text_background_color']
+
+    signin_icon: '%s' % icon('sign-in-alt', int(sp(16)))
+    signup_icon: '%s' % icon('user-plus', int(sp(16)))
+
+    AnchorLayout:
+        canvas.before:
+            Color:
+                rgba: app.theme_palette['primary_color']
+            Triangle:
+                points: [0, self.size[1], self.size[1], 0, self.size[1], self.size[1]]
+
+            Color:
+                rgba: app.theme_palette['primary_variant_color']
+            Triangle:
+                points: [self.size[1], 0, 0, self.size[1], 0, 0]
+
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint: 0.8, None
+            height: self.minimum_height
+            padding: dp(12), dp(0), dp(12), dp(12)
+            spacing: dp(12)
+
+            opacity: 0.95
+            canvas.before:
+                Color:
+                    rgba: app.theme_palette['background_color']
+                RoundedRectangle:
+                    radius: [(15.0, 15.0), (15.0, 15.0), (15.0, 15.0), (15.0, 15.0)]
+                    pos: self.pos
+                    size: self.size
+
+            # signin vs signup btn
+            BoxLayout:
+                orientation: 'horizontal'
+                size_hint: 1, None
+                height: self.minimum_height
+
+                LoginActionButton:
+                    id: signin_button
+                    text: 'Sign In'
+
+                    on_release:
+                        root.login_action = 'sign_in'
+                        root.display_input_form()
+
+                LoginActionButton:
+                    id: signup_button
+                    text: 'Sign Up'
+
+                    on_release:
+                        root.login_action = 'sign_up'
+                        root.display_input_form()
+
+            BoxLayout:
+                id: input_field_holder
+                size_hint: 1, None
+                height: self.minimum_height
+
+            RoundedButton:
+                id: login_button
+                bg_color: app.theme_palette['primary_color']
+                markup: True
+                text: '%s  Sign In' % icon('sign-in-alt', int(sp(16)))
+
+                on_release: root.try_login()

@@ -1,3 +1,5 @@
+#: import NoTransition kivy.uix.screenmanager.NoTransition
+
 <FilterPopup>
     size_hint: 0.8, 1
     background_normal: ''
@@ -197,3 +199,96 @@
                     radius: [(0, 0), (0, 0), (15.0, 15.0), (15.0, 15.0)]
                     pos: self.pos
                     size: self.size
+
+
+<SuccessSignUpPopup>
+    size_hint: 0.85, 1
+    background_normal: ''
+    background_color: (0, 0, 0, 0)
+    auto_dismiss: False
+    good_color: app.theme_palette['good_color']
+
+    BoxLayout:
+        orientation: 'vertical'
+        size_hint: 1, None
+        height: self.minimum_height
+        padding: dp(12)
+        spacing: dp(8)
+
+        opacity: 0.95
+        canvas.before:
+            Color:
+                rgba: app.theme_palette['background_color']
+            RoundedRectangle:
+                radius: [(15.0, 15.0), (15.0, 15.0), (15.0, 15.0), (15.0, 15.0)]
+                pos: self.pos
+                size: self.size
+
+        Label:
+            size_hint: 1, None
+            height: self.texture_size[1]
+            text_size: self.width, None
+            halign: 'left'
+            line_height: 1.2
+            markup: True
+            color: app.theme_palette['text_background_color']
+            text: '[size=18sp]Successfully create new account![/size]\nClick on the password to copy.'
+
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint: 1, None
+            height: self.minimum_height
+            spacing: dp(4)
+
+            Label:
+                size_hint: 1.5, 1
+                text_size: self.size
+                halign: 'right'
+                valign: 'center'
+                text: 'Your Password:'
+                color: app.theme_palette['text_background_color']
+
+            RoundedButton:
+                id: password_display
+                size_hint: 2, None
+                padding: dp(4), dp(4)
+
+                font_size: sp(16)
+                line_height: 1.2
+                color: app.theme_palette['text_background_color']
+
+                on_release: root.copy_password()
+
+        Label:
+            size_hint: 1, None
+            height: self.texture_size[1]
+            text_size: self.width, None
+            halign: 'left'
+            line_height: 1.2
+            color: app.theme_palette['text_background_color']
+            text: 'Please remember your password as we cannot recover your password.'
+
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint: 1, None
+            height: self.minimum_height
+            spacing: dp(8)
+            padding: dp(8)
+
+            RoundedButton:
+                text: '%s  Login' % icon('chevron-left')
+                bg_color: app.theme_palette['secondary_color']
+                color: app.theme_palette['text_secondary_color']
+                on_release:
+                    root.dismiss()
+                    root.screen_instance.app.route_manager.transition = NoTransition()
+                    root.screen_instance.app.route_manager.current = 'login_route'
+
+            RoundedButton:
+                text: '%s  Newsfeed' % icon('home')
+                bg_color: app.theme_palette['primary_color']
+                color: app.theme_palette['text_primary_color']
+                on_release:
+                    root.dismiss()
+                    root.screen_instance.app.route_manager.transition.direction = 'left'
+                    root.screen_instance.app.route_manager.current = 'newsfeed_route'

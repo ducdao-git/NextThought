@@ -11,7 +11,7 @@
     valign: 'center'
     markup: True
     font_size: sp(20)
-    color: app.theme_palette['text_background_color']
+    color: app.theme_palette['support_text_color']
 
 
 <RouteTitleLabel@Label>
@@ -42,7 +42,26 @@
 
     canvas.before:
         Color:
-            rgba: app.theme_palette['comment_background_color']
+            rgba: app.theme_palette['input_background_color']
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+
+
+<RoundedButton@Button>
+    size_hint: 1, None
+    height: self.texture_size[1]
+    padding: dp(8), dp(8)
+    background_normal: ''
+    background_down: ''
+    background_color: (0, 0, 0, 0)
+    bg_color: (0, 0, 0, 0)
+    markup: True
+
+    opacity: 0.95
+    canvas.before:
+        Color:
+            rgba: self.bg_color
         RoundedRectangle:
             pos: self.pos
             size: self.size

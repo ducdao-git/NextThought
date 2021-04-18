@@ -4,17 +4,19 @@
     "primary_variant_color": "#51006f",
     "secondary_color": "#fdc72a",
     "background_color": "#ffffff",
+    "input_background_color": "f5f5f5",
     "divider_color": "#e0e0e0",
     "text_primary_color": "#efe4f2",
     "text_primary_variant_color": "#82279e",
     "text_secondary_color": "#363331",
     "text_background_color": "#2e2e2e",
-    "support_text_color": "#a1a1a1",
+    "support_text_color": "#BCC0C4",
     "comment_background_color": "#eeeeee",
     "user_message_background_color": "#8819ff",
     "partner_message_background_color": "#eeeeee",
     "user_message_color": "#e0e0e0",
-    "partner_message_color": "#2e2e2e"
+    "partner_message_color": "#2e2e2e",
+    "good_color": "#409250"
   },
   "dark": {
     "primary_color": "#282828",

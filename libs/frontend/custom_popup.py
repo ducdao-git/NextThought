@@ -1,4 +1,6 @@
 from kivy.uix.modalview import ModalView
+from kivy.core.clipboard import Clipboard
+from kivy.clock import Clock
 
 
 class FilterPopup(ModalView):
@@ -69,6 +71,26 @@ class OneInputFieldPopup(ModalView):
         elif self.action_name == 'find_partner':
             self.screen_instance.get_partner(
                 self.ids.input_field.text)
+
+
+class SuccessSignUpPopup(ModalView):
+    def __init__(self, screen_instance, acc_password, **kwargs):
+        super().__init__(**kwargs)
+        self.acc_password = acc_password
+        self.screen_instance = screen_instance
+
+        self.display_password()
+
+    def copy_password(self):
+        Clipboard.copy(self.acc_password)
+
+        self.ids.password_display.text = \
+            f'[color={self.good_color}]copied![/color]'
+
+        Clock.schedule_once(lambda *_: self.display_password(), 1)
+
+    def display_password(self):
+        self.ids.password_display.text = f'[b]{self.acc_password}[/b]'
 
 
 class ErrorPopup(ModalView):

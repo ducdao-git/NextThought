@@ -6,8 +6,9 @@ from kivy.lang.builder import Builder
 from kivy.uix.screenmanager import ScreenManager
 
 from libs.backend.local_data_handle import get_theme_palette
-from libs.backend.user import create_user, AuthorizedUser
+from libs.backend.user import AuthorizedUser
 
+from screens.login import LoginRoute
 from screens.newsfeed import NewsfeedRoute
 from screens.comments import CommentsRoute
 from screens.prichat import PriChatRoute
@@ -30,6 +31,7 @@ Builder.load_file('libs/frontend/custom_popup.kv')
 Builder.load_file('libs/frontend/post_widget.kv')
 Builder.load_file('libs/frontend/comment_widget.kv')
 Builder.load_file('libs/frontend/chat_widget.kv')
+Builder.load_file('screens/login.kv')
 Builder.load_file('screens/newsfeed.kv')
 Builder.load_file('screens/comments.kv')
 Builder.load_file('screens/prichat.kv')
@@ -39,9 +41,13 @@ Builder.load_file('screens/message.kv')
 class NextMess(App):
     authorized_user = AuthorizedUser('dtuser2', 'ejzifjyt')
     # authorized_user = AuthorizedUser('dtuser4', 'dkhdiznn')
+
     theme_palette = get_theme_palette('next_mess')
-    process_post = None
+
+    # authorized_user = None
     process_message_partner = None
+    process_post = None
+
     route_manager = ScreenManager()
 
     def build(self):
@@ -50,6 +56,7 @@ class NextMess(App):
         """
         self.title = 'NextMess'
 
+        self.route_manager.add_widget(LoginRoute(app=self))
         self.route_manager.add_widget(NewsfeedRoute(app=self))
         self.route_manager.add_widget(CommentsRoute(app=self))
         self.route_manager.add_widget(PriChatRoute(app=self))
