@@ -5,16 +5,6 @@
         orientation: 'vertical'
         size: root.size
 
-        Label:
-            size_hint: 1, None
-            height: dp(24)
-            canvas.before:
-                Color:
-                    rgba: app.theme_palette['primary_variant_color']
-                Rectangle:
-                    size: self.size
-                    pos: self.pos
-
         BoxLayout:  # action bar
             size_hint: 1, None
             height: dp(56)
@@ -46,7 +36,7 @@
             IconButton:
                 text: "%s" % icon('cog')
                 color: app.theme_palette['text_primary_color']
-                on_release:
+                on_release: root.open_setting_popup()
 
         FloatLayout:  # layout for tasks view and add button
             ScrollView:
@@ -64,7 +54,8 @@
                     orientation: 'vertical'
                     size_hint_y: None
                     padding: [0, 0, 0, dp(56)]  # account for part that are hide behind the bottom nav bar
-                    height: self.minimum_height  # minimum_height is min height to contain all children
+                    # the follow height use to allow child widget not at the top of scrollview if not has enough height
+                    height: self.minimum_height if self.minimum_height > self.parent.height else self.parent.height
 
             BoxLayout:
                 size_hint: 1, None

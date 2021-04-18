@@ -146,3 +146,5 @@ class SettingPopup(ModalView):
     def on_dismiss(self):
         if self.screen_instance.name == 'newsfeed_route':
             self.screen_instance.refresh_display()
+        if self.screen_instance.name == 'message_route':
+            self.screen_instance.refresh_messages()

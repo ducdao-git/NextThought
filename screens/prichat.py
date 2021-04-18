@@ -4,7 +4,8 @@ from time import sleep
 from libs.backend.user import ChatPartner
 from libs.backend.custom_exception import DataError
 from libs.frontend.chat_widget import ChatView
-from libs.frontend.custom_popup import ErrorPopup, OneInputFieldPopup
+from libs.frontend.custom_popup import ErrorPopup, SettingPopup
+from libs.frontend.custom_popup import OneInputFieldPopup
 
 
 class PriChatRoute(Screen):
@@ -68,3 +69,6 @@ class PriChatRoute(Screen):
 
         except DataError as error:
             ErrorPopup(error.message).open()
+
+    def open_setting_popup(self):
+        SettingPopup(self).open()
