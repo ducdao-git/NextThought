@@ -46,6 +46,9 @@ class LoginRoute(Screen):
     def on_pre_enter(self, *args):
         self.display_input_form()
 
+    def on_leave(self, *args):
+        self.login_action = 'sign_in'
+
     def display_input_form(self):
         self.signin_input = SignInInput(self)
         self.signup_input = SignUpInput(self)

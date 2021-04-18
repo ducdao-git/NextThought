@@ -46,6 +46,11 @@ class NewsfeedRoute(Screen):
             tag=tag
         )
 
+        if len(posts) == 0:
+            self.ids.show_no_post.visible = True
+        else:
+            self.ids.show_no_post.visible = False
+
         for post in posts:
             self.ids.newsfeed_scrollview.add_widget(PostView(self, post))
 

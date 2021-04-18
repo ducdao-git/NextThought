@@ -22,7 +22,7 @@
 
             RouteTitleLabel:
                 markup: True
-                text: '   %s   PriChat' % icon('home')
+                text: '   %s   Newsfeed' % icon('home')
 
             IconButton:
                 text: "%s" % icon('search')
@@ -52,6 +52,19 @@
                     size_hint_y: None
                     padding: [0, 0, 0, dp(56)]  # account for part that are hide behind the bottom nav bar
                     height: self.minimum_height  # minimum_height is min height to contain all children
+
+            Label:
+                id: show_no_post
+                visible: False
+                size_hint: 1, None
+                height: self.parent.height if self.visible else dp(0)
+                text_size: self.size
+                valign: 'center'
+                halign: 'center'
+                bold: True
+                text: 'No Post Fit Your Description!' + '\n' * 10
+                color: app.theme_palette['support_text_color']
+
 
             AnchorLayout:
                 anchor_x: 'right'
