@@ -20,6 +20,7 @@ class NewsfeedRoute(Screen):
         self.app = app
         self.filter_username = None
         self.filter_tag = None
+        self.num_post_show = self.app.user_profile.get_num_post_show()
 
     def on_pre_enter(self, *args):
         """
@@ -39,12 +40,18 @@ class NewsfeedRoute(Screen):
         self.ids.newsfeed_scrollview.clear_widgets()
 
     def display_public_posts(self, username=None, tag=None):
-        posts = get_public_posts(uid=get_uid_from_username(username), tag=tag)
+        posts = get_public_posts(
+            limit=self.num_post_show,
+            uid=get_uid_from_username(username),
+            tag=tag
+        )
+
+        # print(posts)
 
         for post in posts:
             self.ids.newsfeed_scrollview.add_widget(PostView(self, post))
 
-    def refresh_newsfeed(self):
+    def refresh_display(self):
         try:
             self.ids.newsfeed_scrollview.clear_widgets()
             self.display_public_posts(self.filter_username, self.filter_tag)
@@ -61,7 +68,7 @@ class NewsfeedRoute(Screen):
 
         try:
             create_public_post(self.app.authorized_user, new_post_content)
-            self.refresh_newsfeed()
+            self.refresh_display()
 
         except DataError as error:
             ErrorPopup(error.message).open()
@@ -78,6 +85,6 @@ class NewsfeedRoute(Screen):
 
         except DataError as error:
             if error.message == 'No such user':
-                self.refresh_newsfeed()
+                self.refresh_display()
 
             ErrorPopup(error.message).open()

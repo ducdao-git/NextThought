@@ -5,7 +5,7 @@ from kivy.config import Config
 from kivy.lang.builder import Builder
 from kivy.uix.screenmanager import ScreenManager
 
-from libs.backend.local_data_handle import get_theme_palette
+from libs.backend.local_data_handle import get_theme_palette, UserProfile
 from libs.backend.user import AuthorizedUser
 
 from screens.login import LoginRoute
@@ -13,11 +13,6 @@ from screens.newsfeed import NewsfeedRoute
 from screens.comments import CommentsRoute
 from screens.prichat import PriChatRoute
 from screens.message import MessageRoute
-
-# -- delete when done test -- #
-from libs.backend.public_post import create_public_post, get_public_posts
-
-# --------------------------- #
 
 Config.set('graphics', 'resizable', False)
 Config.set('graphics', 'width', '400')
@@ -39,16 +34,18 @@ Builder.load_file('screens/message.kv')
 
 
 class NextMess(App):
-    authorized_user = AuthorizedUser('dtuser2', 'ejzifjyt')
-    # authorized_user = AuthorizedUser('dtuser4', 'dkhdiznn')
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
 
-    theme_palette = get_theme_palette('next_mess')
+        self.user_profile = UserProfile()
+        self.theme_palette = get_theme_palette('next_mess')
 
-    # authorized_user = None
-    process_message_partner = None
-    process_post = None
+        self.authorized_user = AuthorizedUser('dtuser2', 'ejzifjyt')
+        # self.authorized_user = None
+        self.process_message_partner = None
+        self.process_post = None
 
-    route_manager = ScreenManager()
+        self.route_manager = ScreenManager()
 
     def build(self):
         """
@@ -65,31 +62,9 @@ class NextMess(App):
         self.route_manager.return_route = ''
         return self.route_manager
 
+    def on_stop(self):
+        self.user_profile.save_user_profile()
+
 
 if __name__ == '__main__':
-    # user2 = AuthorizedUser('dtuser2', 'ejzifjyt')
-    # user3 = AuthorizedUser('dtuser3', 'sphyuddr')
-    # user4 = AuthorizedUser('dtuser4', 'dkhdiznn')
-
-    # create_public_post(user2, 'a'*1000)
-    # for i in range(3):
-    #     create_public_post(user2, f"#comment {i} parent 94", 99)
-
-    # for pid in [99]:
-    #     posts = get_public_posts(uid=5, parent_id=pid)
-    #
-    #     for post in posts:
-    #         post.delete_public_post(user2)
-
-    # create_public_post(user2, 'a'*1000)
-
-    # user4.create_message(5, 'hello, this is a msg from user4 to user2')
-    # user3.create_message(user2.get_uid(), 'msg 2 from user3 to user2')
-    #
-    # pprint(user2.get_conversations())
-    # pprint(user2.get_messages(user3.get_uid(), limit=1))
-    #
-    # print('\n')
-    # pprint(user3.get_conversations())
-    # pprint(user3.get_messages(user2.get_uid(), limit=1))
     NextMess().run()

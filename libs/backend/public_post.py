@@ -40,9 +40,11 @@ def get_public_posts(limit=50, uid=None, tag=None, parent_id=-1):
     :return: list of PublicPost obj from these data
     """
     try:
+        # let say we have 9999 post will this slow down the fetching process?
         response = requests.get(api_url + '/posts',
-                                data={'limit': limit, 'uid': uid, 'tag': tag})
+                                data={'limit': 9999, 'uid': uid, 'tag': tag})
         response_data = get_response_data(response)
+        print(response_data)
 
         sorted_response_data = \
             sorted(response_data, key=lambda x: x['parentid'])
@@ -60,6 +62,9 @@ def get_public_posts(limit=50, uid=None, tag=None, parent_id=-1):
                            len(response_data.get(post['postid'], [])),
                            post['postid'], post['parentid'])
             )
+
+            if len(public_posts) == limit:
+                return public_posts
 
         return public_posts
 

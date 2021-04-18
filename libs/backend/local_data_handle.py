@@ -2,6 +2,8 @@ import json
 from datetime import datetime, timedelta
 from dateutil import tz
 
+from pprint import pprint
+
 from libs.backend.custom_exception import DataError
 
 
@@ -84,3 +86,49 @@ def get_readable_time(time, message_time=False):
     except Exception as error:
         print(f'error ppost get_time: {error}')
         raise DataError(error)
+
+
+class UserProfile:
+    def __init__(self):
+        try:
+            with open('user_profile.json', 'r') as infile:
+                self.user_profile = json.load(infile)
+
+            pprint(self.user_profile)
+
+        except Exception as error:
+            raise DataError(error)
+
+    def get_theme_name(self):
+        return self.user_profile['theme_name']
+
+    def get_remember_username(self):
+        return self.user_profile['remember_username']
+
+    def get_remember_token(self):
+        return self.user_profile['remember_token']
+
+    def get_num_post_show(self):
+        return self.user_profile['num_post_show']
+
+    def get_num_message_show(self):
+        return self.user_profile['num_message_show']
+
+    def set_theme_name(self, new_theme_name):
+        self.user_profile['theme_name'] = new_theme_name
+
+    def set_remember_username(self, new_remember_username):
+        self.user_profile['remember_username'] = new_remember_username
+
+    def set_remember_token(self, new_remember_token):
+        self.user_profile['remember_token'] = new_remember_token
+
+    def set_num_post_show(self, new_num_post_show):
+        self.user_profile['num_post_show'] = new_num_post_show
+
+    def set_num_message_show(self, new_num_message_show):
+        self.user_profile['num_message_show'] = new_num_message_show
+
+    def save_user_profile(self):
+        with open('user_profile.json', 'w') as outfile:
+            json.dump(self.user_profile, outfile, indent=2)

@@ -205,7 +205,7 @@ class PostView(BoxLayout):
             )
 
             # self.post_new_content = post_new_content
-            self.screen_instance.refresh_newsfeed()
+            self.screen_instance.refresh_display()
 
         except DataError as error:
             ErrorPopup(error.message).open()
@@ -215,6 +215,6 @@ class PostView(BoxLayout):
             self.post.delete_public_post(
                 self.screen_instance.app.authorized_user
             )
-            self.screen_instance.ids.newsfeed_scrollview.remove_widget(self)
+            self.screen_instance.refresh_display()
         except DataError as error:
             ErrorPopup(error.message).open()

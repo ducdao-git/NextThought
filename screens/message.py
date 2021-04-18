@@ -111,7 +111,7 @@ class MessageRoute(Screen):
         try:
             self.authorized_user.create_message(
                 self.message_partner.get_uid(),
-                self.ids.message_content_input.text
+                self.ids.message_content_input.text.strip()
             )
 
             self.ids.message_scrollview.clear_widgets()

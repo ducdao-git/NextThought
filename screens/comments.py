@@ -45,7 +45,7 @@ class CommentsRoute(Screen):
 
     def create_comment(self):
         try:
-            comment_input = self.ids.comment_content_input.text
+            comment_input = self.ids.comment_content_input.text.strip()
 
             if comment_input in ['', None]:
                 return
