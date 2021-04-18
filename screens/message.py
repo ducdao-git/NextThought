@@ -91,8 +91,7 @@ class MessageRoute(Screen):
             #     )
 
         except DataError as error:
-            if error.message == \
-                    'Too many requests. Please try again later.':
+            if error.custom_code == 429:
                 sleep(0.05)
                 self.display_messages()
             else:

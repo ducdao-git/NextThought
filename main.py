@@ -39,12 +39,12 @@ Builder.load_file('screens/message.kv')
 
 
 class NextMess(App):
-    # authorized_user = AuthorizedUser('dtuser2', 'ejzifjyt')
+    authorized_user = AuthorizedUser('dtuser2', 'ejzifjyt')
     # authorized_user = AuthorizedUser('dtuser4', 'dkhdiznn')
 
     theme_palette = get_theme_palette('next_mess')
 
-    authorized_user = None
+    # authorized_user = None
     process_message_partner = None
     process_post = None
 
@@ -56,7 +56,7 @@ class NextMess(App):
         """
         self.title = 'NextMess'
 
-        self.route_manager.add_widget(LoginRoute(app=self))
+        # self.route_manager.add_widget(LoginRoute(app=self))
         self.route_manager.add_widget(NewsfeedRoute(app=self))
         self.route_manager.add_widget(CommentsRoute(app=self))
         self.route_manager.add_widget(PriChatRoute(app=self))

@@ -156,9 +156,9 @@ class PostActionBar(BoxLayout):
                 f' [size=12sp]{self.upvotes_num}[/size]'
 
         except DataError as error:
-            if error.message == \
-                    'Too many requests. Please try again later.':
+            if error.custom_code == 429:
                 sleep(0.05)
+                self.upvote_post()
             else:
                 ErrorPopup(error.message).open()
 

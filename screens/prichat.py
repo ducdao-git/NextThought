@@ -30,7 +30,7 @@ class PriChatRoute(Screen):
         try:
             self.conversations = self.app.authorized_user.get_conversations()
         except DataError as error:
-            ErrorPopup('conver ' + error.message).open()
+            ErrorPopup(error.message).open()
             return
 
         partner_index = 0
@@ -44,9 +44,8 @@ class PriChatRoute(Screen):
                 partner_index += 1
 
             except DataError as error:
-                if error.message == \
-                        'Too many requests. Please try again later.':
-                    sleep(0.05)
+                if error.custom_code == 429:
+                    sleep(0.15)
                 else:
                     ErrorPopup(error.message).open()
 
