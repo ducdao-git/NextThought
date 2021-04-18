@@ -88,3 +88,6 @@ class NewsfeedRoute(Screen):
                 self.refresh_display()
 
             ErrorPopup(error.message).open()
+
+    def open_setting_popup(self):
+        SettingPopup(self).open()

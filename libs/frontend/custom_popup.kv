@@ -241,9 +241,9 @@
             text_size: self.width, None
             halign: 'left'
             line_height: 1.2
-            markup: True
+            font_size: sp(18)
             color: app.theme_palette['text_background_color']
-            text: '[size=18sp]Successfully create new account![/size]\nClick on the password to copy.'
+            text: 'Successfully create new account!.'
 
         BoxLayout:
             orientation: 'horizontal'
@@ -269,6 +269,15 @@
                 color: app.theme_palette['text_background_color']
 
                 on_release: root.copy_password()
+
+        Label:
+            size_hint: 1, None
+            height: self.texture_size[1]
+            text_size: self.width, None
+            halign: 'left'
+            line_height: 1.2
+            color: app.theme_palette['support_text_color']
+            text: 'Click on the password to copy.'
 
         Label:
             size_hint: 1, None
@@ -303,3 +312,65 @@
                     root.dismiss()
                     root.screen_instance.app.route_manager.transition.direction = 'left'
                     root.screen_instance.app.route_manager.current = 'newsfeed_route'
+
+<SettingPopup>
+    size_hint: 0.85, 1
+    background_normal: ''
+    background_color: (0, 0, 0, 0)
+    auto_dismiss: False
+
+    BoxLayout:
+        orientation: 'vertical'
+        size_hint: 1, None
+        height: self.minimum_height
+        padding: dp(12)
+        spacing: dp(8)
+
+        opacity: 0.95
+        canvas.before:
+            Color:
+                rgba: app.theme_palette['background_color']
+            RoundedRectangle:
+                radius: [(15.0, 15.0), (15.0, 15.0), (15.0, 15.0), (15.0, 15.0)]
+                pos: self.pos
+                size: self.size
+
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint: 1, None
+            height: self.minimum_height
+            spacing: dp(8)
+
+            Label:
+                size_hint: 4, 1
+                text_size: self.size
+                halign: 'right'
+                valign: 'center'
+                color: app.theme_palette['text_background_color']
+                text: 'Number of Post Show:'
+
+            InputLayout:
+                ResizableTextInput:
+                    id: input_field
+                    multiline: False
+                    on_double_tap: self.select_all()
+
+            Label:
+                size_hint: 1, 1
+
+#            Label:
+#                size_hint: 4, 1
+#                text_size: self.size
+#                halign: 'right'
+#                valign: 'center'
+#                color: app.theme_palette['text_background_color']
+#                text: 'Number of Post Show:'
+#
+#            InputLayout:
+#                ResizableTextInput:
+#                    id: input_field
+#                    multiline: False
+#                    on_double_tap: self.select_all()
+#
+#            Label:
+#                size_hint: 1, 1
