@@ -2,6 +2,8 @@ from kivy.uix.modalview import ModalView
 from kivy.core.clipboard import Clipboard
 from kivy.clock import Clock
 
+from libs.backend.custom_exception import DataError
+
 
 class FilterPopup(ModalView):
     def __init__(self, screen_instance, **kwargs):
@@ -112,4 +114,35 @@ class SettingPopup(ModalView):
     def __init__(self, screen_instance, **kwargs):
         super().__init__(**kwargs)
         self.screen_instance = screen_instance
+        self.user_profile = self.screen_instance.app.user_profile
 
+    def show_help(self, field_name):
+        if self.ids[field_name].text == '' and field_name == 'msg_num_help':
+            self.ids[field_name].text = \
+                'Maximum number of message will show when ' \
+                'in a chat (0 < number < 101)'
+        elif self.ids[field_name].text == '' and field_name == 'post_num_help':
+            self.ids[field_name].text = \
+                'Maximum number of posts or comments will show when ' \
+                'view the newsfeed or post\'s comments (0 < number < 101)'
+        else:
+            return
+
+    def update_user_profile(self):
+        try:
+            if not self.ids.post_num_input.text.strip() == '':
+                self.user_profile.set_num_post_show(
+                    self.ids.post_num_input.text.strip())
+
+            if not self.ids.msg_num_input.text.strip() == '':
+                self.user_profile.set_num_message_show(
+                    self.ids.msg_num_input.text.strip())
+
+            self.dismiss()
+
+        except DataError as error:
+            ErrorPopup(error.message).open()
+
+    def on_dismiss(self):
+        if self.screen_instance.name == 'newsfeed_route':
+            self.screen_instance.refresh_display()

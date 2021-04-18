@@ -1,16 +1,14 @@
 from kivy.uix.button import Button
-# from kivy.uix.textinput import TextInput
 
 
 class IconButton(Button):
     pass
 
-#
 # class ResizableTextInput(TextInput):
 #     pass
 
 
-# class ResizableNumberInput(ResizableTextInput):
+# class ResizableNumberInput(TextInput):
 #     def insert_text(self, input_char, from_undo=False):
 #         if input_char.isdigit():
 #             s = input_char

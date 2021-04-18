@@ -25,7 +25,7 @@
 
 <ResizableTextInput@TextInput>:
     size_hint: 8, None
-    size: self.height, self.minimum_height
+    height: self.minimum_height
     background_color: [1, 0, 0, 0]
     cursor_color: app.theme_palette['primary_color']
     padding: [dp(8), dp(8)]
@@ -68,3 +68,21 @@
         RoundedRectangle:
             pos: self.pos
             size: self.size
+
+<InfoLabel@Label>
+    size_hint: 1, None
+    height: self.texture_size[1]
+    text_size: self.width, None
+    padding: dp(12), dp(2)
+    line_height: 1.2
+    color: app.theme_palette['text_secondary_color']
+#    bg_color: (0, 0, 0, 0)
+
+    opacity: 0.8
+    canvas.before:
+        Color:
+            rgba: app.theme_palette['secondary_color']
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+

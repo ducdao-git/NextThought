@@ -18,9 +18,9 @@ class NewsfeedRoute(Screen):
         """
         super().__init__(**kwargs)
         self.app = app
+        self.user_profile = self.app.user_profile
         self.filter_username = None
         self.filter_tag = None
-        self.num_post_show = self.app.user_profile.get_num_post_show()
 
     def on_pre_enter(self, *args):
         """
@@ -40,8 +40,9 @@ class NewsfeedRoute(Screen):
         self.ids.newsfeed_scrollview.clear_widgets()
 
     def display_public_posts(self, username=None, tag=None):
+        # print(self.user_profile.get_num_post_show())
         posts = get_public_posts(
-            limit=self.num_post_show,
+            limit=self.user_profile.get_num_post_show(),
             uid=get_uid_from_username(username),
             tag=tag
         )

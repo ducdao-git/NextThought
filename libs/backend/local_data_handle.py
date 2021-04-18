@@ -124,11 +124,40 @@ class UserProfile:
         self.user_profile['remember_token'] = new_remember_token
 
     def set_num_post_show(self, new_num_post_show):
+        if new_num_post_show.isdigit():
+            new_num_post_show = int(new_num_post_show)
+        else:
+            raise DataError('Number of Post Show must be integer')
+
+        if new_num_post_show < 1:
+            raise DataError('Number of Post Show must be a positive'
+                            ' integer (number > 0)')
+        elif new_num_post_show > 100:
+            raise DataError(
+                'Number of Post Show cannot excess 100 (number < 101)'
+            )
+
         self.user_profile['num_post_show'] = new_num_post_show
 
     def set_num_message_show(self, new_num_message_show):
+        if new_num_message_show.isdigit():
+            new_num_message_show = int(new_num_message_show)
+        else:
+            raise DataError('Number of Message Show must be integer')
+
+        if new_num_message_show < 1:
+            raise DataError('Number of Message Show must be a positive'
+                            ' integer (number > 0)')
+        elif new_num_message_show > 100:
+            raise DataError(
+                'Number of Message Show cannot excess 100 (number < 101)'
+            )
+
         self.user_profile['num_message_show'] = new_num_message_show
 
     def save_user_profile(self):
-        with open('user_profile.json', 'w') as outfile:
-            json.dump(self.user_profile, outfile, indent=2)
+        try:
+            with open('user_profile.json', 'w') as outfile:
+                json.dump(self.user_profile, outfile, indent=2)
+        except Exception as error:
+            raise DataError(error)

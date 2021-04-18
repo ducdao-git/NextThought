@@ -335,6 +335,18 @@
                 pos: self.pos
                 size: self.size
 
+        RoundedButton:
+            bg_color: app.theme_palette['primary_color']
+            color: app.theme_palette['text_primary_color']
+            text: '%s  Sign Out' % icon('sign-out-alt', int(sp(16)))
+            on_release:
+                root.dismiss()
+                app.root.transition.direction = 'right'
+#**                app.root.current = 'login_route'
+
+        InfoLabel:
+            id: post_num_help
+
         BoxLayout:
             orientation: 'horizontal'
             size_hint: 1, None
@@ -347,30 +359,68 @@
                 halign: 'right'
                 valign: 'center'
                 color: app.theme_palette['text_background_color']
+                markup: True
                 text: 'Number of Post Show:'
 
             InputLayout:
                 ResizableTextInput:
-                    id: input_field
+                    id: post_num_input
                     multiline: False
+                    text: str(app.user_profile.get_num_post_show())
                     on_double_tap: self.select_all()
 
-            Label:
-                size_hint: 1, 1
+            IconButton:
+                size_hint: 0.5, 1
+                color: app.theme_palette['support_text_color']
+                text: '%s' % icon('question-circle', int(sp(16)))
+                on_release: root.show_help('post_num_help')
 
-#            Label:
-#                size_hint: 4, 1
-#                text_size: self.size
-#                halign: 'right'
-#                valign: 'center'
-#                color: app.theme_palette['text_background_color']
-#                text: 'Number of Post Show:'
-#
-#            InputLayout:
-#                ResizableTextInput:
-#                    id: input_field
-#                    multiline: False
-#                    on_double_tap: self.select_all()
-#
-#            Label:
-#                size_hint: 1, 1
+        InfoLabel:
+            id: msg_num_help
+
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint: 1, None
+            height: self.minimum_height
+            spacing: dp(8)
+
+            Label:
+                size_hint: 4, 1
+                text_size: self.size
+                halign: 'right'
+                valign: 'center'
+                color: app.theme_palette['text_background_color']
+                markup: True
+                text: 'Number of Message Show:'
+
+            InputLayout:
+                ResizableTextInput:
+                    id: msg_num_input
+                    multiline: False
+                    text: str(app.user_profile.get_num_message_show())
+                    on_double_tap: self.select_all()
+
+
+            IconButton:
+                size_hint: 0.5, 1
+                color: app.theme_palette['support_text_color']
+                text: '%s' % icon('question-circle', int(sp(16)))
+                on_release: root.show_help('msg_num_help')
+
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint: 1, None
+            height: self.minimum_height
+            spacing: dp(8)
+
+            RoundedButton:
+                bg_color: app.theme_palette['comment_background_color']
+                color: app.theme_palette['text_background_color']
+                text: '%s  Cancel' % icon('ban', int(sp(16)))
+                on_release: root.dismiss()
+
+            RoundedButton:
+                bg_color: app.theme_palette['secondary_color']
+                color: app.theme_palette['text_secondary_color']
+                text: '%s  Save' % icon('save', int(sp(16)))
+                on_release: root.update_user_profile()
