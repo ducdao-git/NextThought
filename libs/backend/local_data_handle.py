@@ -31,7 +31,7 @@ def get_theme_palette(theme_name):
     :return: color palette for the theme
     """
     try:
-        if theme_name not in ['next_mess', 'dark']:
+        if theme_name not in ['next_mess', 'next_mess_dark', 'dark']:
             raise ValueError
 
         with open('assets/theme_palettes.json', 'r') as f:

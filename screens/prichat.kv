@@ -5,36 +5,27 @@
         size: root.size
         orientation: 'vertical'
 
-        Label:
-            text: 'status bar'
-            size_hint: 1, None
-            height: dp(24)
-            canvas.before:
-                Color:
-                    rgba: app.theme_palette['primary_variant_color']
-                Rectangle:
-                    size: self.size
-                    pos: self.pos
-
         BoxLayout:  # action bar
             orientation: 'horizontal'
             size_hint: 1, None
             height: dp(56)
             canvas.before:
                 Color:
-                    rgba: app.theme_palette['primary_color']
-#                    rgba: [0,0,0,0]
+                    rgba: app.theme_palette['background_color']
                 Rectangle:
                     size: self.size
                     pos: self.pos
 
             RouteTitleLabel:
-                text: ' ' * 3 + 'PriChat'
+                markup: True
+                text: '   %s   PriChat' % icon('comments')
 
             IconButton:
                 text: "%s" % icon('cog')
-                color: app.theme_palette['text_primary_color']
+                color: app.theme_palette['primary_color']
                 on_release: root.open_setting_popup()
+
+        DividerLabel:
 
         FloatLayout:  # layout for tasks view and add button
             ScrollView:
@@ -74,28 +65,31 @@
                             size: self.size
                             pos: self.pos
 
+            DividerLabel:
+                height: dp(49 + 1.5)
+
             BoxLayout:  # bottom nav bar
                 orientation: 'horizontal'
                 size_hint: 1, None
-                height: dp(56)
+                height: dp(49)
                 canvas.before:
                     Color:
-                        rgba: app.theme_palette['primary_color']
-#                        rgba: [0,0,0,0]
+                        rgba: app.theme_palette['background_color']
                     Rectangle:
                         size: self.size
                         pos: self.pos
 
                 IconButton:
-                    text: " " * 2 + "%s\n[size=14sp]Newsfeed[/size]" % icon('home')
-                    color: app.theme_palette['text_primary_color']
+                    text: "%s  [size=14sp]Newsfeed[/size]" % icon('home')
+                    color: app.theme_palette['support_text_color']
                     on_release:
-                        app.root.transition = SlideTransition(direction='right', duration=0.3)
+#                        app.root.transition = SlideTransition(direction='right', duration=0.3)
+                        app.root.transition = NoTransition()
                         app.root.current = 'newsfeed_route'
 
                 IconButton:
-                    text: "%s\n[size=14sp]PriChat[/size]" % icon('comments')
-                    color: app.theme_palette['secondary_color']
+                    text: "%s  [size=14sp]PriChat[/size]" % icon('comments')
+                    color: app.theme_palette['primary_color']
                     on_release:
                         root.ids.prichat_scrollview.clear_widgets()
                         root.display_conversations()

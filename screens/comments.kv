@@ -5,46 +5,26 @@
         orientation: 'vertical'
         size: root.size
 
-        canvas.before:
-            Color:
-                rgba: app.theme_palette['background_color']
-            Rectangle:
-                pos: self.pos
-                size: self.size
-
-        Label:
-            size_hint: 1, None
-            height: dp(24)
-            canvas.before:
-                Color:
-                    rgba: app.theme_palette['primary_variant_color']
-                Rectangle:
-                    size: self.size
-                    pos: self.pos
-
         BoxLayout:  # action bar
             size_hint: 1, None
             height: dp(56)
             canvas.before:
                 Color:
-                    rgba: app.theme_palette['primary_color']
+                    rgba: app.theme_palette['background_color']
                 Rectangle:
                     size: self.size
                     pos: self.pos
 
             IconButton:
                 text: "   %s   Post's Comments" % icon('chevron-down')
-                color: app.theme_palette['text_primary_color']
+                color: app.theme_palette['primary_color']
                 valign: 'center'
                 halign: 'left'
                 on_release:
                     app.root.transition = CardTransition(mode='pop', direction='down')
                     app.root.current = app.root.return_route
 
-#        BoxLayout:
-#            id: short_top_comment_holder
-#            size_hint: 1, None
-#            height: self.minimum_height
+        DividerLabel:
 
         FloatLayout:  # layout for tasks view and add button
             ScrollView:
@@ -63,18 +43,14 @@
                     padding: [0, 0, 0, dp(56)]  # account for part that are hide behind the bottom nav bar
                     height: self.minimum_height  # minimum_height is min height to contain all children
 
+            DividerLabel:
+                height: dp(49 + 1.5)
+
             BoxLayout:
                 size_hint: 1, None
-                height: self.minimum_height + dp(1)
+                height: self.minimum_height
                 orientation: 'horizontal'
                 padding: dp(4), dp(8)
-
-                canvas:
-                    Color:
-                        rgba: app.theme_palette['comment_background_color']
-                    Rectangle:
-                        pos: self.pos[0], self.pos[1] + self.size[1] - dp(1)
-                        size: self.size[0], dp(1.5)
 
                 canvas.before:
                     Color:

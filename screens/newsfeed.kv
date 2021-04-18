@@ -1,5 +1,6 @@
 #: import CardTransition kivy.uix.screenmanager.CardTransition
 #: import SlideTransition kivy.uix.screenmanager.SlideTransition
+#: import NoTransition kivy.uix.screenmanager.NoTransition
 
 <NewsfeedRoute>:
     name: 'newsfeed_route'
@@ -8,42 +9,32 @@
         size: root.size
         orientation: 'vertical'
 
-        Label:
-            text: 'status bar'
-            size_hint: 1, None
-            height: dp(24)
-            canvas.before:
-                Color:
-                    rgba: app.theme_palette['primary_variant_color']
-                Rectangle:
-                    size: self.size
-                    pos: self.pos
-
         BoxLayout:  # action bar
             orientation: 'horizontal'
             size_hint: 1, None
             height: dp(56)
             canvas.before:
                 Color:
-                    rgba: app.theme_palette['primary_color']
-#                    rgba: [0,0,0,0]
+                    rgba: app.theme_palette['background_color']
                 Rectangle:
                     size: self.size
                     pos: self.pos
 
             RouteTitleLabel:
-                text: ' ' * 3 + 'Newsfeed'
+                markup: True
+                text: '   %s   PriChat' % icon('home')
 
             IconButton:
                 text: "%s" % icon('search')
-                color: app.theme_palette['text_primary_color']
+                color: app.theme_palette['primary_color']
                 on_release: root.open_filter_popup()
 
             IconButton:
                 text: "%s" % icon('cog')
-                color: app.theme_palette['text_primary_color']
+                color: app.theme_palette['primary_color']
                 on_release: root.open_setting_popup()
 
+        DividerLabel:
 
         FloatLayout:  # layout for tasks view and add button
             ScrollView:
@@ -83,31 +74,34 @@
                             size: self.size
                             pos: self.pos
 
+            DividerLabel:
+                height: dp(49 + 1.5)
+
             BoxLayout:  # bottom nav bar
                 orientation: 'horizontal'
                 size_hint: 1, None
-                height: dp(56)
+                height: dp(49)
                 canvas.before:
                     Color:
-                        rgba: app.theme_palette['primary_color']
-#                        rgba: [0,0,0,0]
+                        rgba: app.theme_palette['background_color']
                     Rectangle:
                         size: self.size
                         pos: self.pos
 
                 IconButton:
-                    text: " " * 2 + "%s\n[size=14sp]Newsfeed[/size]" % icon('home')
-                    color: app.theme_palette['secondary_color']
+                    text: "%s  [size=14sp]Newsfeed[/size]" % icon('home')
+                    color: app.theme_palette['primary_color']
                     on_release:
                         root.filter_username = ''
                         root.filter_tag = ''
                         root.refresh_display()
 
                 IconButton:
-                    text: "%s\n[size=14sp]PriChat[/size]" % icon('comments')
-                    color: app.theme_palette['text_primary_color']
+                    text: "%s  [size=14sp]PriChat[/size]" % icon('comments')
+                    color: app.theme_palette['support_text_color']
                     on_release:
                         root.filter_username = ''
                         root.filter_tag = ''
-                        app.root.transition = SlideTransition(direction='left', duration=0.3)
+#                        app.root.transition = SlideTransition(direction='left', duration=0.3)
+                        app.root.transition = NoTransition()
                         app.root.current = 'prichat_route'

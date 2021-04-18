@@ -1,5 +1,16 @@
 #: import icon kivysome.icon
 
+<DividerLabel@Label>
+    size_hint: 1, None
+    height: dp(1.5)
+
+    canvas:
+        Color:
+            rgba: app.theme_palette['divider_color']
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
 
 <IconButton>
     size_hint: 1, 1
@@ -20,7 +31,7 @@
     halign: 'left'
     valign: 'center'
     font_size: sp(20)
-    color: app.theme_palette['text_primary_color']
+    color: app.theme_palette['primary_color']
 
 
 <ResizableTextInput@TextInput>:

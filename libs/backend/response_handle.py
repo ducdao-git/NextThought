@@ -1,6 +1,16 @@
 import json
+from urllib import request, error
 
 from libs.backend.custom_exception import DataError
+
+
+def is_internet_connected():
+    try:
+        request.urlopen('https://www.google.com/', timeout=3)
+        return True
+
+    except error.URLError:
+        return False
 
 
 def get_response_data(response):
