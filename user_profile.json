@@ -1,7 +1,8 @@
 {
   "theme_name": "next_mess",
-  "remember_username": "",
-  "remember_token": "",
+  "do_save_auth": 0,
+  "saved_username": "",
+  "saved_token": "",
   "num_post_show": 50,
   "num_message_show": 50
 }

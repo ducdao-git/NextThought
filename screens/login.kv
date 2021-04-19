@@ -58,10 +58,43 @@
                 root.ids.password_input.password = False if root.ids.password_input.password == True else True
                 self.text = root.eye_icon if root.ids.password_input.password == False else root.no_eye_icon
 
+    BoxLayout:
+        orientation: 'horizontal'
+        size_hint: 1, None
+        height: self.minimum_height
+
+        CheckBox:
+            id: do_save_auth_checkbox
+            size_hint: 1, 1
+
+            canvas.before:
+                Color:
+                    rgba: app.theme_palette['divider_color']
+                Rectangle:
+                    pos: self.center_x - dp(7), self.center_y - dp(7)
+                    size: [dp(14), dp(14)]
+                Color:
+                    rgba: app.theme_palette['background_color']
+                Rectangle:
+                    pos: self.center_x - dp(6), self.center_y - dp(6)
+                    size: [dp(12), dp(12)]
+
+        IconButton:
+            size_hint: 4, None
+            height: self.texture_size[1]
+            text_size: self.width, None
+            halign: 'left'
+            font_size: sp(16)
+            text: 'Remember password'
+            color: app.theme_palette['text_background_color']
+            on_release:
+                root.ids.do_save_auth_checkbox.active = True if root.ids.do_save_auth_checkbox.active == False else False
+
+
 <SignUpInput>
     size_hint: 1, None
-    height: dp(78.0)
-    padding: dp(0), dp(22.5)
+    height: dp(109.0)
+    padding: dp(0), dp(38)
 
     InputLayout:
         IconButton:

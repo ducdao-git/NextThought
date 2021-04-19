@@ -23,8 +23,8 @@ class NextMess(App):
         self.user_profile = UserProfile()
         self.theme_palette = get_theme_palette('next_mess')
 
-        self.authorized_user = AuthorizedUser('dtuser2', 'ejzifjyt')
-        # self.authorized_user = None
+        # self.authorized_user = AuthorizedUser('dtuser2', 'ejzifjyt')
+        self.authorized_user = None
         self.process_message_partner = None
         self.process_post = None
 
@@ -36,7 +36,7 @@ class NextMess(App):
         """
         self.title = 'NextMess'
 
-        # self.route_manager.add_widget(LoginRoute(app=self))
+        self.route_manager.add_widget(LoginRoute(app=self))
         self.route_manager.add_widget(NewsfeedRoute(app=self))
         self.route_manager.add_widget(CommentsRoute(app=self))
         self.route_manager.add_widget(PriChatRoute(app=self))

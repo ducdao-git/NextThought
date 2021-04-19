@@ -102,11 +102,14 @@ class UserProfile:
     def get_theme_name(self):
         return self.user_profile['theme_name']
 
-    def get_remember_username(self):
-        return self.user_profile['remember_username']
+    def get_do_save_auth(self):
+        return self.user_profile['do_save_auth']
 
-    def get_remember_token(self):
-        return self.user_profile['remember_token']
+    def get_saved_username(self):
+        return self.user_profile['saved_username']
+
+    def get_saved_token(self):
+        return self.user_profile['saved_token']
 
     def get_num_post_show(self):
         return self.user_profile['num_post_show']
@@ -117,11 +120,17 @@ class UserProfile:
     def set_theme_name(self, new_theme_name):
         self.user_profile['theme_name'] = new_theme_name
 
-    def set_remember_username(self, new_remember_username):
-        self.user_profile['remember_username'] = new_remember_username
+    def switch_do_save_auth(self, switch_to_state):
+        if switch_to_state:
+            self.user_profile['do_save_auth'] = 1
+        else:
+            self.user_profile['do_save_auth'] = 0
 
-    def set_remember_token(self, new_remember_token):
-        self.user_profile['remember_token'] = new_remember_token
+    def set_saved_username(self, new_saved_username):
+        self.user_profile['saved_username'] = new_saved_username
+
+    def set_saved_token(self, new_saved_token):
+        self.user_profile['saved_token'] = new_saved_token
 
     def set_num_post_show(self, new_num_post_show):
         if new_num_post_show.isdigit():
