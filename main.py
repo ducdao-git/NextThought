@@ -7,7 +7,6 @@ from kivy.uix.screenmanager import ScreenManager, Screen
 
 from libs.backend.local_data_handle import get_theme_palette, UserProfile
 from libs.backend.response_handle import is_internet_connected
-from libs.backend.user import AuthorizedUser
 
 from screens.login import LoginRoute
 from screens.newsfeed import NewsfeedRoute
@@ -17,13 +16,21 @@ from screens.message import MessageRoute
 
 
 class NextMess(App):
+    """
+    main app class - run if internet connection is good
+    """
+
     def __init__(self, **kwargs):
+        """
+        initialize some app wide variable like user profile, theme, and screen
+        manager.
+        :param kwargs: param call for App class
+        """
         super().__init__(**kwargs)
 
         self.user_profile = UserProfile()
         self.theme_palette = get_theme_palette('next_mess')
 
-        # self.authorized_user = AuthorizedUser('dtuser2', 'ejzifjyt')
         self.authorized_user = None
         self.process_message_partner = None
         self.process_post = None
@@ -32,7 +39,8 @@ class NextMess(App):
 
     def build(self):
         """
-        call when the app start. it add all screen to screen manager
+        call when the app start. it set the app name add all screen to screen
+        manager.
         """
         self.title = 'NextMess'
 
@@ -46,19 +54,37 @@ class NextMess(App):
         return self.route_manager
 
     def on_stop(self):
+        """
+        save user profile locally on app stop
+        """
         self.user_profile.save_user_profile()
 
 
 class AppCrashScreen(Screen):
+    """
+    screen display if unable to run app at all
+    """
     pass
 
 
 class NextMessCrash(App):
+    """
+    run this 'app' version if unable to run the main app
+    """
+
     def __init__(self, **kwargs):
+        """
+        initialize app wide variable theme
+        :param kwargs: param call for App class
+        """
         super().__init__(**kwargs)
         self.theme_palette = get_theme_palette('next_mess')
 
     def build(self):
+        """
+        call when the main app unable to start. it set the app name and display
+        the crash screen
+        """
         self.title = 'NextMess'
         return AppCrashScreen()
 
@@ -68,6 +94,9 @@ if __name__ == '__main__':
     Config.set('graphics', 'width', '400')
     Config.set('graphics', 'height', '800')
 
+    # if no internet then open the crash version of the app. do this because
+    # the icon fonts require internet connection to load thus the main app
+    # cannot run if no internet connection.
     if not is_internet_connected():
         Builder.load_file('screens/app_crash.kv')
         NextMessCrash().run()

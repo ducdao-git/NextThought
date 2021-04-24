@@ -13,7 +13,16 @@ from libs.frontend.custom_popup import OneInputFieldPopup, ErrorPopup
 
 
 class PostInfoButton(Button):
+    """
+    class use to display post info i.e. post owner, posted time
+    """
+
     def __init__(self, owner_name, posted_time, **kwargs):
+        """
+        :param owner_name: string repr name of the user who posted this post
+        :param posted_time: string repr posted time of the post
+        :param kwargs: param call for Button class
+        """
         super().__init__(**kwargs)
         self.text = f"[b]{owner_name}[/b]\n[size=12sp][color=" \
                     f"{self.posted_time_color}]{posted_time}[/color][/size]"
@@ -21,14 +30,14 @@ class PostInfoButton(Button):
         self.bind(size=self.update_text_size)
         self.bind(texture_size=self.update_height)
 
-    def update_text_size(self, *args):
+    def update_text_size(self, *_):
         """
         update value of text_size. this function make sure the text_size not
         take widget default/initial size as the value
         """
         self.text_size = self.width, None
 
-    def update_height(self, *args):
+    def update_height(self, *_):
         """
         update value of widget height. this function make sure the height not
         take widget default/initial texture_size as the value
@@ -37,7 +46,15 @@ class PostInfoButton(Button):
 
 
 class PostContentButton(Button):
+    """
+    class use to display content of the post
+    """
+
     def __init__(self, post_content, **kwargs):
+        """
+        :param post_content: string repr content of the post
+        :param kwargs: param call for Button class
+        """
         super().__init__(**kwargs)
         self.text = post_content
 
@@ -86,7 +103,20 @@ class PostDividerLabel(Label):
 
 
 class PostOptionButton(IconButton):
+    """
+    class use to display option for post. only display this class if the
+    AuthorizedUser is the owner of the post
+    """
+
     def __init__(self, view_instance, option_action, **kwargs):
+        """
+        create PostOptionButton obj. depend on option_action, the button will
+        have different icon and functionality
+        :param view_instance: BoxLayout obj repr view that will hold this
+        option button
+        :param option_action: string repr name of the action
+        :param kwargs: param call for Button class
+        """
         super().__init__(**kwargs)
         self.option_action = option_action
         self.view_instance = view_instance
@@ -101,6 +131,9 @@ class PostOptionButton(IconButton):
         self.text = f'[size=16sp]{option_icon}[/size]'
 
     def on_release(self):
+        """
+        on release call the according function in the view instance
+        """
         if self.option_action == 'edit':
             return self.view_instance.get_post_new_content()
         elif self.option_action == 'delete':
@@ -110,7 +143,16 @@ class PostOptionButton(IconButton):
 
 
 class PostActionBar(BoxLayout):
+    """
+    class use to display action bar (the bar below post content)
+    """
+
     def __init__(self, view_instance, **kwargs):
+        """
+        :param view_instance: BoxLayout obj repr view that will hold this
+        action bar
+        :param kwargs: param call for BoxLayout class
+        """
         super().__init__(**kwargs)
         self.view_instance = view_instance
 
@@ -126,6 +168,10 @@ class PostActionBar(BoxLayout):
         self.bind(minimum_height=self.setter('height'))
 
     def display_post_upvotes(self):
+        """
+        display post upvotes on the action bar. display 'Like' if no
+        upvote, display number of upvote if post has upvote
+        """
         if self.upvotes_num != 0:
             upvote_text = str(self.upvotes_num)
         else:
@@ -135,6 +181,10 @@ class PostActionBar(BoxLayout):
             self.heart_icon + f' [size=12sp]{upvote_text}[/size]'
 
     def display_post_comments_num(self):
+        """
+        display post upvotes on the action bar. display 'Comment' if no
+        comment, display number of comment if post has comment
+        """
         if self.comments_num != 0:
             comment_btn_text = str(self.comments_num)
         else:
@@ -144,6 +194,10 @@ class PostActionBar(BoxLayout):
             self.comment_icon + f' [size=12sp]{comment_btn_text}[/size]'
 
     def upvote_post(self):
+        """
+        try upvote the post. if request code is 429, auto retry upvote it. if
+        unable to upvote, display error
+        """
         curr_post = self.view_instance.post
         curr_user = self.view_instance.screen_instance.app.authorized_user
 
@@ -165,10 +219,16 @@ class PostActionBar(BoxLayout):
 
 class PostView(BoxLayout):
     """
-    custom boxlayout to display a public post
+    class display a post. it is used to hold post info, content, and action.
     """
 
     def __init__(self, screen_instance, post, **kwargs):
+        """
+        :param screen_instance: Screen obj repr screen that will display this
+        PostView obj
+        :param post: Post obj repr a post
+        :param kwargs: param call for BoxLayout class
+        """
         super().__init__(**kwargs)
         self.screen_instance = screen_instance
         self.post = post
@@ -192,9 +252,16 @@ class PostView(BoxLayout):
         self.bind(minimum_height=self.setter('height'))
 
     def get_post_new_content(self):
+        """
+        open popup and display input field to get new content for the post
+        """
         OneInputFieldPopup(view_instance=self, action_name='edit_post').open()
 
     def post_edit(self, post_new_content):
+        """
+        try to edit a post with post new content. if unable, display error
+        :param post_new_content: string repr new content of the post
+        """
         if post_new_content == '':
             return
 
@@ -211,6 +278,9 @@ class PostView(BoxLayout):
             ErrorPopup(error.message).open()
 
     def post_delete(self):
+        """
+        try delete a post, then refresh the view. if unable, display error
+        """
         try:
             self.post.delete_public_post(
                 self.screen_instance.app.authorized_user

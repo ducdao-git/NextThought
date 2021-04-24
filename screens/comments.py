@@ -7,9 +7,17 @@ from libs.frontend.custom_popup import ErrorPopup
 
 
 class CommentsRoute(Screen):
+    # might notice that this screen along with it support widget is really
+    # similar to newsfeed screen but they have really different look and some
+    # different functionality here and there thus I split it to a new class
+    """
+    screen use to display comments
+    """
+
     def __init__(self, app, **kwargs):
         """
         :param app: current app instance
+        :param kwargs: param call for Screen class
         """
         super().__init__(**kwargs)
         self.app = app
@@ -17,17 +25,29 @@ class CommentsRoute(Screen):
         self.top_comment = None
         self.comments = None
 
-    def on_pre_enter(self, *args):
+    def on_pre_enter(self, *_):
+        """
+        call display_comments() when enter this screen
+        """
         self.display_comments()
 
-    def on_leave(self, *args):
+    def on_leave(self, *_):
+        """
+        clear the scrollview when leave the screen
+        """
         self.ids.comment_scrollview.clear_widgets()
 
     def refresh_display(self):
+        """
+        re-display the newest comments from the server
+        """
         self.ids.comment_scrollview.clear_widgets()
         self.display_comments()
 
     def display_comments(self):
+        """
+        try to display comments. if unable, display error
+        """
         try:
             self.top_comment = self.app.process_post
 
@@ -46,6 +66,11 @@ class CommentsRoute(Screen):
             ErrorPopup(error.message).open()
 
     def create_comment(self):
+        """
+        create a new comment with user input date on the server. auto take new
+        comment content from comment_content_input then remove left and right
+        empty space
+        """
         try:
             comment_input = self.ids.comment_content_input.text.strip()
 

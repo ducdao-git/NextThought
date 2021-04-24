@@ -7,7 +7,15 @@ from libs.frontend.custom_popup import ErrorPopup, SuccessSignUpPopup
 
 
 class SignInInput(BoxLayout):
+    """
+    structure of the sign in form
+    """
+
     def __init__(self, screen_instance):
+        """
+        display the empty sign in form
+        :param screen_instance: screen obj repr screen display this class
+        """
         super().__init__()
         self.screen_instance = screen_instance
         self.user_profile = self.screen_instance.user_profile
@@ -22,34 +30,58 @@ class SignInInput(BoxLayout):
                 self.user_profile.get_do_save_auth())
 
     def get_signin_data(self):
-        return self.ids.do_save_auth_checkbox.active, \
-               self.ids.username_input.text.strip(), \
-               self.ids.password_input.text.strip()
+        """
+        :return: return user input data but take out all space on most left and
+        right
+        """
+        return (self.ids.do_save_auth_checkbox.active,
+                self.ids.username_input.text.strip(),
+                self.ids.password_input.text.strip())
 
     def clear_input_field(self):
+        """
+        clear the input field
+        """
         self.ids.username_input.text = ''
         self.ids.password_input.text = ''
 
-    def on_remember_password_change(self, checkbox_state):
-        pass
-
 
 class SignUpInput(BoxLayout):
+    """
+    structure of the sign up form
+    """
+
     def __init__(self, screen_instance):
+        """
+        display the empty sign up form
+        :param screen_instance: screen obj repr screen display this class
+        """
         super().__init__()
         self.screen_instance = screen_instance
 
     def get_signup_data(self):
+        """
+        :return: return user input data but take out all space on most left and
+        right
+        """
         return self.ids.username_input.text.strip()
 
     def clear_input_field(self):
+        """
+        clear the input field
+        """
         self.ids.username_input.text = ''
 
 
 class LoginRoute(Screen):
+    """
+    screen use to display sign in or sign up input form
+    """
+
     def __init__(self, app, **kwargs):
         """
         :param app: current app instance
+        :param kwargs: param call for Screen class
         """
         super().__init__(**kwargs)
         self.app = app
@@ -58,13 +90,24 @@ class LoginRoute(Screen):
         self.signin_input = None
         self.signup_input = None
 
-    def on_pre_enter(self, *args):
+    def on_pre_enter(self, *_):
+        """
+        call display_input_form() when enter to this screen.
+        """
         self.display_input_form()
 
-    def on_leave(self, *args):
+    def on_leave(self, *_):
+        """
+        set login_action to 'sign_in' when leave the screen. this effect what
+        will be display when display_input_form() is called
+        """
         self.login_action = 'sign_in'
 
     def display_input_form(self):
+        """
+        display input form depend on the login_action sign_in or sign_up form
+        will be display
+        """
         self.signin_input = SignInInput(self)
         self.signup_input = SignUpInput(self)
 
@@ -93,6 +136,9 @@ class LoginRoute(Screen):
             self.ids.login_button.text = f'{self.signup_icon}  Create Account'
 
     def try_login(self):
+        """
+        try login with the input data. if unable to login, display error
+        """
         if self.login_action == 'sign_in':
             will_saved, username, token = self.signin_input.get_signin_data()
 

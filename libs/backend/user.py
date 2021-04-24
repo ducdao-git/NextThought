@@ -9,7 +9,7 @@ api_url = 'http://nsommer.wooster.edu/social'
 
 def create_user(username):
     """
-    create a new user in api and AuthorizedUser obj with this username
+    create a new user on server and AuthorizedUser obj with this username
     :param username: string represent username of new user
     :return: AuthorizedUser obj with this username
     """
@@ -26,6 +26,11 @@ def create_user(username):
 
 
 def get_uid_from_username(username):
+    """
+    get user ID from the username
+    :param username: string repr name of a user
+    :return: int repr user ID of the user with this username
+    """
     if username in ['', None]:
         return None
 
@@ -58,7 +63,7 @@ class AuthorizedUser:
 
     def set_username_id(self, username):
         """
-        setter - set user id and username for the user, check if the username
+        setter - set user ID and username for the user, check if the username
         exist in the api
         :param username: string represent username for the user
         :return: None
@@ -81,7 +86,7 @@ class AuthorizedUser:
         :param token: string to check if represent valid token
         :return: string represent token
         """
-        # api doesn't ofer check validity of token so test token
+        # api doesn't offer check validity of token so test token
         # by change username for an user then change back
         try:
             response = requests.patch(
@@ -129,7 +134,6 @@ class AuthorizedUser:
         """
         change username for current signed in user
         :param new_username: string represent new username for the user
-        :return: None
         """
         try:
             response = requests.patch(
@@ -147,6 +151,12 @@ class AuthorizedUser:
             raise DataError(error)
 
     def create_message(self, recipientid, message_content):
+        """
+        try create new message with the sender is this user, recipient is user
+        with recipientid. if unable, raise DataError with this error
+        :param recipientid: int repr ID of recipient
+        :param message_content: string repr content of the new message
+        """
         try:
             response = requests.post(
                 api_url + '/messages',
@@ -164,6 +174,14 @@ class AuthorizedUser:
             raise DataError(error)
 
     def get_messages(self, otherid, limit=50):
+        """
+        try get messages between this user and the other user with otherid. if
+        unable, raise DataError with this error
+        :param otherid: int repr ID of the other user
+        :param limit: int repr number of most recent messages to get
+        :return: list of Message obj where each Message obj is a message
+        between the 2 users
+        """
         try:
             response = requests.get(
                 api_url + '/messages',
@@ -193,6 +211,11 @@ class AuthorizedUser:
             raise DataError(error)
 
     def get_conversations(self):
+        """
+        try get list of other user that this user has conversation with
+        :return: list of ChatPartner obj where each ChatPartner obj represent
+        a user that this user has conversation with
+        """
         try:
             response = requests.get(
                 api_url + '/conversations',
@@ -215,12 +238,29 @@ class AuthorizedUser:
             raise DataError(error)
 
     def __repr__(self):
+        """
+        printable form of AuthorizedUser obj
+        :return: string repr AuthorizedUser obj
+        """
         return f'AuthorizedUser class -- uid: {self.uid}, username:' \
                f' {self.username}, token: {self.token}'
 
 
 class ChatPartner:
+    """
+    class represent anonymous_users. this class only care about username and
+    uid of a the user. use when need pass the user who has conversation with
+    authorized user around
+    """
+
     def __init__(self, username, uid=None, server_check=False):
+        """
+        create a new ChatPartner obj. include check validity of username when
+        uid is None or server_check is True
+        :param username: string repr username for this user
+        :param uid: int repr ID of this user
+        :param server_check: boolean to do a check validity username and uid
+        """
         if server_check or uid is None:
             self.uid = get_uid_from_username(username)
 
@@ -234,11 +274,23 @@ class ChatPartner:
             self.uid = uid
 
     def get_username(self):
+        """
+        getter -- get username
+        :return: string repr username of the user
+        """
         return self.username
 
     def get_uid(self):
+        """
+        getter -- get uid
+        :return: int repr ID of the user
+        """
         return self.uid
 
     def __repr__(self):
+        """
+        printable form of ChatPartner obj
+        :return: string repr ChatPartner obj
+        """
         return f'ChatPartner class -- uid: {self.uid}, ' \
                f'username: {self.username}'

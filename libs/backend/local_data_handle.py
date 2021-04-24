@@ -2,8 +2,6 @@ import json
 from datetime import datetime, timedelta
 from dateutil import tz
 
-from pprint import pprint
-
 from libs.backend.custom_exception import DataError
 
 
@@ -27,7 +25,7 @@ def _hex_to_rgb(hex_color):
 def get_theme_palette(theme_name):
     """
     get color data of the theme_name
-    :param theme_name: name of the theme - next_mess
+    :param theme_name: string repr name of the theme
     :return: color palette for the theme
     """
     try:
@@ -54,6 +52,15 @@ def get_theme_palette(theme_name):
 
 
 def get_readable_time(time, message_time=False):
+    """
+    get human easy readable time, the time format will vary depend on how long
+    was it from current time and if it is message time or not. message display
+    time have different format from post or comment display time. if unable to
+    convert utc time to local time, raise DataError.
+    :param time: string repr the time of post, comment, or message
+    :param message_time: boolean to check if the time is message time
+    :return: string repr readable form of the time
+    """
     try:
         from_zone = tz.tzutc()
         to_zone = tz.tzlocal()
@@ -89,50 +96,99 @@ def get_readable_time(time, message_time=False):
 
 
 class UserProfile:
+    """
+    class repr a user profile
+    """
+
     def __init__(self):
+        """
+        create a UserProfile obj from user_profile local file save. if unable
+        to read local file save, raise DataError
+        """
         try:
             with open('user_profile.json', 'r') as infile:
                 self.user_profile = json.load(infile)
 
-            pprint(self.user_profile)
+            # pprint(self.user_profile)
 
         except Exception as error:
             raise DataError(error)
 
     def get_theme_name(self):
+        """
+        :return: string repr name of the theme user are currently use
+        """
         return self.user_profile['theme_name']
 
     def get_do_save_auth(self):
+        """
+        :return: 1 or 0, where 1 mean do save auth, 0 mean don't save auth
+        """
         return self.user_profile['do_save_auth']
 
     def get_saved_username(self):
+        """
+        :return: string repr saved username
+        """
         return self.user_profile['saved_username']
 
     def get_saved_token(self):
+        """
+        :return: string repr saved token
+        """
         return self.user_profile['saved_token']
 
     def get_num_post_show(self):
+        """
+        :return: string repr maximum post will be show
+        """
         return self.user_profile['num_post_show']
 
     def get_num_message_show(self):
+        """
+        :return: string repr maximum message will be show
+        """
         return self.user_profile['num_message_show']
 
     def set_theme_name(self, new_theme_name):
+        """
+        set new value for theme_name
+        :param new_theme_name: string repr name of the new theme
+        """
         self.user_profile['theme_name'] = new_theme_name
 
     def switch_do_save_auth(self, switch_to_state):
+        """
+        change value of do_save_auth. do_save_auth can only take 1 or 0. Where
+        1 mean do save auth, 0 mean don't save auth
+        :param switch_to_state: boolean repr do_save_auth equal to this state
+        """
         if switch_to_state:
             self.user_profile['do_save_auth'] = 1
         else:
             self.user_profile['do_save_auth'] = 0
 
     def set_saved_username(self, new_saved_username):
+        """
+        set value for saved_username
+        :param new_saved_username: string repr new username to be save
+        """
         self.user_profile['saved_username'] = new_saved_username
 
     def set_saved_token(self, new_saved_token):
+        """
+        set value for saved_token
+        :param new_saved_token: string repr new token to be save
+        """
         self.user_profile['saved_token'] = new_saved_token
 
     def set_num_post_show(self, new_num_post_show):
+        """
+        set value for num_post_show. the value must be in 1 to 100 inclusively,
+        else raise raise DataError
+        :param new_num_post_show: int repr new maximum number of post will be
+        show
+        """
         if new_num_post_show.isdigit():
             new_num_post_show = int(new_num_post_show)
         else:
@@ -149,6 +205,12 @@ class UserProfile:
         self.user_profile['num_post_show'] = new_num_post_show
 
     def set_num_message_show(self, new_num_message_show):
+        """
+        set value for num_message_show. the value must be in 1 to 100
+        inclusively, else raise raise DataError
+        :param new_num_message_show: int repr new maximum number of message
+        will be show
+        """
         if new_num_message_show.isdigit():
             new_num_message_show = int(new_num_message_show)
         else:
@@ -165,6 +227,10 @@ class UserProfile:
         self.user_profile['num_message_show'] = new_num_message_show
 
     def save_user_profile(self):
+        """
+        save user profile to local user_profile file to preserve setting. if
+        unable to write to local user_profile file, raise DataError
+        """
         try:
             with open('user_profile.json', 'w') as outfile:
                 json.dump(self.user_profile, outfile, indent=2)

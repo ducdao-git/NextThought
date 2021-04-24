@@ -2,19 +2,19 @@ from kivy.uix.screenmanager import Screen
 
 from libs.backend.user import get_uid_from_username
 from libs.backend.public_post import get_public_posts, create_public_post
-from libs.backend.custom_exception import DataError
 from libs.frontend.post_widget import PostView
 from libs.frontend.custom_popup import *
 
 
 class NewsfeedRoute(Screen):
     """
-    Screen use to display public posts
+    screen use to display public posts
     """
 
     def __init__(self, app, **kwargs):
         """
         :param app: current app instance
+        :param kwargs: param call for Screen class
         """
         super().__init__(**kwargs)
         self.app = app
@@ -22,24 +22,30 @@ class NewsfeedRoute(Screen):
         self.filter_username = None
         self.filter_tag = None
 
-    def on_pre_enter(self, *args):
+    def on_pre_enter(self, *_):
         """
-        function will be call when the animation to enter the screen start. it
-        display most <limit> recent post
+        call display_public_posts() when enter to this screen. if
+        display_public_posts raise DataError, then display the error
         """
         try:
             self.display_public_posts(self.filter_username, self.filter_tag)
         except DataError as error:
             ErrorPopup(error.message).open()
 
-    def on_leave(self, *args):
+    def on_leave(self, *_):
         """
-        function will be call whn leaving the screen. the function will clear
-        all widget in screen i.e. remove all unused widget, data
+        empty the screen scrollview when enter to different screen
         """
         self.ids.newsfeed_scrollview.clear_widgets()
 
     def display_public_posts(self, username=None, tag=None):
+        """
+        display most <limit> recent posts
+        :param username: string repr name of user to filter and take only posts
+        that post by this user. if None, take all available posts
+        :param tag: string repr tag and take only posts contain this tag. if
+        None, take all available posts
+        """
         posts = get_public_posts(
             limit=self.user_profile.get_num_post_show(),
             uid=get_uid_from_username(username),
@@ -55,6 +61,11 @@ class NewsfeedRoute(Screen):
             self.ids.newsfeed_scrollview.add_widget(PostView(self, post))
 
     def refresh_display(self):
+        """
+        clear the posts data then re-display to display the newest post
+        (refresh functionality). display error if unable to display newest
+        public posts
+        """
         try:
             self.ids.newsfeed_scrollview.clear_widgets()
             self.display_public_posts(self.filter_username, self.filter_tag)
@@ -63,9 +74,18 @@ class NewsfeedRoute(Screen):
             ErrorPopup(error.message).open()
 
     def open_create_post_popup(self):
+        """
+        open popup to take in content for new post
+        """
         OneInputFieldPopup(screen_instance=self).open()
 
     def create_post(self, new_post_content):
+        """
+        create a new post on server then refresh the display to get update
+        :param new_post_content: string repr content of new post and create new
+        post on server with this content. display error if unable to create new
+        post
+        """
         if new_post_content in ['', None]:
             return None
 
@@ -77,9 +97,20 @@ class NewsfeedRoute(Screen):
             ErrorPopup(error.message).open()
 
     def open_filter_popup(self):
+        """
+        open filter popup for to enter filter option
+        """
         FilterPopup(self).open()
 
     def filter_post(self, username=None, tag=None):
+        """
+        take in username and tag for filter, try to display posts that pass
+        these filter. if able to display post then set screen wide filter
+        username and tag. if unable, then display error
+        :param username: string repr name of user to pass to
+        display_public_posts()
+        :param tag: string repr tag to pass to display_public_posts()
+        """
         try:
             self.ids.newsfeed_scrollview.clear_widgets()
             self.display_public_posts(username, tag)
@@ -93,4 +124,5 @@ class NewsfeedRoute(Screen):
             ErrorPopup(error.message).open()
 
     def open_setting_popup(self):
+        """open setting popup"""
         SettingPopup(self).open()

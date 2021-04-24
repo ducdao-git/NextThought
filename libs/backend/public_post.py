@@ -83,6 +83,7 @@ class PublicPost:
         :param content: string repr content of this post
         :param time: string repr posted time for this post
         :param upvotes_num: int repr number of upvote/like for this post
+        :param comments_num: int repr number of comments for this post
         :param postid: int repr ID of this post
         :param parentid: int repr ID of this post
         """
@@ -92,27 +93,52 @@ class PublicPost:
         self.postid, self.parentid = postid, parentid
 
     def get_owner_name(self):
+        """
+        :return: string repr name of the owner of this post
+        """
         return self.owner_name
 
     def get_content(self):
+        """
+        :return: string repr content of this post
+        """
         return self.content
 
     def get_time(self):
+        """
+        :return: string repr posted time for this post
+        """
         return self.time
 
     def get_upvotes_num(self):
+        """
+        :return: int repr number of upvote/like for this post
+        """
         return self.upvotes_num
 
     def get_comments_num(self):
+        """
+        :return: int repr number of comments for this post
+        """
         return self.comments_num
 
     def get_postid(self):
+        """
+        :return: int repr ID of this post
+        """
         return self.postid
 
     def get_parentid(self):
+        """
+        :return: int repr ID of this post
+        """
         return self.parentid
 
     def upvote_post(self, user):
+        """
+        try upvote a post. if unable, raise DataError with this error
+        :param user: AuthorizedUser obj repr user who upvote this post
+        """
         try:
             response = requests.post(
                 api_url + '/upvotes',
@@ -129,6 +155,11 @@ class PublicPost:
             raise DataError(error)
 
     def reduce_comments_num(self, by=1):
+        """
+        change comments num locally
+        :param by: int repr number that comments num will be reduce by. if by
+        is negative, this mean increase comments num
+        """
         self.comments_num -= by
 
     def edit_public_post(self, owner, new_content):
@@ -175,7 +206,8 @@ class PublicPost:
 
     def __repr__(self):
         """
-        :return: string representation of a public post
+        printable form of public post
+        :return: string repr of a public post
         """
         return f'AuthorizedUser class -- owner_name: {self.owner_name}, ' \
                f'content: {self.content}, time: {self.time} ' \

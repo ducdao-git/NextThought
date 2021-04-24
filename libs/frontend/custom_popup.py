@@ -6,7 +6,16 @@ from libs.backend.custom_exception import DataError
 
 
 class FilterPopup(ModalView):
+    """
+    class use to display filter option as a popup
+    """
+
     def __init__(self, screen_instance, **kwargs):
+        """
+        :param screen_instance: Screen obj repr screen that will display this
+        FilterPopup obj
+        :param kwargs: param call for ModalView class
+        """
         super().__init__(**kwargs)
         self.screen_instance = screen_instance
 
@@ -18,6 +27,10 @@ class FilterPopup(ModalView):
             self.ids.filter_tag.text = self.screen_instance.filter_tag
 
     def on_dismiss(self):
+        """
+        give input data and call filter_post function from screen instance when
+        dismiss
+        """
         filter_username, filter_tag = None, None
 
         if self.ids.filter_username.text != '':
@@ -30,8 +43,22 @@ class FilterPopup(ModalView):
 
 
 class OneInputFieldPopup(ModalView):
+    """
+    class use to display popup with exactly one input field
+    """
+
     def __init__(self, screen_instance=None, view_instance=None,
                  action_name='create_post', **kwargs):
+        """
+        create OneInputFieldPopup obj. action_name will also affect what the
+        popup will display
+        :param screen_instance: Screen obj repr screen that will display this
+        OneInputFieldPopup obj
+        :param view_instance: BoxLayout obj which will display this
+        OneInputFieldPopup obj
+        :param action_name: string repr name of the action
+        :param kwargs: param call for ModalView class
+        """
         super().__init__(**kwargs)
         self.view_instance = view_instance
         self.screen_instance = screen_instance
@@ -57,6 +84,11 @@ class OneInputFieldPopup(ModalView):
             self.ids.input_field.hint_text = 'Type a username...'
 
     def on_dismiss(self):
+        """
+        call appropriate function when popup get dismiss. depend on the
+        action_name, the screen_instance or view_instance will need to run the
+        action functionality.
+        """
         if self.action_name == 'edit_post':
             self.view_instance.post_edit(self.ids.input_field.text.strip())
 
@@ -91,7 +123,17 @@ class ErrorPopup(ModalView):
 
 
 class SuccessSignUpPopup(ModalView):
+    """
+    class use to display successful sign up message when sign up is success
+    """
+
     def __init__(self, screen_instance, acc_password, **kwargs):
+        """
+        :param screen_instance: Screen obj repr screen that will display this
+        SuccessSignUpPopup obj
+        :param acc_password: string repr token of the sign up account
+        :param kwargs: param call for ModalView class
+        """
         super().__init__(**kwargs)
         self.acc_password = acc_password
         self.screen_instance = screen_instance
@@ -99,6 +141,10 @@ class SuccessSignUpPopup(ModalView):
         self.display_password()
 
     def copy_password(self):
+        """
+        allow user to click on the password to copy. change the text to
+        'copied!' to notice user the password has copied
+        """
         Clipboard.copy(self.acc_password)
 
         self.ids.password_display.text = \
@@ -107,16 +153,33 @@ class SuccessSignUpPopup(ModalView):
         Clock.schedule_once(lambda *_: self.display_password(), 1)
 
     def display_password(self):
+        """
+        display token for the new sign up account
+        """
         self.ids.password_display.text = f'[b]{self.acc_password}[/b]'
 
 
 class SettingPopup(ModalView):
+    """
+    class use to display the setting
+    """
+
     def __init__(self, screen_instance, **kwargs):
+        """
+        :param screen_instance: Screen obj repr screen that will display this
+        SettingPopup obj
+        :param kwargs: param call for ModalView class
+        """
         super().__init__(**kwargs)
         self.screen_instance = screen_instance
         self.user_profile = self.screen_instance.app.user_profile
 
     def show_help(self, field_name):
+        """
+        show help for input field. help the user understand what this value do
+        :param field_name: string repr the name of the input field we need to
+        show help for
+        """
         if self.ids[field_name].text == '' and field_name == 'msg_num_help':
             self.ids[field_name].text = \
                 'Maximum number of message will show when ' \
@@ -129,6 +192,10 @@ class SettingPopup(ModalView):
             return
 
     def update_user_profile(self):
+        """
+        update user profile with the new user input data. if unable to set
+        value to any option, display error
+        """
         try:
             if not self.ids.post_num_input.text.strip() == '':
                 self.user_profile.set_num_post_show(
@@ -144,6 +211,10 @@ class SettingPopup(ModalView):
             ErrorPopup(error.message).open()
 
     def on_dismiss(self):
+        """
+        on dismiss, depend on the screen, will refresh if the screen is
+        newsfeed or message
+        """
         if self.screen_instance.name == 'newsfeed_route':
             self.screen_instance.refresh_display()
         if self.screen_instance.name == 'message_route':

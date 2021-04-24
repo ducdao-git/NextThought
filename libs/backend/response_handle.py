@@ -5,6 +5,10 @@ from libs.backend.custom_exception import DataError
 
 
 def is_internet_connected():
+    """
+    try check for internet connect by ping google.com.
+    :return: True if able to ping google.com, else False
+    """
     try:
         request.urlopen('https://www.google.com/', timeout=3)
         return True
@@ -16,7 +20,7 @@ def is_internet_connected():
 def get_response_data(response):
     """
     get the data of a request or raise exception if request is bad
-    :param response: a request obj
+    :param response: a request obj repr a response
     :return: response data of the request or None if exception raise
     """
     if response.status_code == 200:

@@ -3,7 +3,16 @@ from requests.exceptions import RequestException
 
 # Custom Exception used to catch errors when change user data.
 class DataError(Exception):
+    """
+    class repr custom exception
+    """
+
     def __init__(self, error_messages):
+        """
+        create new DataError obj
+        :param error_messages: can be any type. depend on the type, the new
+        error message will be generate accordingly (read implementation)
+        """
         if type(error_messages) in [str, int]:
             self.custom_code = 1
             self.message = str(error_messages)
