@@ -29,7 +29,8 @@ class NextMess(App):
         super().__init__(**kwargs)
 
         self.user_profile = UserProfile()
-        self.theme_palette = get_theme_palette('next_mess')
+        self.theme_palette = \
+            get_theme_palette(self.user_profile.get_theme_name())
 
         self.authorized_user = None
         self.process_message_partner = None
@@ -78,7 +79,9 @@ class NextMessCrash(App):
         :param kwargs: param call for App class
         """
         super().__init__(**kwargs)
-        self.theme_palette = get_theme_palette('next_mess')
+        self.user_profile = UserProfile()
+        self.theme_palette = \
+            get_theme_palette(self.user_profile.get_theme_name())
 
     def build(self):
         """
