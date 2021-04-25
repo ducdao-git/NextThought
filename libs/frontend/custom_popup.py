@@ -3,6 +3,7 @@ from kivy.core.clipboard import Clipboard
 from kivy.clock import Clock
 
 from libs.backend.custom_exception import DataError
+from libs.backend.local_data_handle import get_theme_palette
 
 
 class FilterPopup(ModalView):
@@ -172,7 +173,20 @@ class SettingPopup(ModalView):
         """
         super().__init__(**kwargs)
         self.screen_instance = screen_instance
+        self.app = self.screen_instance.app
         self.user_profile = self.screen_instance.app.user_profile
+
+        if self.user_profile.get_theme_name() == 'light':
+            self.ids.light_theme.bg_color = \
+                self.ids.theme_option.selected_bg_color
+            self.ids.light_theme.color = \
+                self.ids.theme_option.selected_text_color
+
+        elif self.user_profile.get_theme_name() == 'dark':
+            self.ids.dark_theme.bg_color = \
+                self.ids.theme_option.selected_bg_color
+            self.ids.dark_theme.color = \
+                self.ids.theme_option.selected_text_color
 
     def show_help(self, field_name):
         """
@@ -209,6 +223,11 @@ class SettingPopup(ModalView):
 
         except DataError as error:
             ErrorPopup(error.message).open()
+
+    def change_theme(self, new_theme_name):
+        self.user_profile.set_theme_name(new_theme_name)
+        self.app.theme_palette = get_theme_palette(new_theme_name)
+        self.app.refresh_theme()
 
     def on_dismiss(self):
         """

@@ -20,7 +20,7 @@ class NextMess(App):
     main app class - run if internet connection is good
     """
 
-    def __init__(self, **kwargs):
+    def __init__(self, authorized_user=None, goto_route=None, **kwargs):
         """
         initialize some app wide variable like user profile, theme, and screen
         manager.
@@ -32,11 +32,12 @@ class NextMess(App):
         self.theme_palette = \
             get_theme_palette(self.user_profile.get_theme_name())
 
-        self.authorized_user = None
+        self.authorized_user = authorized_user
         self.process_message_partner = None
         self.process_post = None
+        self.goto_route = goto_route
 
-        self.route_manager = ScreenManager()
+        self.route_manager = None
 
     def build(self):
         """
@@ -45,6 +46,21 @@ class NextMess(App):
         """
         self.title = 'NextMess'
 
+        self.route_manager = None
+
+        Builder.load_file('libs/frontend/custom_kv_widget.kv')
+        Builder.load_file('libs/frontend/custom_popup.kv')
+        Builder.load_file('libs/frontend/post_widget.kv')
+        Builder.load_file('libs/frontend/comment_widget.kv')
+        Builder.load_file('libs/frontend/chat_widget.kv')
+        Builder.load_file('screens/login.kv')
+        Builder.load_file('screens/newsfeed.kv')
+        Builder.load_file('screens/comments.kv')
+        Builder.load_file('screens/prichat.kv')
+        Builder.load_file('screens/message.kv')
+
+        self.route_manager = ScreenManager()
+
         self.route_manager.add_widget(LoginRoute(app=self))
         self.route_manager.add_widget(NewsfeedRoute(app=self))
         self.route_manager.add_widget(CommentsRoute(app=self))
@@ -52,7 +68,30 @@ class NextMess(App):
         self.route_manager.add_widget(MessageRoute(app=self))
 
         self.route_manager.return_route = ''
+
+        if self.goto_route is not None:
+            self.route_manager.current = self.goto_route
+
         return self.route_manager
+
+    def refresh_theme(self):
+        """
+        call when change theme. by create a new app instance, all new theme
+        will be load in. costly but this is the only method not cause conflict
+        when clear widget
+        """
+        Builder.unload_file('libs/frontend/custom_kv_widget.kv')
+        Builder.unload_file('libs/frontend/custom_popup.kv')
+        Builder.unload_file('libs/frontend/post_widget.kv')
+        Builder.unload_file('libs/frontend/comment_widget.kv')
+        Builder.unload_file('libs/frontend/chat_widget.kv')
+        Builder.unload_file('screens/login.kv')
+        Builder.unload_file('screens/newsfeed.kv')
+        Builder.unload_file('screens/comments.kv')
+        Builder.unload_file('screens/prichat.kv')
+        Builder.unload_file('screens/message.kv')
+        
+        self.build()
 
     def on_stop(self):
         """
@@ -108,16 +147,5 @@ if __name__ == '__main__':
         kivysome.enable("https://kit.fontawesome.com/4adb19bb6e.js",
                         group=kivysome.FontGroup.SOLID,
                         font_folder="assets/fonts")
-
-        Builder.load_file('libs/frontend/custom_kv_widget.kv')
-        Builder.load_file('libs/frontend/custom_popup.kv')
-        Builder.load_file('libs/frontend/post_widget.kv')
-        Builder.load_file('libs/frontend/comment_widget.kv')
-        Builder.load_file('libs/frontend/chat_widget.kv')
-        Builder.load_file('screens/login.kv')
-        Builder.load_file('screens/newsfeed.kv')
-        Builder.load_file('screens/comments.kv')
-        Builder.load_file('screens/prichat.kv')
-        Builder.load_file('screens/message.kv')
 
         NextMess().run()

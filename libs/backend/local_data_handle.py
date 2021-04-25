@@ -152,9 +152,13 @@ class UserProfile:
 
     def set_theme_name(self, new_theme_name):
         """
-        set new value for theme_name
+        set new value for theme_name. raise DataError if new_theme_name neither
+        'light' nor 'dark'
         :param new_theme_name: string repr name of the new theme
         """
+        if new_theme_name not in ['light', 'dark']:
+            raise DataError('Invalid theme name')
+
         self.user_profile['theme_name'] = new_theme_name
 
     def switch_do_save_auth(self, switch_to_state):

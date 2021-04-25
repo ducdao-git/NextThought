@@ -323,7 +323,7 @@
         orientation: 'vertical'
         size_hint: 1, None
         height: self.minimum_height
-        padding: dp(12)
+        padding: dp(12), dp(4), dp(12), dp(12)
         spacing: dp(8)
 
         opacity: 0.95
@@ -334,15 +334,6 @@
                 radius: [(15.0, 15.0), (15.0, 15.0), (15.0, 15.0), (15.0, 15.0)]
                 pos: self.pos
                 size: self.size
-
-        RoundedButton:
-            bg_color: app.theme_palette['primary_color']
-            color: app.theme_palette['text_primary_color']
-            text: '%s  Sign Out' % icon('sign-out-alt', int(sp(16)))
-            on_release:
-                root.dismiss()
-                app.root.transition.direction = 'right'
-                app.root.current = 'login_route'
 
         InfoLabel:
             id: post_num_help
@@ -424,3 +415,47 @@
                 color: app.theme_palette['text_secondary_color']
                 text: '%s  Save' % icon('save', int(sp(16)))
                 on_release: root.update_user_profile()
+
+        DividerLabel:
+
+        BoxLayout:
+            id: theme_option
+            orientation: 'horizontal'
+            size_hint: 1, None
+            height: self.minimum_height
+            padding: dp(0), dp(12)
+            spacing: dp(8)
+
+            unselected_bg_color: app.theme_palette['comment_background_color']
+            unselected_text_color: app.theme_palette['text_background_color']
+            selected_bg_color: app.theme_palette['secondary_color']
+            selected_text_color: app.theme_palette['text_secondary_color']
+
+            RoundedButton:
+                id: light_theme
+                bg_color: self.parent.unselected_bg_color
+                color: self.parent.unselected_text_color
+                text: '%s  Light' % icon('sun', int(sp(16)))
+                on_release:
+                    root.change_theme('light')
+                    root.dismiss()
+
+            RoundedButton:
+                id: dark_theme
+                bg_color: self.parent.unselected_bg_color
+                color: self.parent.unselected_text_color
+                text: '%s  Dark' % icon('moon', int(sp(16)))
+                on_release:
+                    root.change_theme('dark')
+                    root.dismiss()
+
+        DividerLabel:
+
+        RoundedButton:
+            bg_color: app.theme_palette['primary_color']
+            color: app.theme_palette['text_primary_color']
+            text: '%s  Sign Out' % icon('sign-out-alt', int(sp(16)))
+            on_release:
+                root.dismiss()
+                app.root.transition.direction = 'right'
+                app.root.current = 'login_route'
