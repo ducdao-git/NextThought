@@ -1,9 +1,10 @@
 import kivysome
+from copy import deepcopy
 
 from kivy.app import App
 from kivy.config import Config
 from kivy.lang.builder import Builder
-from kivy.uix.screenmanager import ScreenManager, Screen
+from kivy.uix.screenmanager import ScreenManager, Screen, NoTransition
 
 from libs.backend.local_data_handle import get_theme_palette, UserProfile
 from libs.backend.response_handle import is_internet_connected
@@ -20,7 +21,9 @@ class NextMess(App):
     main app class - run if internet connection is good
     """
 
-    def __init__(self, authorized_user=None, goto_route=None, **kwargs):
+    def __init__(self, authorized_user=None, process_message_partner=None,
+                 process_post=None, current_route=None,
+                 return_route=None, **kwargs):
         """
         initialize some app wide variable like user profile, theme, and screen
         manager.
@@ -33,9 +36,10 @@ class NextMess(App):
             get_theme_palette(self.user_profile.get_theme_name())
 
         self.authorized_user = authorized_user
-        self.process_message_partner = None
-        self.process_post = None
-        self.goto_route = goto_route
+        self.process_message_partner = process_message_partner
+        self.process_post = process_post
+        self.current_route = current_route
+        self.return_route = return_route
 
         self.route_manager = None
 
@@ -45,8 +49,6 @@ class NextMess(App):
         manager.
         """
         self.title = 'NextMess'
-
-        self.route_manager = None
 
         Builder.load_file('libs/frontend/custom_kv_widget.kv')
         Builder.load_file('libs/frontend/custom_popup.kv')
@@ -60,6 +62,7 @@ class NextMess(App):
         Builder.load_file('screens/message.kv')
 
         self.route_manager = ScreenManager()
+        self.route_manager.transition = NoTransition()
 
         self.route_manager.add_widget(LoginRoute(app=self))
         self.route_manager.add_widget(NewsfeedRoute(app=self))
@@ -67,10 +70,13 @@ class NextMess(App):
         self.route_manager.add_widget(PriChatRoute(app=self))
         self.route_manager.add_widget(MessageRoute(app=self))
 
-        self.route_manager.return_route = ''
+        if self.current_route is not None:
+            self.route_manager.current = self.current_route
 
-        if self.goto_route is not None:
-            self.route_manager.current = self.goto_route
+        if self.return_route is not None:
+            self.route_manager.return_route = self.return_route
+        else:
+            self.route_manager.return_route = ''
 
         return self.route_manager
 
@@ -90,8 +96,15 @@ class NextMess(App):
         Builder.unload_file('screens/comments.kv')
         Builder.unload_file('screens/prichat.kv')
         Builder.unload_file('screens/message.kv')
-        
-        self.build()
+
+        self.stop()
+        NextMess(
+            # deepcopy(self.authorized_user),
+            # deepcopy(self.process_message_partner),
+            # deepcopy(self.process_post),
+            # deepcopy(self.route_manager.current),
+            # deepcopy(self.route_manager.return_route)
+        ).run()
 
     def on_stop(self):
         """
