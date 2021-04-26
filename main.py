@@ -15,7 +15,7 @@ from screens.prichat import PriChatRoute
 from screens.message import MessageRoute
 
 
-class NextMess(App):
+class NextThought(App):
     """
     main app class - run if internet connection is good
     """
@@ -43,7 +43,7 @@ class NextMess(App):
         call when the app start. it set the app name add all screen to screen
         manager.
         """
-        self.title = 'NextMess'
+        self.title = 'NextThought'
 
         Builder.load_file('libs/frontend/custom_kv_widget.kv')
         Builder.load_file('libs/frontend/custom_popup.kv')
@@ -125,7 +125,7 @@ class AppCrashScreen(Screen):
     pass
 
 
-class NextMessCrash(App):
+class NextThoughtCrash(App):
     """
     run this 'app' version if unable to run the main app
     """
@@ -145,7 +145,7 @@ class NextMessCrash(App):
         call when the main app unable to start. it set the app name and display
         the crash screen
         """
-        self.title = 'NextMess'
+        self.title = 'NextThought'
         return AppCrashScreen()
 
 
@@ -159,11 +159,11 @@ if __name__ == '__main__':
     # cannot run if no internet connection.
     if not is_internet_connected():
         Builder.load_file('screens/app_crash.kv')
-        NextMessCrash().run()
+        NextThoughtCrash().run()
 
     else:
         kivysome.enable("https://kit.fontawesome.com/4adb19bb6e.js",
                         group=kivysome.FontGroup.SOLID,
                         font_folder="assets/fonts")
 
-        NextMess().run()
+        NextThought().run()
