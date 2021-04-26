@@ -29,6 +29,11 @@ class CommentsRoute(Screen):
         """
         call display_comments() when enter this screen
         """
+        # ScreenManager remove_widget will go in screen before delete thus
+        # trigger on_pre_enter when requirement not meet
+        if self.app.process_post is None:
+            return
+
         self.display_comments()
 
     def on_leave(self, *_):

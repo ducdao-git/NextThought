@@ -33,6 +33,11 @@ class MessageRoute(Screen):
         self.authorized_user = self.app.authorized_user
         self.message_partner = self.app.process_message_partner
 
+        # ScreenManager remove_widget will go in screen before delete thus
+        # trigger on_pre_enter when requirement not meet
+        if self.message_partner is None:
+            return
+
         self.ids.message_partner_name.text = \
             self.message_partner.get_username()
 
