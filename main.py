@@ -73,6 +73,7 @@ class NextThought(App):
         new theme can be apply -- this operation is costly but necessary.
         """
         current_route = self.route_manager.current
+        return_route = self.route_manager.return_route
 
         # notice this method will go into each screen prior to remove, thus
         # trigger on_pre_enter function when requirement for screen not met
@@ -89,27 +90,12 @@ class NextThought(App):
         Builder.unload_file('screens/prichat.kv')
         Builder.unload_file('screens/message.kv')
 
-        Builder.load_file('libs/frontend/custom_kv_widget.kv')
-        Builder.load_file('libs/frontend/custom_popup.kv')
-        Builder.load_file('libs/frontend/post_widget.kv')
-        Builder.load_file('libs/frontend/comment_widget.kv')
-        Builder.load_file('libs/frontend/chat_widget.kv')
-        Builder.load_file('screens/login.kv')
-        Builder.load_file('screens/newsfeed.kv')
-        Builder.load_file('screens/comments.kv')
-        Builder.load_file('screens/prichat.kv')
-        Builder.load_file('screens/message.kv')
-
-        screens = [
-            LoginRoute(app=self), NewsfeedRoute(app=self),
-            CommentsRoute(app=self), PriChatRoute(app=self),
-            MessageRoute(app=self)
-        ]
-        for screen in screens:
-            self.route_manager.add_widget(screen)
+        # rebuild the whole app
+        self.build()
 
         self.route_manager.transition = NoTransition()
         self.route_manager.current = current_route
+        self.route_manager.return_route = return_route
 
     def on_stop(self):
         """
