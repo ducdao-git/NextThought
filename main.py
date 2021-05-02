@@ -1,12 +1,12 @@
-import kivysome
+from os.path import join, dirname
+from kivysome.iconfonts import register
 
 from kivy.app import App
 from kivy.config import Config
 from kivy.lang.builder import Builder
-from kivy.uix.screenmanager import ScreenManager, Screen, NoTransition
+from kivy.uix.screenmanager import ScreenManager, NoTransition
 
 from libs.backend.local_data_handle import get_theme_palette, UserProfile
-from libs.backend.response_handle import is_internet_connected
 
 from screens.login import LoginRoute
 from screens.newsfeed import NewsfeedRoute
@@ -104,52 +104,16 @@ class NextThought(App):
         self.user_profile.save_user_profile()
 
 
-class AppCrashScreen(Screen):
-    """
-    screen display if unable to run app at all
-    """
-    pass
-
-
-class NextThoughtCrash(App):
-    """
-    run this 'app' version if unable to run the main app
-    """
-
-    def __init__(self, **kwargs):
-        """
-        initialize app wide variable theme
-        :param kwargs: param call for App class
-        """
-        super().__init__(**kwargs)
-        self.user_profile = UserProfile()
-        self.theme_palette = \
-            get_theme_palette(self.user_profile.get_theme_name())
-
-    def build(self):
-        """
-        call when the main app unable to start. it set the app name and display
-        the crash screen
-        """
-        self.title = 'NextThought'
-        return AppCrashScreen()
-
-
 if __name__ == '__main__':
     Config.set('graphics', 'resizable', False)
     Config.set('graphics', 'width', '400')
     Config.set('graphics', 'height', '800')
 
-    # if no internet then open the crash version of the app. do this because
-    # the icon fonts require internet connection to load thus the main app
-    # cannot run if no internet connection.
-    if not is_internet_connected():
-        Builder.load_file('screens/app_crash.kv')
-        NextThoughtCrash().run()
+    # allow app to use icon offline
+    register(
+        "default_font",
+        "assets/fonts/fa-solid-5.15.3.ttf",
+        join(dirname(__file__), "assets/fonts/fa-solid-5.15.3.fontd"),
+    )
 
-    else:
-        kivysome.enable("https://kit.fontawesome.com/4adb19bb6e.js",
-                        group=kivysome.FontGroup.SOLID,
-                        font_folder="assets/fonts")
-
-        NextThought().run()
+    NextThought().run()
