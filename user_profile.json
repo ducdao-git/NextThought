@@ -1,8 +1,8 @@
 {
-  "theme_name": "light",
-  "do_save_auth": 0,
-  "saved_username": "",
-  "saved_token": "",
+  "theme_name": "dark",
+  "do_save_auth": 1,
+  "saved_username": "dtuser2",
+  "saved_token": "ejzifjyt",
   "num_post_show": 20,
   "num_message_show": 20
 }
